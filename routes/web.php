@@ -1,0 +1,67 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\GuestController;
+use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
+
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/rooms', [PageController::class, 'rooms'])->name('rooms');
+Route::get('/blog', [PageController::class, 'blog'])->name('blog');
+Route::get('/contact', [PageController::class, 'showContactForm'])->name('contact');
+Route::post('/contact', [PageController::class, 'submitContactForm'])->name('contact.submit');
+Route::get('/room_details/{id}', [PageController::class, 'roomDetails'])->name('room.details');
+
+// Forgot password routes (generic for any user)
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// Reset password routes
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
+    Route::post('/booking', [BookController::class, 'store'])->name('booking.submit');
+});
+
+Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/message', [DashboardController::class, 'message'])->name('message.index');
+
+    Route::get('/gallery', [DashboardController::class, 'galleryIndex'])->name('gallery.index');
+    Route::get('/gallery/create', [DashboardController::class, 'galleryCreate'])->name('gallery.create');
+    Route::post('/gallery/store', [DashboardController::class, 'galleryStore'])->name('gallery.store');
+    Route::delete('/gallery/{gallery}', [DashboardController::class, 'galleryDestroy'])->name('gallery.destroy');
+
+    Route::get('/booking/approve/{id}/{model?}', [BookingController::class, 'approve'])->name('booking.approve');
+    Route::get('/booking/reject/{id}/{model?}', [BookingController::class, 'reject'])->name('booking.reject');
+
+    Route::resource('booking', BookingController::class);
+
+    // ✅ ROOMS ROUTES (ONLY ONCE)
+    Route::get('rooms', [RoomController::class, 'index'])->name('rooms.index');
+    Route::get('rooms/create', [RoomController::class, 'create'])->name('rooms.create');
+    Route::post('rooms', [RoomController::class, 'store'])->name('rooms.store');
+    Route::get('rooms/{room}/edit', [RoomController::class, 'edit'])->name('rooms.edit');
+    Route::put('rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
+    Route::delete('rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
+
+    Route::resource('guest', GuestController::class);
+    Route::resource('staff', StaffController::class);
+});
