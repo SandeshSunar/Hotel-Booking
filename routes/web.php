@@ -39,6 +39,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/booking', [BookController::class, 'store'])->name('booking.submit');
 });
 
+//Admin logn routes
+Route::prefix('admin')->as('admin.')->group(function (){
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+});
+
 Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
