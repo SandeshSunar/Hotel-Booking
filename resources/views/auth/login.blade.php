@@ -1,66 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('auth.layout')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hotel System - Login</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+@section('title', 'Login - MyHotel')
 
-<body class="d-flex align-items-center justify-content-center vh-100 bg-light">
-    <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
-        <h3 class="text-center mb-4">Login</h3>
+@section('visual-title', 'Your escape starts here')
+@section('visual-text', 'Access your reservations, explore premium rooms, and enjoy a seamless booking experience tailored just for you.')
+@section('icon', 'bi-door-open')
+@section('heading', 'Welcome Back')
+@section('subheading', 'Sign in to your account')
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
+@section('content')
+    @if ($errors->any() || session('error') || session('success'))
+        <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} auth-alert">
+            @if (session('success'))
+                {{ session('success') }}
+            @elseif (session('error'))
+                {{ session('error') }}
+            @else
+                <ul class="mb-0 ps-3">
                     @foreach ($errors->all() as $error)
-                       <li>{{ $error }}</li>
+                        <li>{{ $error }}</li>
                     @endforeach
                 </ul>
-            </div>
-        @endif
+            @endif
+        </div>
+    @endif
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+    <form method="POST" action="{{ route('login.submit') }}" class="auth-form">
+        @csrf
 
-        <form method="POST" action="{{ route('login.submit') }}">
-            @csrf
-            <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control @error('email') is-invalid @enderror"
-                       id="email" name="email" value="{{ old('email') }}" required>
-                @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
-            </div>
+        <div class="auth-input-group">
+            <i class="bi bi-envelope input-icon"></i>
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control @error('email') is-invalid @enderror"
+                   id="email" name="email" value="{{ old('email') }}"
+                   placeholder="you@example.com" required>
+            @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+        </div>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control @error('password') is-invalid @enderror"
-                       id="password" name="password" required>
-                @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
-            </div>
+        <div class="auth-input-group">
+            <i class="bi bi-lock input-icon"></i>
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control @error('password') is-invalid @enderror"
+                   id="password" name="password"
+                   placeholder="Enter your password" required>
+            @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+        </div>
 
-            <div class="mb-3 text-end">
-                <a href="{{ route('password.request') }}">Forgot Password?</a>
-            </div>
+        <div class="auth-forgot">
+            <a href="{{ route('password.request') }}" class="auth-link small">Forgot password?</a>
+        </div>
 
-            <div class="d-grid mb-3">
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
+        <button type="submit" class="auth-btn">
+            <i class="bi bi-box-arrow-in-right"></i> Sign In
+        </button>
+    </form>
 
-        <p class="text-center">
-            Don’t have an account? <a href="{{ route('register') }}">Register here</a>
-        </p>
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+    <p class="auth-switch">
+        Don't have an account? <a href="{{ route('register') }}" class="auth-link">Create one</a>
+    </p>
+@endsection

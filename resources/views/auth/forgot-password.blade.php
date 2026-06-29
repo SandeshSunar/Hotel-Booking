@@ -1,27 +1,49 @@
 @extends('web.layouts.master')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
-        <h3 class="text-center mb-4">Forgot Password</h3>
+<div class="container d-flex justify-content-center align-items-center py-5" style="min-height: 70vh;">
+    <div class="auth-card" style="max-width: 440px; width: 100%;">
+        <div class="auth-card-header">
+            <div class="auth-icon-wrap">
+                <i class="bi bi-key"></i>
+            </div>
+            <h2>Forgot Password</h2>
+            <p>Enter your email to receive a reset link</p>
+        </div>
 
         @if (session('status'))
-            <div class="alert alert-success">{{ session('status') }}</div>
+            <div class="alert alert-success auth-alert">{{ session('status') }}</div>
         @endif
 
-        <form method="POST" action="{{ route('password.email') }}">
+        @if ($errors->any())
+            <div class="alert alert-danger auth-alert">
+                <ul class="mb-0 ps-3">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('password.email') }}" class="auth-form">
             @csrf
-            <div class="mb-3">
-                <label>Email address</label>
-                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" required>
+
+            <div class="auth-input-group">
+                <i class="bi bi-envelope input-icon"></i>
+                <label for="forgotEmail" class="form-label">Email address</label>
+                <input type="email" class="form-control @error('email') is-invalid @enderror"
+                       id="forgotEmail" name="email" value="{{ old('email') }}"
+                       placeholder="you@example.com" required>
                 @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Send OTP</button>
+            <button type="submit" class="auth-btn">
+                <i class="bi bi-send"></i> Send Reset Link
+            </button>
         </form>
 
-        <p class="text-center mt-3">
-            <a href="{{ route('login') }}">Back to Login</a>
+        <p class="auth-switch">
+            <a href="{{ route('home') }}" class="auth-link">Back to Home</a>
         </p>
     </div>
 </div>

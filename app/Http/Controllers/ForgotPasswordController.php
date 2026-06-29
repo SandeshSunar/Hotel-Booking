@@ -10,6 +10,10 @@ class ForgotPasswordController extends Controller
     // Show forgot password form
     public function showLinkRequestForm()
     {
+        if (request()->routeIs('admin.password.request')) {
+            return view('auth.admin-forgot-password');
+        }
+
         return view('auth.forgot-password');
     }
 

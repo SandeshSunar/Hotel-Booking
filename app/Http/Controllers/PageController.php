@@ -41,7 +41,9 @@ class PageController extends Controller
     public function gallery()
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please login to view the gallery.');
+            return redirect()->route('home')
+                ->with('open_auth_modal', 'login')
+                ->with('error', 'Please login to view the gallery.');
         }
 
         $galleries = Gallery::all();

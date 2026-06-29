@@ -11,6 +11,10 @@ class ResetPasswordController extends Controller
     // Show reset password form
     public function showResetForm($token)
     {
+        if (request()->routeIs('admin.password.reset')) {
+            return view('auth.admin-reset-password', ['token' => $token]);
+        }
+
         return view('auth.reset-password', ['token' => $token]);
     }
 
@@ -31,8 +35,17 @@ class ResetPasswordController extends Controller
             }
         );
 
-        return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('success', 'Password reset successful. You can login now.')
-            : back()->withErrors(['email' => __($status)]);
+        if ($status !== Password::PASSWORD_RESET) {
+            return back()->withErrors(['email' => __($status)]);
+        }
+
+        if ($request->routeIs('admin.password.update')) {
+            return redirect()->route('admin.login')
+                ->with('success', 'Password reset successful. You can login now.');
+        }
+
+        return redirect()->route('home')
+            ->with('open_auth_modal', 'login')
+            ->with('success', 'Password reset successful. You can login now.');
     }
 }

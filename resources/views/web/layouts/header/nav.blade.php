@@ -33,12 +33,178 @@
                     <a class="nav-link fw-bold {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact Us</a>
                 </li>
                 <li class="nav-item me-2">
-                    <a class="btn btn-success {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">Login</a>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-success {{ request()->routeIs('register') ? 'active' : '' }}" href="{{ route('register') }}">Register</a>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<!-- Login Modal -->
+<div class="modal fade auth-modal" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header position-relative">
+                <div class="w-100 text-center">
+                    <div class="auth-icon-wrap">
+                        <i class="bi bi-door-open"></i>
+                    </div>
+                    <h5 class="modal-title fw-bold" id="loginModalLabel">Welcome Back</h5>
+                    <p class="text-muted small mb-0">Sign in to continue your journey</p>
+                </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (!old('name') && ($errors->any() || session('error') || session('success')))
+                    <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} auth-alert">
+                        @if (session('success'))
+                            {{ session('success') }}
+                        @elseif (session('error'))
+                            {{ session('error') }}
+                        @else
+                            <ul class="mb-0 ps-3">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('login.submit') }}" class="auth-form">
+                    @csrf
+
+                    <div class="auth-input-group">
+                        <i class="bi bi-envelope input-icon"></i>
+                        <label for="modalEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                               id="modalEmail" name="email" value="{{ old('email') }}"
+                               placeholder="you@example.com" required>
+                        @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="auth-input-group">
+                        <i class="bi bi-lock input-icon"></i>
+                        <label for="modalPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror"
+                               id="modalPassword" name="password"
+                               placeholder="Enter your password" required>
+                        @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="auth-forgot">
+                        <a href="{{ route('password.request') }}" class="auth-link small">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="auth-btn">
+                        <i class="bi bi-box-arrow-in-right"></i> Sign In
+                    </button>
+                </form>
+
+                <p class="auth-switch">
+                    Don't have an account?
+                    <button type="button" class="btn btn-link auth-link p-0 align-baseline"
+                            data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">
+                        Create one
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade auth-modal" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header position-relative">
+                <div class="w-100 text-center">
+                    <div class="auth-icon-wrap">
+                        <i class="bi bi-person-plus"></i>
+                    </div>
+                    <h5 class="modal-title fw-bold" id="registerModalLabel">Create Account</h5>
+                    <p class="text-muted small mb-0">Join us and book your perfect stay</p>
+                </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (old('name') && ($errors->any() || session('error')))
+                    <div class="alert alert-danger auth-alert">
+                        @if (session('error'))
+                            {{ session('error') }}
+                        @else
+                            <ul class="mb-0 ps-3">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('register.submit') }}" class="auth-form">
+                    @csrf
+
+                    <div class="auth-input-group">
+                        <i class="bi bi-person input-icon"></i>
+                        <label for="modalName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                               id="modalName" name="name" value="{{ old('name') }}"
+                               placeholder="John Doe" required>
+                        @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="auth-input-group">
+                        <i class="bi bi-envelope input-icon"></i>
+                        <label for="modalRegisterEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                               id="modalRegisterEmail" name="email" value="{{ old('email') }}"
+                               placeholder="you@example.com" required>
+                        @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="auth-input-group">
+                        <i class="bi bi-telephone input-icon"></i>
+                        <label for="modalPhone" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control @error('phone') is-invalid @enderror"
+                               id="modalPhone" name="phone" value="{{ old('phone') }}"
+                               placeholder="07XXXXXXXX" required>
+                        @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="auth-input-group">
+                        <i class="bi bi-lock input-icon"></i>
+                        <label for="modalRegisterPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror"
+                               id="modalRegisterPassword" name="password"
+                               placeholder="Minimum 6 characters" required>
+                        @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="auth-input-group">
+                        <i class="bi bi-shield-lock input-icon"></i>
+                        <label for="modalPasswordConfirmation" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control"
+                               id="modalPasswordConfirmation" name="password_confirmation"
+                               placeholder="Repeat your password" required>
+                    </div>
+
+                    <button type="submit" class="auth-btn">
+                        <i class="bi bi-person-plus"></i> Create Account
+                    </button>
+                </form>
+
+                <p class="auth-switch">
+                    Already have an account?
+                    <button type="button" class="btn btn-link auth-link p-0 align-baseline"
+                            data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">
+                        Sign in
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

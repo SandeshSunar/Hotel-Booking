@@ -14,7 +14,7 @@ class AuthController extends Controller
     // Show register page
     public function showRegister()
     {
-        return view('auth.register');
+        return redirect()->route('home')->with('open_auth_modal', 'register');
     }
 
     // Handle register request
@@ -42,7 +42,9 @@ class AuthController extends Controller
                 'usertype' => 'user', // Default new users are normal users
             ]);
 
-            return redirect()->route('login')->with('success', 'Account created successfully. Please login.');
+            return redirect()->route('home')
+                ->with('open_auth_modal', 'login')
+                ->with('success', 'Account created successfully. Please login.');
         } catch (Throwable $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
@@ -51,7 +53,11 @@ class AuthController extends Controller
     // Show login page
     public function showLogin()
     {
-        return view('auth.login');
+        if (request()->routeIs('admin.login')) {
+            return view('auth.admin-login');
+        }
+
+        return redirect()->route('home')->with('open_auth_modal', 'login');
     }
 
     // Handle login request
@@ -93,6 +99,8 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login')->with('success', 'Logged out successfully.');
+        return redirect()->route('home')
+            ->with('open_auth_modal', 'login')
+            ->with('success', 'Logged out successfully.');
     }
 } 
