@@ -1,40 +1,58 @@
-<footer class="bg-dark text-white py-3 mt-auto">
+<footer class="site-footer mt-auto">
     <div class="container">
-        <div class="row">
-            <!-- About section -->
-            <div class="col-md-4 mb-3 mb-md-0">
-                <h5>Simple Website</h5>
-                <p class="small">Creating simple, effective websites.</p>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <a href="{{ route('home') }}" class="footer-brand d-inline-flex align-items-center text-decoration-none">
+                    <img src="{{ asset('/images/logo.png') }}" alt="MyHotel Logo" class="footer-logo">
+                    <span class="footer-brand-text">MyHotel</span>
+                </a>
+                <p class="footer-about">
+                    Experience elegant rooms, warm hospitality, and memorable stays in one modern destination.
+                </p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="bi bi-youtube"></i></a>
+                </div>
             </div>
 
-            <!-- Quick Links -->
-            <div class="col-md-4 mb-3 mb-md-0">
-                <h5>Quick Links</h5>
-                <ul class="list-unstyled small">
-                    <li><a href="{{ route('home') }}" class="text-white text-decoration-none">Home</a></li>
-                    <li><a href="{{ route('about') }}" class="text-white text-decoration-none">About</a></li>
-                    <li><a href="{{ route('rooms') }}" class="text-white text-decoration-none">Rooms</a></li>
-                    <li><a href="{{ route('gallery') }}" class="text-white text-decoration-none">Gallery</a></li>
-                    <li><a href="{{ route('blog') }}" class="text-white text-decoration-none">Blog</a></li>
-                    <li><a href="{{ route('contact') }}" class="text-white text-decoration-none">Contact</a></li>
+            <div class="col-6 col-lg-2">
+                <h6 class="footer-title">Explore</h6>
+                <ul class="footer-links">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li><a href="{{ route('about') }}">About</a></li>
+                    <li><a href="{{ route('rooms') }}">Rooms</a></li>
+                    <li><a href="{{ route('gallery') }}">Gallery</a></li>
                 </ul>
             </div>
 
-            <!-- Contact Info -->
-            <div class="col-md-4">
-                <h5>Contact</h5>
-                <ul class="list-unstyled small">
-                    <li><i class="bi bi-envelope me-2"></i> info@simplewebsite.com</li>
-                    <li><i class="bi bi-phone me-2"></i> +1 (123) 456-7890</li>
+            <div class="col-6 col-lg-2">
+                <h6 class="footer-title">Discover</h6>
+                <ul class="footer-links">
+                    <li><a href="{{ route('blog') }}">Blog</a></li>
+                    <li><a href="{{ route('contact') }}">Contact</a></li>
+                    <li><a href="{{ route('rooms') }}">Special Offers</a></li>
+                    <li><a href="{{ route('contact') }}">Support</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4">
+                <h6 class="footer-title">Contact Us</h6>
+                <ul class="footer-contact">
+                    <li><i class="bi bi-geo-alt-fill"></i> City Center, Main Street, MyTown</li>
+                    <li><i class="bi bi-envelope-fill"></i> info@myhotel.com</li>
+                    <li><i class="bi bi-telephone-fill"></i> +1 (123) 456-7890</li>
                 </ul>
             </div>
         </div>
 
-        <hr class="my-2 bg-light">
-
-        <!-- Bottom copyright -->
-        <div class="text-center small">
-            &copy; {{ date('Y') }} Simple Website. All rights reserved.
+        <div class="footer-bottom">
+            <p class="mb-0">&copy; {{ date('Y') }} MyHotel. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
         </div>
     </div>
 </footer>
