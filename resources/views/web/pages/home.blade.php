@@ -4,6 +4,9 @@
 
 @section('content')
 <section class="home-hero">
+    <img src="{{ asset('images/hotel-bg.jpg') }}" alt="Luxury Hotel" class="home-hero-bg">
+    <div class="home-hero-overlay"></div>
+
     <div class="container home-hero-content">
         <div class="row justify-content-center">
             <div class="col-lg-10">
