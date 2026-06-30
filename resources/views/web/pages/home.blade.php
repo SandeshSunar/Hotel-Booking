@@ -4,51 +4,35 @@
 
 @section('content')
 <section class="home-hero">
-    <img src="{{ asset('images/hotel-bg.jpg') }}" alt="Luxury Hotel" class="home-hero-bg">
-    <div class="home-hero-overlay"></div>
-
     <div class="container home-hero-content">
-        <div class="row g-4 align-items-center">
-            <div class="col-lg-7">
-                <span class="home-badge">
-                    <i class="bi bi-stars"></i> Premium Boutique Experience
-                </span>
-                <h1 class="home-title">Stay in comfort, style, and unforgettable hospitality.</h1>
-                <p class="home-subtitle">
-                    Discover beautifully designed rooms, modern amenities, and personalized service
-                    tailored for business trips, romantic escapes, and family holidays.
-                </p>
-
-                <div class="home-actions">
-                    <a href="{{ route('rooms') }}" class="btn home-btn-primary">
-                        Explore Rooms
-                    </a>
-                    <a href="{{ route('contact') }}" class="btn home-btn-outline">
-                        Plan Your Stay
-                    </a>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="home-hero-top">
+                    <span class="home-badge">
+                        <i class="bi bi-stars"></i> Premium Boutique Experience
+                    </span>
+                    <h1 class="home-title text-center">Find your perfect stay at our hotel</h1>
+                    <p class="home-subtitle text-center">
+                        Modern rooms, friendly staff and a prime location for business, family and leisure trips.
+                    </p>
+                    <div class="home-trust justify-content-center">
+                        <div><strong>4.9/5</strong> guest rating</div>
+                        <div><strong>1k+</strong> happy stays</div>
+                        <div><strong>24/7</strong> support</div>
+                    </div>
                 </div>
 
-                <div class="home-trust">
-                    <div><strong>4.9/5</strong> guest rating</div>
-                    <div><strong>24/7</strong> concierge</div>
-                    <div><strong>Best Price</strong> guarantee</div>
-                </div>
-            </div>
-
-            <div class="col-lg-5">
-                <div class="home-booking-card">
-                    <h3>Book Your Room</h3>
-                    <p>Reserve your perfect stay in just a few clicks.</p>
-                    <form class="row g-3">
-                        <div class="col-12">
-                            <label for="arrival" class="form-label">Arrival</label>
+                <div class="home-search-card">
+                    <form class="row g-3 align-items-center">
+                        <div class="col-md-4 home-search-field">
+                            <label for="arrival" class="form-label">Check-in</label>
                             <input type="date" id="arrival" name="arrival" class="form-control" required>
                         </div>
-                        <div class="col-12">
-                            <label for="departure" class="form-label">Departure</label>
+                        <div class="col-md-4 home-search-field">
+                            <label for="departure" class="form-label">Check-out</label>
                             <input type="date" id="departure" name="departure" class="form-control" required>
                         </div>
-                        <div class="col-12">
+                        <div class="col-md-3 home-search-field">
                             <label for="guests" class="form-label">Guests</label>
                             <select id="guests" name="guests" class="form-select">
                                 <option value="1">1 Guest</option>
@@ -57,8 +41,10 @@
                                 <option value="4">4 Guests</option>
                             </select>
                         </div>
-                        <div class="col-12">
-                            <button type="submit" class="btn home-book-btn w-100">Check Availability</button>
+                        <div class="col-md-1 d-grid">
+                            <button type="submit" class="btn home-book-btn">
+                                <i class="bi bi-search"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
