@@ -1,5 +1,5 @@
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top web-navbar">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand fw-bold" href="{{ route('home') }}">
@@ -33,10 +33,10 @@
                     <a class="nav-link fw-bold {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact Us</a>
                 </li>
                 <li class="nav-item me-2">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    <button type="button" class="btn nav-auth-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
                 </li>
                 <li class="nav-item">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+                    <button type="button" class="btn nav-auth-btn nav-auth-btn-outline" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
                 </li>
             </ul>
         </div>
