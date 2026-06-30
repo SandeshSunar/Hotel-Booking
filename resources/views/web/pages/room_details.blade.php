@@ -114,7 +114,7 @@
             <div class="col-6 col-lg-3">
                 <div class="room-feature-card">
                     <i class="bi bi-wifi"></i>
-                    <h6>Fast WiFi</h6>
+                    <h6>Free WiFi</h6>
                     <p>{{ $room->wifi ? 'Included' : 'Optional' }}</p>
                 </div>
             </div>
