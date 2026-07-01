@@ -34,8 +34,9 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
     Route::post('/booking', [BookController::class, 'store'])->name('booking.submit');
 });
 
