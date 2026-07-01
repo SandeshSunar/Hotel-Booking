@@ -3,129 +3,195 @@
 @section('title', 'Blog')
 
 @section('content')
-<style>
-    /* 🌅 Background & overall styling */
-    body {
-        background: url('{{ asset('images/blog_bg.jpg') }}') center center/cover no-repeat fixed;
-        color: #333;
-    }
+    <style>
+        .blog-page {
+            position: relative;
+            overflow: hidden;
+            padding: 5rem 0;
+            background:
+                radial-gradient(circle at top left, rgba(246, 203, 122, 0.24), transparent 28%),
+                radial-gradient(circle at top right, rgba(12, 74, 110, 0.15), transparent 24%),
+                linear-gradient(180deg, #f8fafc 0%, #eef4f8 100%);
+        }
 
-    .blog-section {
-        background-color: rgba(178, 232, 247, 0.9);
-        border-radius: 12px;
-        padding: 40px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        margin-top: 60px;
-    }
+        .blog-page::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.35) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4), transparent 65%);
+            pointer-events: none;
+        }
 
-    .blog-header {
-        text-align: center;
-        margin-bottom: 50px;
-    }
+        .blog-shell {
+            position: relative;
+            z-index: 1;
+        }
 
-    .blog-header h1 {
-        font-size: 2.8rem;
-        font-weight: bold;
-        color: #040608ff;
-    }
+        .blog-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
 
-    .blog-header p {
-        font-size: 1.2rem;
-        color: #141313ff;
-        margin-top: 10px;
-    }
+        .blog-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            background: rgba(17, 24, 39, 0.08);
+            color: #0f172a;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
 
-    .blog-card {
-        background: #ffffffff;
-        border-radius: 12px;
-        overflow: hidden;
-        transition: all 0.4s ease;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
+        .blog-title {
+            font-size: clamp(2.4rem, 5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
 
-    .blog-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
+        .blog-lead {
+            max-width: 760px;
+            margin: 0 auto;
+            color: #475569;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
 
-    .blog-card img {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-    }
+        .blog-card-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            height: 100%;
+        }
 
-    .blog-content {
-        padding: 20px;
-    }
+        .blog-card {
+            height: 100%;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+        }
 
-    .blog-content h3 {
-        font-size: 1.5rem;
-        color: #2c3e50;
-        margin-bottom: 10px;
-    }
+        .blog-card-link:hover .blog-card {
+            transform: translateY(-8px);
+            box-shadow: 0 26px 60px rgba(15, 23, 42, 0.14);
+            border-color: rgba(15, 23, 42, 0.12);
+        }
 
-    .blog-content p {
-        color: #666;
-        font-size: 1rem;
-        margin-bottom: 0;
-    }
+        .blog-media {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16 / 10;
+        }
 
-    hr {
-        border-top: 2px solid #ddd;
-        margin: 40px 0;
-    }
-</style>
+        .blog-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.45s ease;
+        }
 
-<div class="container blog-section">
-    <div class="blog-header">
-        <h1>✨ Our Blog ✨</h1>
-        <p>Explore stories, travel tips, and delightful moments from our hotel experience.</p>
+        .blog-card-link:hover .blog-media img {
+            transform: scale(1.05);
+        }
+
+        .blog-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.45rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.8);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .blog-body {
+            padding: 1.5rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .blog-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .blog-card-title {
+            color: #0f172a;
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 0.85rem;
+        }
+
+        .blog-card-text {
+            color: #475569;
+            margin-bottom: 0;
+            line-height: 1.75;
+        }
+
+        .blog-readmore {
+            margin-top: 1.25rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #0f172a;
+            font-weight: 700;
+        }
+    </style>
+
+    <div class="blog-page">
+        <div class="container blog-shell">
+            <div class="blog-hero">
+                <div class="blog-kicker">Stories, guides, and hotel moments</div>
+                <h1 class="blog-title">Our Blog</h1>
+                <p class="blog-lead">Explore travel tips, dining inspiration, and hotel experiences designed to help guests
+                    plan a better stay.</p>
+            </div>
+
+            <div class="row g-4">
+                @foreach ($posts as $post)
+                    <div class="col-md-6">
+                        <a href="{{ route('blog.details', $post['slug']) }}" class="blog-card-link">
+                            <article class="blog-card">
+                                <div class="blog-media">
+                                    <img src="{{ $post['image'] }}" alt="{{ $post['title'] }}">
+                                    <div class="blog-badge">{{ $post['category'] }}</div>
+                                </div>
+                                <div class="blog-body">
+                                    <div class="blog-meta">
+                                        <span>{{ $post['date'] }}</span>
+                                        <span>{{ $post['read_time'] }}</span>
+                                    </div>
+                                    <h2 class="blog-card-title">{{ $post['title'] }}</h2>
+                                    <p class="blog-card-text">{{ $post['excerpt'] }}</p>
+                                    <div class="blog-readmore">Read story <span aria-hidden="true">→</span></div>
+                                </div>
+                            </article>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </div>
-
-    <div class="row">
-        <!-- Blog Post 1 -->
-        <div class="col-md-6 mb-4">
-            <div class="blog-card">
-                <img src="{{ asset('images/blog1.jpg') }}" alt="Best Time to Visit" class="img-fluid">
-                <div class="blog-content">
-                    <h3>Best Time to Visit Our City</h3>
-                    <p>Discover the most enchanting seasons to enjoy your stay and make unforgettable memories.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Blog Post 2 -->
-        <div class="col-md-6 mb-4">
-            <div class="blog-card">
-                <img src="{{ asset('images/blog2.jpg') }}" alt="Top 5 Things to Do" class="img-fluid">
-                <div class="blog-content">
-                    <h3>Top 5 Things to Do Nearby</h3>
-                    <p>From scenic views to cultural landmarks — explore everything just steps away from our hotel.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Blog Post 3 -->
-        <div class="col-md-6 mb-4">
-            <div class="blog-card">
-                <img src="{{ asset('images/blog3.jpg') }}" alt="Gourmet Dining" class="img-fluid">
-                <div class="blog-content">
-                    <h3>Gourmet Dining Experiences</h3>
-                    <p>Indulge your senses in a world of flavor — crafted by our world-class chefs.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Blog Post 4 -->
-        <div class="col-md-6 mb-4">
-            <div class="blog-card">
-                <img src="{{ asset('images/blog4.jpg') }}" alt="Wellness and Spa" class="img-fluid">
-                <div class="blog-content">
-                    <h3>Wellness and Spa Services</h3>
-                    <p>Relax, refresh, and rejuvenate — because you deserve to feel your best every day.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
