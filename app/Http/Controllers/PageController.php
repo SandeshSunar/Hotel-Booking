@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use App\Models\Contact;
-use App\Models\Gallery;
-use App\Models\Guest;
 use App\Models\Room;
+use App\Models\Guest;
+use App\Models\Gallery;
 use App\Models\Staff;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -17,14 +17,12 @@ class PageController extends Controller
     public function home()
     {
         $room = Room::all();
-
         return view('web.pages.home', compact('room'));
     }
 
     public function roomDetails($id)
     {
         $room = Room::findOrFail($id);
-
         return view('web.pages.room_details', compact('room'));
     }
 
@@ -36,14 +34,12 @@ class PageController extends Controller
     public function rooms()
     {
         $room = Room::all();
-
         return view('web.pages.rooms', compact('room'));
     }
 
     public function gallery()
     {
         $galleries = Gallery::all();
-
         return view('web.pages.gallery', compact('galleries'));
     }
 
@@ -66,7 +62,7 @@ class PageController extends Controller
             'message' => 'required|string',
         ]);
 
-        $contact = new Contact;
+        $contact = new Contact();
         $contact->name = $request->name;
         $contact->phone = $request->phone;
         $contact->message = $request->message;
@@ -98,28 +94,24 @@ class PageController extends Controller
     public function booking()
     {
         $bookings = Booking::with(['guest', 'room'])->get();
-
         return view('admin.pages.booking', compact('bookings'));
     }
 
     public function room()
     {
         $rooms = Room::all();
-
         return view('admin.pages.room', compact('rooms'));
     }
 
     public function guest()
     {
         $guests = Guest::all();
-
         return view('admin.pages.guest', compact('guests'));
     }
 
     public function staff()
     {
         $staff = Staff::all();
-
         return view('admin.pages.staff', compact('staff'));
     }
 }
