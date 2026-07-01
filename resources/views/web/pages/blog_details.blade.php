@@ -15,9 +15,9 @@
             position: relative;
             overflow: hidden;
             border-radius: 28px;
-            max-width: 720px;
+            max-width: 560px;
             margin: 0 auto 1.5rem;
-            min-height: 180px;
+            min-height: 140px;
             box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
             background: #0f172a;
         }
@@ -25,7 +25,7 @@
         .blog-details-hero img {
             width: 100%;
             height: 100%;
-            min-height: 180px;
+            min-height: 140px;
             object-fit: cover;
             opacity: 0.72;
         }
