@@ -89,7 +89,7 @@
         .blog-media {
             position: relative;
             overflow: hidden;
-            aspect-ratio: 16 / 10;
+            aspect-ratio: 16 / 8;
         }
 
         .blog-media img {
@@ -151,12 +151,28 @@
         }
 
         .blog-readmore {
-            margin-top: 1.25rem;
-            display: inline-flex;
+            margin: 1.25rem auto 0;
+            display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: #0f172a;
+            justify-content: center;
+            padding: 0.75rem 1.1rem;
+            border-radius: 999px;
+            border: 0;
+            background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);
+            color: #ffffff;
             font-weight: 700;
+            width: fit-content;
+            cursor: pointer;
+            box-shadow: 0 10px 24px rgba(14, 165, 233, 0.28);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        }
+
+        .blog-readmore:hover {
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(14, 165, 233, 0.34);
+            filter: brightness(1.03);
         }
     </style>
 
@@ -172,7 +188,7 @@
             <div class="row g-4">
                 @foreach ($posts as $post)
                     <div class="col-md-6">
-                        <a href="{{ route('blog.details', $post['slug']) }}" class="blog-card-link">
+                        <a href="{{ route('blog.details', ['slug' => $post['slug']]) }}" class="blog-card-link">
                             <article class="blog-card">
                                 <div class="blog-media">
                                     <img src="{{ $post['image'] }}" alt="{{ $post['title'] }}">
