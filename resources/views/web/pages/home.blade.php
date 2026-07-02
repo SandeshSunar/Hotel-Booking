@@ -110,9 +110,11 @@
                                     <strong>Rs. {{ number_format($room->price, 2) }} / night</strong>
                                     <small class="text-muted">Room #{{ $room->room_number }}</small>
                                 </div>
-                                <a href="{{ route('room.details', $room->id) }}" class="room-link">
-                                    View Details <i class="bi bi-arrow-right"></i>
-                                </a>
+                                <div class="room-link-wrap">
+                                    <a href="{{ route('room.details', $room->id) }}" class="room-link">
+                                        View Details <i class="bi bi-arrow-right"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
