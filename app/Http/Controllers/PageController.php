@@ -9,6 +9,7 @@ use App\Models\Gallery;
 use App\Models\Staff;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class PageController extends Controller
@@ -114,6 +115,13 @@ class PageController extends Controller
     {
         $room = Room::all();
         return view('web.pages.rooms', compact('room'));
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+
+        return view('web.pages.profile', compact('user'));
     }
 
     public function gallery()

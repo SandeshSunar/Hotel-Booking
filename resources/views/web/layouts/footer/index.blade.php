@@ -3,7 +3,7 @@
         <div class="row g-4">
             <div class="col-lg-4">
                 <a href="{{ route('home') }}" class="footer-brand d-inline-flex align-items-center text-decoration-none">
-                    <img src="{{ asset('/images/logo.png') }}" alt="MyHotel Logo" class="footer-logo">
+                    <img src="{{ asset('images/logo.png') }}" alt="MyHotel Logo" class="footer-logo">
                     <span class="footer-brand-text">MyHotel</span>
                 </a>
                 <p class="footer-about">

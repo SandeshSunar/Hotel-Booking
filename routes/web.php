@@ -39,6 +39,7 @@ Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/booking', [BookController::class, 'store'])->name('booking.submit');
+    Route::get('/profile', [PageController::class, 'profile'])->name('profile.index');
 });
 
 //Admin logn routes
