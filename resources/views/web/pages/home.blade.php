@@ -93,7 +93,7 @@
             <div class="row g-4">
                 @forelse ($featuredRooms as $room)
                     <div class="col-md-4">
-                        <div class="room-card h-100 {{ $loop->first ? 'room-card-highlight' : '' }}">
+                        <div class="room-card h-100">
                             <div class="ratio ratio-16x9 rounded-top overflow-hidden">
                                 <img src="{{ $room->image ? asset('storage/' . $room->image) : asset('images/hotel-bg.jpg') }}"
                                     alt="{{ $room->type }}" class="w-100 h-100 object-fit-cover">

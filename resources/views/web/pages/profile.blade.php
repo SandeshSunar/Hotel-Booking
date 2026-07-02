@@ -117,6 +117,12 @@
 
     <section class="profile-page">
         <div class="container profile-shell">
+            @if (session('success'))
+                <div class="alert alert-success border-0 shadow-sm mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <div class="profile-hero">
                 <div class="profile-avatar">{{ $avatarLetter }}</div>
                 <div>
@@ -129,33 +135,58 @@
             <div class="row g-4">
                 <div class="col-lg-7">
                     <div class="profile-card">
-                        <h4 class="fw-bold mb-3">Account Details</h4>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="profile-stat">
-                                    <div class="profile-stat-label">Full Name</div>
-                                    <p class="profile-stat-value">{{ $user->name }}</p>
+                        <h4 class="fw-bold mb-3">Personal Details</h4>
+                        <form method="POST" action="{{ route('profile.update') }}">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="profile-stat">
+                                        <div class="profile-stat-label">Full Name</div>
+                                        <input type="text" name="name" value="{{ old('name', $user->name) }}"
+                                            class="form-control @error('name') is-invalid @enderror"
+                                            placeholder="Enter your full name">
+                                        @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="profile-stat">
+                                        <div class="profile-stat-label">Email</div>
+                                        <input type="email" value="{{ $user->email }}" class="form-control" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="profile-stat">
+                                        <div class="profile-stat-label">Phone Number</div>
+                                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
+                                            class="form-control @error('phone') is-invalid @enderror"
+                                            placeholder="Enter your phone number">
+                                        @error('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="profile-stat">
+                                        <div class="profile-stat-label">Member Level</div>
+                                        <p class="profile-stat-value mb-0">Genius Level 1</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="profile-stat">
-                                    <div class="profile-stat-label">Email</div>
-                                    <p class="profile-stat-value">{{ $user->email }}</p>
-                                </div>
+
+                            <div class="d-flex flex-wrap gap-2 mt-4">
+                                <button type="submit" class="btn auth-btn">
+                                    <i class="bi bi-check2-circle"></i> Save Changes
+                                </button>
+                                <a href="{{ route('profile.index') }}"
+                                    class="btn btn-outline-secondary rounded-pill px-4 py-2">
+                                    Cancel
+                                </a>
                             </div>
-                            <div class="col-md-6">
-                                <div class="profile-stat">
-                                    <div class="profile-stat-label">Phone Number</div>
-                                    <p class="profile-stat-value">{{ $user->phone ?? 'Not added yet' }}</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="profile-stat">
-                                    <div class="profile-stat-label">Member Level</div>
-                                    <p class="profile-stat-value">Genius Level 1</p>
-                                </div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
 

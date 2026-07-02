@@ -40,6 +40,7 @@ Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 Route::middleware(['auth'])->group(function () {
     Route::post('/booking', [BookController::class, 'store'])->name('booking.submit');
     Route::get('/profile', [PageController::class, 'profile'])->name('profile.index');
+    Route::put('/profile', [PageController::class, 'updateProfile'])->name('profile.update');
 });
 
 //Admin logn routes

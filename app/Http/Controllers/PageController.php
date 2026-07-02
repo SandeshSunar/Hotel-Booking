@@ -124,6 +124,20 @@ class PageController extends Controller
         return view('web.pages.profile', compact('user'));
     }
 
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        $user->update($validated);
+
+        return redirect()->route('profile.index')->with('success', 'Your personal details have been updated.');
+    }
+
     public function gallery()
     {
         $galleries = Gallery::all();
