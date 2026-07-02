@@ -53,6 +53,22 @@
         .gallery-row .col-md-3 {
             margin-bottom: 1.5rem;
         }
+
+        .gallery-modal-header {
+            position: relative;
+        }
+
+        .gallery-modal-title {
+            width: 100%;
+            text-align: center;
+        }
+
+        .gallery-modal-close {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
     </style>
 
     <h1 class="gallery-heading">Our Gallery</h1>
@@ -80,9 +96,10 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="galleryImageModalLabel">Gallery Image</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header gallery-modal-header">
+                    <h5 class="modal-title gallery-modal-title" id="galleryImageModalLabel">Gallery Image</h5>
+                    <button type="button" class="btn-close gallery-modal-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-0">
                     <img id="galleryImageModalPreview" src="" alt="" class="w-100"

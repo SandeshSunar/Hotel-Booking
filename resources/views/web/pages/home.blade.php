@@ -91,36 +91,38 @@
                 <h2 class="section-title">Choose Your Perfect Room</h2>
             </div>
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="room-card">
-                        <div class="room-card-body">
-                            <h5>Deluxe Room</h5>
-                            <p>Designed for guests who value comfort with modern elegance.</p>
-                            <a href="{{ route('rooms') }}" class="room-link">View Details <i
-                                    class="bi bi-arrow-right"></i></a>
+                @forelse ($featuredRooms as $room)
+                    <div class="col-md-4">
+                        <div class="room-card h-100 {{ $loop->first ? 'room-card-highlight' : '' }}">
+                            <div class="ratio ratio-16x9 rounded-top overflow-hidden">
+                                <img src="{{ $room->image ? asset('storage/' . $room->image) : asset('images/hotel-bg.jpg') }}"
+                                    alt="{{ $room->type }}" class="w-100 h-100 object-fit-cover">
+                            </div>
+                            <div class="room-card-body">
+                                <span
+                                    class="badge mb-2 {{ $room->status === 'available' ? 'bg-success' : 'bg-secondary' }}">
+                                    {{ ucfirst($room->status) }}
+                                </span>
+                                <h5>{{ \Illuminate\Support\Str::headline($room->type) }}</h5>
+                                <p>{{ \Illuminate\Support\Str::limit($room->description ?? 'A comfortable stay designed for your trip.', 95) }}
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <strong>Rs. {{ number_format($room->price, 2) }} / night</strong>
+                                    <small class="text-muted">Room #{{ $room->room_number }}</small>
+                                </div>
+                                <a href="{{ route('room.details', $room->id) }}" class="room-link">
+                                    View Details <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="room-card room-card-highlight">
-                        <div class="room-card-body">
-                            <h5>Executive Suite</h5>
-                            <p>Spacious suite ideal for business stays and premium experiences.</p>
-                            <a href="{{ route('rooms') }}" class="room-link">View Details <i
-                                    class="bi bi-arrow-right"></i></a>
+                @empty
+                    <div class="col-12">
+                        <div class="alert alert-light border text-center mb-0">
+                            No rooms have been added yet. Once the admin uploads rooms, they will appear here.
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="room-card">
-                        <div class="room-card-body">
-                            <h5>Family Residence</h5>
-                            <p>Comfortable multi-bed space crafted for memorable family moments.</p>
-                            <a href="{{ route('rooms') }}" class="room-link">View Details <i
-                                    class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>

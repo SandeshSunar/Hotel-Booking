@@ -94,8 +94,9 @@ class PageController extends Controller
     // ======= Public Pages =======
     public function home()
     {
-        $room = Room::all();
-        return view('web.pages.home', compact('room'));
+        $featuredRooms = Room::latest()->take(3)->get();
+
+        return view('web.pages.home', compact('featuredRooms'));
     }
 
     public function roomDetails($id)
