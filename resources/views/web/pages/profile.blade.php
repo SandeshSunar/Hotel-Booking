@@ -68,7 +68,6 @@
         }
 
         .profile-card {
-            height: 100%;
             background: #fff;
             border-radius: 1.25rem;
             padding: 1.25rem;
@@ -134,7 +133,7 @@
 
             <div class="row g-4">
                 <div class="col-lg-7">
-                    <div class="profile-card">
+                    <div class="profile-card h-100">
                         <h4 class="fw-bold mb-3">Personal Details</h4>
                         <form method="POST" action="{{ route('profile.update') }}">
                             @csrf
