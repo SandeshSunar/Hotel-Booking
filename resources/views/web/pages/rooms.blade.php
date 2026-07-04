@@ -4,7 +4,7 @@
 
 @section('content')
     <section class="rooms-hero">
-        <div class="container py-5">
+        <div class="container py-4">
             <div class="row justify-content-center">
                 <div class="col-lg-9 text-center">
                     <span class="rooms-badge"><i class="bi bi-door-open-fill"></i> Our Rooms</span>
@@ -17,7 +17,7 @@
         </div>
     </section>
 
-    <section class="rooms-listing py-5">
+    <section class="rooms-listing py-4">
         <div class="container">
             @php
                 $sectionMeta = [
@@ -43,16 +43,16 @@
                     </div>
 
                     @if($rooms->isNotEmpty())
-                        <div class="row g-4">
+                        <div class="row g-3">
                             @foreach($rooms as $roomType)
                                 @php
                                     $image = $roomType->primary_image
                                         ? asset('storage/' . $roomType->primary_image)
                                         : asset('images/hotel-bg.jpg');
-                                    $facilities = $roomType->facilities->take(5);
+                                    $facilities = $roomType->facilities->take(3);
                                 @endphp
-                                <div class="col-md-6 col-lg-4">
-                                    <article class="rooms-card h-100">
+                                <div class="col-sm-6 col-lg-4 col-xl-3">
+                                    <article class="rooms-card rooms-card--compact h-100">
                                         <div class="rooms-image-wrap">
                                             <img src="{{ $image }}" class="rooms-image" alt="{{ $roomType->name }}">
                                             @if($roomType->room_number)
@@ -68,19 +68,19 @@
                                                 @endif
                                             </div>
                                             <p class="small text-muted mb-2"><i class="bi bi-people"></i> {{ $roomType->capacity_label }}</p>
-                                            <p class="rooms-card-text">{{ $roomType->short_description ?? \Illuminate\Support\Str::limit($roomType->description, 100) }}</p>
+                                            <p class="rooms-card-text">{{ $roomType->short_description ?? \Illuminate\Support\Str::limit($roomType->description, 65) }}</p>
                                             @if($facilities->isNotEmpty())
-                                                <ul class="list-unstyled small mb-3">
+                                                <ul class="list-unstyled rooms-card-facilities mb-2">
                                                     @foreach($facilities as $facility)
                                                         <li><i class="bi bi-check2-circle text-success me-1"></i> {{ $facility->name }}</li>
                                                     @endforeach
                                                 </ul>
                                             @endif
-                                            <div class="d-grid gap-2">
-                                                <a class="btn rooms-card-btn" href="{{ route('room.details', $roomType->slug) }}">
+                                            <div class="d-flex flex-wrap gap-1 mt-auto rooms-card-actions">
+                                                <a class="btn btn-sm rooms-card-btn" href="{{ route('room.details', $roomType->slug) }}">
                                                     View Details <i class="bi bi-arrow-right"></i>
                                                 </a>
-                                                <a class="btn btn-outline-primary rounded-pill" href="{{ route('room.details', $roomType->slug) }}#booking-form">
+                                                <a class="btn btn-sm btn-outline-primary rounded-pill px-3" href="{{ route('room.details', $roomType->slug) }}#booking-form">
                                                     Book Now
                                                 </a>
                                             </div>
