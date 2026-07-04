@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use App\Models\Room;
+use App\Models\RoomType;
 use App\Models\Guest;
 use App\Models\Gallery;
 use App\Models\Staff;
@@ -95,15 +95,24 @@ class PageController extends Controller
     // ======= Public Pages =======
     public function home()
     {
-        $featuredRooms = Room::latest()->take(3)->get();
+        $featuredRooms = RoomType::with('images')
+            ->where('is_active', true)
+            ->where('status', 'available')
+            ->latest()
+            ->take(3)
+            ->get();
 
         return view('web.pages.home', compact('featuredRooms'));
     }
 
-    public function roomDetails($id)
+    public function roomDetails($slug)
     {
-        $room = Room::findOrFail($id);
-        return view('web.pages.room_details', compact('room'));
+        $roomType = RoomType::with(['images', 'facilities'])
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        return view('web.pages.room_details', compact('roomType'));
     }
 
     public function about()
@@ -113,8 +122,18 @@ class PageController extends Controller
 
     public function rooms()
     {
-        $room = Room::all();
-        return view('web.pages.rooms', compact('room'));
+        $sectionCategories = ['single', 'double', 'family'];
+
+        $allRooms = RoomType::with(['images', 'facilities'])
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
+
+        $roomSections = collect($sectionCategories)->mapWithKeys(function ($category) use ($allRooms) {
+            return [$category => $allRooms->where('category', $category)->values()];
+        });
+
+        return view('web.pages.rooms', compact('roomSections', 'sectionCategories'));
     }
 
     public function profile()

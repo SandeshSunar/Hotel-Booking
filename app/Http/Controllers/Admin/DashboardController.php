@@ -7,9 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 
-use App\Models\Booking; // Admin bookings
-use App\Models\Book;    // User bookings
-use App\Models\Room;
+use App\Models\Booking;
+use App\Models\RoomType;
 use App\Models\Guest;
 use App\Models\Staff;
 use App\Models\Gallery;
@@ -26,44 +25,30 @@ class DashboardController extends Controller
             return redirect()->route('login')->with('error', 'Please login first.');
         }
 
-        $totalBookings = Booking::count() + Book::count();
+        $totalBookings = Booking::count();
 
         $statistics = [
             'totalBookings'   => $totalBookings,
-            'totalRooms'      => Room::count(),
-            'availableRooms'  => Room::where('status', 'available')->count(),
+            'totalRooms'      => RoomType::sum('total_rooms'),
+            'availableRooms'  => RoomType::sum('available_rooms'),
             'totalGuests'     => Guest::count(),
             'totalStaff'      => Staff::count(),
         ];
 
-        // Recent Admin Bookings
-        $recentAdminBookings = Booking::with(['guest', 'room'])
-            ->latest()->take(5)->get()->map(function ($b) {
-                return (object)[
+        $recentBookings = Booking::with(['guest', 'roomType'])
+            ->latest()
+            ->take(5)
+            ->get()
+            ->map(function ($b) {
+                return (object) [
                     'id' => $b->id,
-                    'guest' => $b->guest,
-                    'room' => $b->room,
-                    'check_in' => $b->check_in_date,
-                    'check_out' => $b->check_out_date,
+                    'guest' => $b->guest ?? (object) ['name' => $b->guest_name],
+                    'room' => $b->roomType,
+                    'check_in' => $b->check_in,
+                    'check_out' => $b->check_out,
                     'status' => $b->status,
                 ];
             });
-
-        // Recent User Bookings
-        $recentUserBookings = Book::with('room')->latest()->take(5)->get()->map(function ($b) {
-            return (object)[
-                'id' => $b->id,
-                'guest' => (object)['name' => $b->guest_name],
-                'room' => $b->room,
-                'check_in' => $b->check_in,
-                'check_out' => $b->check_out,
-                'status' => 'booked',
-            ];
-        });
-
-        $recentBookings = $recentAdminBookings->concat($recentUserBookings)
-                                ->sortByDesc('id')
-                                ->take(5);
 
         $recentGuests = Guest::latest()->take(5)->get();
         $recentStaff  = Staff::latest()->take(5)->get();

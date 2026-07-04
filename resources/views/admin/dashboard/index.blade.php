@@ -56,7 +56,7 @@
                             @forelse($recentBookings as $booking)
                                 <tr>
                                     <td>{{ $booking->guest->name ?? 'N/A' }}</td>
-                                    <td>{{ $booking->room->room_number ?? $booking->room->type ?? 'N/A' }}</td>
+                                    <td>{{ $booking->room->name ?? 'N/A' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($booking->check_in)->format('Y-m-d') }}</td>
                                     <td><span class="badge bg-info">{{ ucfirst($booking->status) }}</span></td>
                                 </tr>

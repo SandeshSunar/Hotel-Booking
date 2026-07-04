@@ -9,46 +9,37 @@
     <form action="{{ route('admin.booking.update', $booking->id) }}" method="POST">
         @csrf
         @method('PUT')
-
-        <div class="mb-3">
-            <label>Guest</label>
-            <select name="user_id" class="form-select" required>
-                @foreach($users as $user)
-                    <option value="{{ $user->id }}" {{ $booking->user_id == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                @endforeach
-            </select>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label>Room Type</label>
+                <select name="room_type_id" class="form-select" required>
+                    @foreach($roomTypes as $roomType)
+                        <option value="{{ $roomType->id }}" {{ $booking->room_type_id == $roomType->id ? 'selected' : '' }}>{{ $roomType->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label>Status</label>
+                <select name="status" class="form-select" required>
+                    <option value="pending" {{ $booking->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="confirmed" {{ $booking->status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                    <option value="cancelled" {{ $booking->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                </select>
+            </div>
+            <div class="col-md-4"><label>Guest Name</label><input type="text" name="guest_name" class="form-control" value="{{ $booking->guest_name }}" required></div>
+            <div class="col-md-4"><label>Email</label><input type="email" name="email" class="form-control" value="{{ $booking->email }}" required></div>
+            <div class="col-md-4"><label>Phone</label><input type="text" name="phone" class="form-control" value="{{ $booking->phone }}" required></div>
+            <div class="col-md-4"><label>Check In</label><input type="date" name="check_in" class="form-control" value="{{ $booking->check_in->format('Y-m-d') }}" required></div>
+            <div class="col-md-4"><label>Check Out</label><input type="date" name="check_out" class="form-control" value="{{ $booking->check_out->format('Y-m-d') }}" required></div>
+            <div class="col-md-4"><label>Rooms</label><input type="number" name="rooms_count" class="form-control" value="{{ $booking->rooms_count }}" min="1" required></div>
+            <div class="col-md-4"><label>Adults</label><input type="number" name="adults" class="form-control" value="{{ $booking->adults }}" min="1" required></div>
+            <div class="col-md-4"><label>Children</label><input type="number" name="children" class="form-control" value="{{ $booking->children }}" min="0"></div>
+            <div class="col-12"><label>Special Requests</label><textarea name="special_requests" class="form-control" rows="3">{{ $booking->special_requests }}</textarea></div>
         </div>
-
-        <div class="mb-3">
-            <label>Room</label>
-            <select name="room_id" class="form-select" required>
-                @foreach($rooms as $room)
-                    <option value="{{ $room->id }}" {{ $booking->room_id == $room->id ? 'selected' : '' }}>{{ $room->room_number }}</option>
-                @endforeach
-            </select>
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-success">Update Booking</button>
+            <a href="{{ route('admin.booking.index') }}" class="btn btn-secondary">Back</a>
         </div>
-
-        <div class="mb-3">
-            <label>Check In Date</label>
-            <input type="date" name="check_in_date" class="form-control" value="{{ $booking->check_in_date }}" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Check Out Date</label>
-            <input type="date" name="check_out_date" class="form-control" value="{{ $booking->check_out_date }}" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Status</label>
-            <select name="status" class="form-select" required>
-                <option value="pending" {{ $booking->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                <option value="confirmed" {{ $booking->status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                <option value="cancelled" {{ $booking->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-success">Update Booking</button>
-        <a href="{{ route('admin.booking.index') }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
 @endsection

@@ -91,27 +91,25 @@
                 <h2 class="section-title">Choose Your Perfect Room</h2>
             </div>
             <div class="row g-4">
-                @forelse ($featuredRooms as $room)
+                @forelse ($featuredRooms as $roomType)
                     <div class="col-md-4">
                         <div class="room-card h-100">
                             <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                <img src="{{ $room->image ? asset('storage/' . $room->image) : asset('images/hotel-bg.jpg') }}"
-                                    alt="{{ $room->type }}" class="w-100 h-100 object-fit-cover">
+                                <img src="{{ $roomType->primary_image ? asset('storage/' . $roomType->primary_image) : asset('images/hotel-bg.jpg') }}"
+                                    alt="{{ $roomType->name }}" class="w-100 h-100 object-fit-cover">
                             </div>
                             <div class="room-card-body">
-                                <span
-                                    class="badge mb-2 {{ $room->status === 'available' ? 'bg-success' : 'bg-secondary' }}">
-                                    {{ ucfirst($room->status) }}
+                                <span class="badge mb-2 {{ $roomType->status === 'available' ? 'bg-success' : 'bg-secondary' }}">
+                                    {{ ucfirst($roomType->status) }}
                                 </span>
-                                <h5>{{ \Illuminate\Support\Str::headline($room->type) }}</h5>
-                                <p>{{ \Illuminate\Support\Str::limit($room->description ?? 'A comfortable stay designed for your trip.', 95) }}
-                                </p>
+                                <h5>{{ $roomType->name }}</h5>
+                                <p>{{ Str::limit($roomType->short_description ?? $roomType->description, 95) }}</p>
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <strong>Rs. {{ number_format($room->price, 2) }} / night</strong>
-                                    <small class="text-muted">Room #{{ $room->room_number }}</small>
+                                    <strong>Rs. {{ number_format($roomType->display_price, 2) }} / night</strong>
+                                    <small class="text-muted">{{ $roomType->capacity_label }}</small>
                                 </div>
                                 <div class="room-link-wrap">
-                                    <a href="{{ route('room.details', $room->id) }}" class="room-link">
+                                    <a href="{{ route('room.details', $roomType->slug) }}" class="room-link">
                                         View Details <i class="bi bi-arrow-right"></i>
                                     </a>
                                 </div>

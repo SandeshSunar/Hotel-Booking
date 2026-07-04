@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\BookingController;
-use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\RoomTypeController;
 use App\Http\Controllers\Admin\GuestController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\BookController;
@@ -19,7 +19,8 @@ Route::get('/blog', [PageController::class, 'blog'])->name('blog');
 Route::get('/blog/{slug}', [PageController::class, 'blogDetails'])->name('blog.details');
 Route::get('/contact', [PageController::class, 'showContactForm'])->name('contact');
 Route::post('/contact', [PageController::class, 'submitContactForm'])->name('contact.submit');
-Route::get('/room_details/{id}', [PageController::class, 'roomDetails'])->name('room.details');
+Route::get('/rooms/{slug}', [PageController::class, 'roomDetails'])->name('room.details');
+Route::get('/room_details/{slug}', fn ($slug) => redirect()->route('room.details', $slug));
 
 // Forgot password routes (generic for any user)
 Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -73,13 +74,8 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 
     Route::resource('booking', BookingController::class);
 
-    // ✅ ROOMS ROUTES (ONLY ONCE)
-    Route::get('rooms', [RoomController::class, 'index'])->name('rooms.index');
-    Route::get('rooms/create', [RoomController::class, 'create'])->name('rooms.create');
-    Route::post('rooms', [RoomController::class, 'store'])->name('rooms.store');
-    Route::get('rooms/{room}/edit', [RoomController::class, 'edit'])->name('rooms.edit');
-    Route::put('rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
-    Route::delete('rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
+    Route::resource('room-types', RoomTypeController::class);
+    Route::delete('room-type-images/{image}', [RoomTypeController::class, 'destroyImage'])->name('room-type-images.destroy');
 
     Route::resource('guest', GuestController::class);
     Route::resource('staff', StaffController::class);

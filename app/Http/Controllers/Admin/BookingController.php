@@ -3,142 +3,133 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Booking; // Admin bookings
-use App\Models\Book;    // User bookings
-use App\Models\Room;
-use App\Models\User;
+use App\Models\Booking;
+use App\Models\Payment;
+use App\Models\RoomType;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-    // Show all bookings
     public function index()
     {
-        // 1️⃣ Admin bookings
-        $adminBookings = Booking::with(['user', 'room'])->get()->map(function ($b) {
-            return (object)[
-                'id' => $b->id,
-                'user' => $b->user ?? (object)['name' => 'N/A'],
-                'room' => $b->room,
-                'check_in' => $b->check_in_date,
-                'check_out' => $b->check_out_date,
-                'status' => $b->status ?? 'pending',
-            ];
-        });
+        $bookings = Booking::with(['roomType', 'guest', 'user', 'payment'])
+            ->latest()
+            ->get();
 
-        // 2️⃣ User bookings
-        $userBookings = Book::with('room')->get()->map(function ($b) {
-            return (object)[
-                'id' => $b->id,
-                'user' => (object)['name' => $b->guest_name],
-                'room' => $b->room,
-                'check_in' => $b->check_in,
-                'check_out' => $b->check_out,
-                'status' => $b->status ?? 'pending',
-            ];
-        });
-
-        // 3️⃣ Combine both collections
-        $allBookings = $adminBookings->concat($userBookings);
-
-        return view('admin.pages.booking.index', [
-            'bookings' => $allBookings
-        ]);
+        return view('admin.pages.booking.index', compact('bookings'));
     }
 
-    // Show create booking form
     public function create()
     {
-        $users = User::all();
-        $rooms = Room::where('status', 'available')->get();
-        return view('admin.pages.booking.create', compact('users', 'rooms'));
+        $roomTypes = RoomType::where('is_active', true)->get();
+
+        return view('admin.pages.booking.create', compact('roomTypes'));
     }
 
-    // Store a new booking
     public function store(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'room_id' => 'required|exists:rooms,id',
-            'check_in_date' => 'required|date',
-            'check_out_date' => 'required|date|after:check_in_date',
-            'status' => 'required|string',
+        $validated = $request->validate([
+            'room_type_id' => 'required|exists:room_types,id',
+            'guest_name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string|max:20',
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
+            'adults' => 'required|integer|min:1',
+            'children' => 'nullable|integer|min:0',
+            'rooms_count' => 'required|integer|min:1',
+            'special_requests' => 'nullable|string',
+            'status' => 'required|in:pending,confirmed,cancelled',
         ]);
 
-        Booking::create($request->all());
+        $roomType = RoomType::findOrFail($validated['room_type_id']);
+        $nights = max(1, (new \DateTime($validated['check_in']))->diff(new \DateTime($validated['check_out']))->days);
+        $totalPrice = $roomType->display_price * $nights * (int) $validated['rooms_count'];
 
-        // Update room status
-        Room::where('id', $request->room_id)->update(['status' => 'booked']);
+        $booking = Booking::create(array_merge($validated, [
+            'children' => $validated['children'] ?? 0,
+            'total_price' => $totalPrice,
+        ]));
+
+        Payment::create([
+            'booking_id' => $booking->id,
+            'amount' => $totalPrice,
+            'payment_method' => 'cash',
+            'status' => $validated['status'] === 'confirmed' ? 'paid' : 'pending',
+        ]);
 
         return redirect()->route('admin.booking.index')->with('success', 'Booking created successfully.');
     }
 
-    // Show edit form
     public function edit(Booking $booking)
     {
-        $users = User::all();
-        $rooms = Room::all();
-        return view('admin.pages.booking.edit', compact('booking', 'users', 'rooms'));
+        $roomTypes = RoomType::all();
+
+        return view('admin.pages.booking.edit', compact('booking', 'roomTypes'));
     }
 
-    // Update booking
     public function update(Request $request, Booking $booking)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'room_id' => 'required|exists:rooms,id',
-            'check_in_date' => 'required|date',
-            'check_out_date' => 'required|date|after:check_in_date',
-            'status' => 'required|string',
+        $validated = $request->validate([
+            'room_type_id' => 'required|exists:room_types,id',
+            'guest_name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string|max:20',
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
+            'adults' => 'required|integer|min:1',
+            'children' => 'nullable|integer|min:0',
+            'rooms_count' => 'required|integer|min:1',
+            'special_requests' => 'nullable|string',
+            'status' => 'required|in:pending,confirmed,cancelled',
         ]);
 
-        $booking->update($request->all());
+        $roomType = RoomType::findOrFail($validated['room_type_id']);
+        $nights = max(1, (new \DateTime($validated['check_in']))->diff(new \DateTime($validated['check_out']))->days);
+        $validated['total_price'] = $roomType->display_price * $nights * (int) $validated['rooms_count'];
+        $validated['children'] = $validated['children'] ?? 0;
+
+        $booking->update($validated);
+
+        if ($booking->payment) {
+            $booking->payment->update([
+                'amount' => $validated['total_price'],
+                'status' => $validated['status'] === 'confirmed' ? 'paid' : ($validated['status'] === 'cancelled' ? 'refunded' : 'pending'),
+            ]);
+        }
 
         return redirect()->route('admin.booking.index')->with('success', 'Booking updated successfully.');
     }
 
-    // Delete booking
     public function destroy(Booking $booking)
     {
-        Room::where('id', $booking->room_id)->update(['status' => 'available']);
+        $booking->payment?->delete();
         $booking->delete();
 
         return redirect()->route('admin.booking.index')->with('success', 'Booking deleted successfully.');
-    }public function approve($id)
+    }
+
+    public function approve($id)
     {
-        // Try finding Booking (admin)
-        $booking = \App\Models\Booking::find($id);
+        $booking = Booking::findOrFail($id);
+        $booking->update(['status' => 'confirmed']);
 
-        // If not found, try Book (user)
-        if (!$booking) {
-            $booking = \App\Models\Book::find($id);
+        if ($booking->payment) {
+            $booking->payment->update(['status' => 'paid']);
         }
 
-        if ($booking) {
-            $booking->status = 'confirmed';
-            $booking->save();
-            return redirect()->back()->with('success', 'Booking approved successfully!');
-        }
-
-        return redirect()->back()->with('error', 'Booking not found.');
+        return redirect()->back()->with('success', 'Booking confirmed successfully!');
     }
 
     public function reject($id)
     {
-        $booking = \App\Models\Booking::find($id);
+        $booking = Booking::findOrFail($id);
+        $booking->update(['status' => 'cancelled']);
 
-        if (!$booking) {
-            $booking = \App\Models\Book::find($id);
+        if ($booking->payment) {
+            $booking->payment->update(['status' => 'refunded']);
         }
 
-        if ($booking) {
-            $booking->status = 'cancelled';
-            $booking->save();
-            return redirect()->back()->with('success', 'Booking rejected successfully!');
-        }
-
-        return redirect()->back()->with('error', 'Booking not found.');
+        return redirect()->back()->with('success', 'Booking cancelled successfully!');
     }
-
-
 }
