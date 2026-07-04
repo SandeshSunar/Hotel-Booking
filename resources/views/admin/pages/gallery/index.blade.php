@@ -3,8 +3,8 @@
 @section('title','Gallery')
 @section('content')
 <div class="p-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold">🖼️ Gallery</h4>
+        <h4 class="fw-bold mb-4">🖼️ Gallery</h4>
+    <div class="d-flex justify-content-between align-items-left mb-3">
         <a href="{{ route('admin.gallery.create') }}" class="btn  btn-success mb-3~ ">➕ Add New</a>
     </div>
 

@@ -43,21 +43,33 @@
                     <h3 class="contact-card-title">Send Us a Message</h3>
                     <p class="contact-card-subtitle">We usually reply within a few hours.</p>
                     <form action="{{ route('contact.submit') }}" method="POST" class="contact-form">
-                @csrf
+                        @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Full Name</label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="Enter your full name" required>
+                            <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
+                                value="{{ old('name') }}" placeholder="Enter your full name" required>
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number</label>
-                            <input type="tel" name="phone" id="phone" class="form-control" placeholder="Enter your phone number" required>
+                            <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                            <input type="tel" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror"
+                                value="{{ old('phone') }}" placeholder="Enter your phone number" required>
+                            @error('phone')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="message" class="form-label">Your Message</label>
-                            <textarea name="message" id="message" rows="5" class="form-control" placeholder="Type your message here..." required></textarea>
+                            <label for="message" class="form-label">Your Message <span class="text-danger">*</span></label>
+                            <textarea name="message" id="message" rows="5" class="form-control @error('message') is-invalid @enderror"
+                                placeholder="Type your message here..." required>{{ old('message') }}</textarea>
+                            @error('message')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <button type="submit" class="btn contact-submit-btn">Send Message</button>
-            </form>
+                    </form>
                 </div>
 
                 @if(session('success'))

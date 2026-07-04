@@ -32,8 +32,14 @@ class RoomController extends Controller
             'price' => 'required|numeric',
             'wifi' => 'nullable|string',
             'status' => 'required',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'description' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ], [
+            'room_number.required' => 'Room number is required.',
+            'type.required' => 'Room type is required.',
+            'price.required' => 'Price is required.',
+            'description.required' => 'Description is required.',
+            'image.required' => 'Room image is required.',
         ]);
 
         $data = $request->only([
@@ -72,8 +78,19 @@ class RoomController extends Controller
             'price' => 'required|numeric',
             'wifi' => 'nullable|string',
             'status' => 'required',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'description' => 'required|string',
+            'image' => [
+                $room->image ? 'nullable' : 'required',
+                'image',
+                'mimes:jpeg,png,jpg,gif,svg,webp',
+                'max:2048',
+            ],
+        ], [
+            'room_number.required' => 'Room number is required.',
+            'type.required' => 'Room type is required.',
+            'price.required' => 'Price is required.',
+            'description.required' => 'Description is required.',
+            'image.required' => 'Room image is required.',
         ]);
 
         $data = $request->only([

@@ -176,7 +176,11 @@ class PageController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
-            'message' => 'required|string',
+            'message' => 'required|string|max:1000',
+        ], [
+            'name.required' => 'Full name is required.',
+            'phone.required' => 'Contact number is required.',
+            'message.required' => 'Message is required.',
         ]);
 
         $contact = new Contact();

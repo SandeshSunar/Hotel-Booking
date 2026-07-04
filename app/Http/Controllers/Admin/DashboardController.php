@@ -13,6 +13,7 @@ use App\Models\Room;
 use App\Models\Guest;
 use App\Models\Staff;
 use App\Models\Gallery;
+use App\Models\Contact;
 
 class DashboardController extends Controller
 {
@@ -73,6 +74,44 @@ class DashboardController extends Controller
     }
 
 
+    // ---------------- MESSAGES ----------------
+    public function message()
+    {
+        $messages = Contact::latest()->get();
+        return view('admin.pages.message.index', compact('messages'));
+    }
+
+    public function messageEdit(Contact $contact)
+    {
+        return view('admin.pages.message.edit', ['message' => $contact]);
+    }
+
+    public function messageUpdate(Request $request, Contact $contact)
+    {
+        $request->validate([
+            'name'    => 'required|string|max:255',
+            'phone'   => 'required|string|max:20',
+            'message' => 'required|string',
+        ], [
+            'name.required'    => 'Name is required.',
+            'phone.required'   => 'Contact number is required.',
+            'message.required' => 'Message is required.',
+        ]);
+
+        $contact->update($request->only('name', 'phone', 'message'));
+
+        return redirect()->route('admin.message.index')
+                         ->with('success', 'Message updated successfully.');
+    }
+
+    public function messageDestroy(Contact $contact)
+    {
+        $contact->delete();
+
+        return redirect()->route('admin.message.index')
+                         ->with('success', 'Message deleted successfully.');
+    }
+
     // Show gallery page
     public function galleryIndex()
     {
@@ -92,6 +131,9 @@ class DashboardController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ], [
+            'title.required' => 'Gallery name is required.',
+            'image.required' => 'Gallery image is required.',
         ]);
 
         $imagePath = $request->file('image')->store('gallery', 'public');
@@ -117,6 +159,8 @@ class DashboardController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ], [
+            'title.required' => 'Gallery name is required.',
         ]);
 
         $data = ['title' => $request->title];
