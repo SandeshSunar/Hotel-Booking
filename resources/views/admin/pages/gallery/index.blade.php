@@ -28,11 +28,12 @@
                     <td>{{ $key + 1 }}</td>
                     <td>{{ $gallery->title }}</td>
                     <td><img src="{{ asset('storage/'.$gallery->image_path) }}" alt="{{ $gallery->title }}" width="100"></td>
-                    <td>
+                    <td class="d-flex gap-2">
+                        <a href="{{ route('admin.gallery.edit', $gallery->id) }}" class="btn btn-sm btn-primary"> Edit</a>
                         <form action="{{ route('admin.gallery.destroy', $gallery->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-sm btn-danger">🗑️ Delete</button>
+                            <button class="btn btn-sm btn-danger"> Delete</button>
                         </form>
                     </td>
                 </tr>

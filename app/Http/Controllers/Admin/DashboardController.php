@@ -105,6 +105,35 @@ class DashboardController extends Controller
                          ->with('success', 'Image uploaded successfully.');
     }
 
+    // Show form to edit image
+    public function galleryEdit(Gallery $gallery)
+    {
+        return view('admin.pages.gallery.edit', compact('gallery'));
+    }
+
+    // Update gallery image
+    public function galleryUpdate(Request $request, Gallery $gallery)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        $data = ['title' => $request->title];
+
+        if ($request->hasFile('image')) {
+            if (Storage::disk('public')->exists($gallery->image_path)) {
+                Storage::disk('public')->delete($gallery->image_path);
+            }
+            $data['image_path'] = $request->file('image')->store('gallery', 'public');
+        }
+
+        $gallery->update($data);
+
+        return redirect()->route('admin.gallery.index')
+                         ->with('success', 'Image updated successfully.');
+    }
+
     // Delete an image
     public function galleryDestroy(Gallery $gallery)
     {

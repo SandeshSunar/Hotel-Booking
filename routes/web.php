@@ -61,6 +61,8 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
     Route::get('/gallery', [DashboardController::class, 'galleryIndex'])->name('gallery.index');
     Route::get('/gallery/create', [DashboardController::class, 'galleryCreate'])->name('gallery.create');
     Route::post('/gallery/store', [DashboardController::class, 'galleryStore'])->name('gallery.store');
+    Route::get('/gallery/{gallery}/edit', [DashboardController::class, 'galleryEdit'])->name('gallery.edit');
+    Route::put('/gallery/{gallery}', [DashboardController::class, 'galleryUpdate'])->name('gallery.update');
     Route::delete('/gallery/{gallery}', [DashboardController::class, 'galleryDestroy'])->name('gallery.destroy');
 
     Route::get('/booking/approve/{id}/{model?}', [BookingController::class, 'approve'])->name('booking.approve');
