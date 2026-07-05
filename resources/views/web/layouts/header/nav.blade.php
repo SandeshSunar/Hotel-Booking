@@ -136,7 +136,7 @@
                         <label for="modalEmail" class="form-label">Email address</label>
                         <input type="email" class="form-control @error('email') is-invalid @enderror"
                             id="modalEmail" name="email" value="{{ old('email') }}"
-                            placeholder="you@example.com" required>
+                            placeholder="Enter your email" required>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

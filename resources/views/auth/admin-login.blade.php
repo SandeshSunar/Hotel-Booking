@@ -42,7 +42,7 @@
                     <label for="adminEmail" class="form-label">Email address</label>
                     <input type="email" class="form-control @error('email') is-invalid @enderror"
                            id="adminEmail" name="email" value="{{ old('email') }}"
-                           placeholder="admin@example.com" required>
+                           placeholder="Enter email" required>
                     @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
