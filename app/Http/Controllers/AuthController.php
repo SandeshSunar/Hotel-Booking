@@ -31,7 +31,8 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()
                     ->withInput()
-                    ->withErrors($validator->errors());
+                    ->withErrors($validator->errors())
+                    ->with('open_auth_modal', 'register');
             }
 
             User::create([
@@ -46,7 +47,7 @@ class AuthController extends Controller
                 ->with('open_auth_modal', 'login')
                 ->with('success', 'Account created successfully. Please login.');
         } catch (Throwable $e) {
-            return redirect()->back()->withInput()->with('error', $e->getMessage());
+            return redirect()->back()->withInput()->with('error', $e->getMessage())->with('open_auth_modal', 'register');
         }
     }
 
@@ -72,7 +73,8 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return redirect()->back()
                 ->withInput()
-                ->withErrors($validator->errors());
+                ->withErrors($validator->errors())
+                ->with('open_auth_modal', 'login');
         }
 
         // Attempt login
@@ -90,7 +92,7 @@ class AuthController extends Controller
             }
         }
 
-        return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
+        return redirect()->back()->withInput()->with('error', 'Invalid email or password.')->with('open_auth_modal', 'login');
     }
 
     // Logout

@@ -60,11 +60,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 @php
-    $openRegisterModal =
-        (old('name') && ($errors->any() || session('error'))) || session('open_auth_modal') === 'register';
-    $openLoginModal =
-        !$openRegisterModal &&
-        ($errors->any() || session('error') || session('success') || session('open_auth_modal') === 'login');
+    $openRegisterModal = session('open_auth_modal') === 'register';
+    $openLoginModal = session('open_auth_modal') === 'login';
 @endphp
 
 @if ($openRegisterModal)
@@ -80,5 +77,20 @@
         });
     </script>
 @endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var successToastEl = document.getElementById('successToast');
+        if (successToastEl) {
+            var successToast = new bootstrap.Toast(successToastEl, { delay: 6000 });
+            successToast.show();
+        }
+        var errorToastEl = document.getElementById('errorToast');
+        if (errorToastEl) {
+            var errorToast = new bootstrap.Toast(errorToastEl, { delay: 6000 });
+            errorToast.show();
+        }
+    });
+</script>
 
 @stack('scripts')
