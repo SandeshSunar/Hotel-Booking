@@ -125,5 +125,11 @@
                 @endforelse
             </div>
         </div>
+
+        <div class="room-link-wrap py-4">
+            <a href="{{ route('rooms', $roomType->slug) }}" class="room-link">
+                View All Rooms <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
     </section>
 @endsection
