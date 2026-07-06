@@ -15,9 +15,11 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Email <span class="text-danger">*</span></label>
-                <input type="text" name="email" class="form-control" value="{{ old('email', $email->email ?? '') }}"
-                    required></input>
+                <label class="form-label">
+                    Email <span class="text-danger">*</span>
+                </label>
+
+                <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
             </div>
 
             <div class="md-3">

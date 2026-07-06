@@ -11,7 +11,7 @@
         @method('PUT')
 
         <div class="mb-3">
-            <label>Name</label>
+            <label>Name <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control" value="{{ $staff->name }}" required>
         </div>
 
@@ -24,17 +24,17 @@
         </div>
 
         <div class="mb-3">
-            <label>Phone</label>
+            <label>Phone <span class="text-danger">*</span></label>
             <input type="text" name="phone" class="form-control" value="{{ $staff->phone }}" required>
         </div>
 
         <div class="mb-3">
-            <label>Email</label>
+            <label>Email <span class="text-danger">*</span></label>
             <input type="email" name="email" class="form-control" value="{{ $staff->email }}" required>
         </div>
 
         <div class="mb-3">
-            <label>Role</label>
+            <label>Role <span class="text-danger">*</span></label>
             <input type="text" name="role" class="form-control" value="{{ $staff->role }}" required>
         </div>
 

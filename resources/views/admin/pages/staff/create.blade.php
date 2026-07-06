@@ -19,7 +19,7 @@
         </div>
 
         <div class="mb-3">
-            <label> <span class="text-danger">*</span></label>
+            <label>Phone <span class="text-danger">*</span></label>
             <input type="text" name="phone" class="form-control" value="{{ old('phone', $phone->phone ?? '') }}" required>
         </div>
 
