@@ -26,6 +26,10 @@
                 <label class="form-lavel">Phone <sapan class="text-danger">*</sapan></label>
                 <input type="tel" name="phone" class="form-control" value="{{ old('phone', $phone->phone ?? '') }}"
                     required></input>
+
+                @error('phone')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-3">

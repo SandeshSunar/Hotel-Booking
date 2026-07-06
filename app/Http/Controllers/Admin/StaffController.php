@@ -13,6 +13,7 @@ class StaffController extends Controller
     public function index()
     {
         $staffs = Staff::all();
+
         return view('admin.pages.staff.index', compact('staffs'));
     }
 
@@ -27,7 +28,7 @@ class StaffController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'phone' => 'required|unique:staff,phone',
+            'phone' => 'required|digits:10|unique:staff,phone',
             'email' => 'required|email|unique:staff,email',
             'role' => 'required|string',
             'image' => 'nullable|image|max:2048',
@@ -55,8 +56,8 @@ class StaffController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'phone' => 'required|unique:staff,phone,' . $staff->id,
-            'email' => 'required|email|unique:staff,email,' . $staff->id,
+            'phone' => 'required|digits:10|unique:staff,phone,'.$staff->id,
+            'email' => 'required|email|unique:staff,email,'.$staff->id,
             'role' => 'required|string',
             'image' => 'nullable|image|max:2048',
         ]);

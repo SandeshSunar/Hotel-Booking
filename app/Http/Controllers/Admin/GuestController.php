@@ -12,6 +12,7 @@ class GuestController extends Controller
     public function index()
     {
         $guests = Guest::all();
+
         return view('admin.pages.guest.index', compact('guests'));
     }
 
@@ -27,7 +28,7 @@ class GuestController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:guests,email',
-            'phone' => 'required|string',
+            'phone' => 'required|digits:10|unique:guests,phone',
             'address' => 'required|string',
         ]);
 
@@ -47,8 +48,8 @@ class GuestController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|email|unique:guests,email,' . $guest->id,
-            'phone' => 'required|string',
+            'email' => 'required|email|unique:guests,email,'.$guest->id,
+            'phone' => 'required|digits:10|unique:guests,phone,'.$guest->id,
             'address' => 'required|string',
         ]);
 
@@ -61,6 +62,7 @@ class GuestController extends Controller
     public function destroy(Guest $guest)
     {
         $guest->delete();
+
         return redirect()->route('admin.guest.index')->with('success', 'Guest deleted successfully.');
     }
 }
