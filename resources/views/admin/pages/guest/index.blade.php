@@ -18,6 +18,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
+                        <th>Address</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -28,6 +29,7 @@
                             <td>{{ $guest->name }}</td>
                             <td>{{ $guest->email }}</td>
                             <td>{{ $guest->phone }}</td>
+                            <td>{{ $guest->address}}</td>
                             <td>
                                 <a href="{{ route('admin.guest.edit', $guest->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                 <form action="{{ route('admin.guest.destroy', $guest->id) }}" method="POST" class="d-inline">
