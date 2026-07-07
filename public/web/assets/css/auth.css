@@ -1169,7 +1169,7 @@
 }
 
 .rooms-card-body {
-    padding: 1.15rem;
+    padding: 0.75rem;
 }
 
 .rooms-card-title {
@@ -1211,7 +1211,7 @@
     background: #fff;
     border: 1px solid #e4ecf9;
     border-radius: 1.25rem;
-    padding: 2rem;
+    padding: 1rem;
     margin-bottom: 2rem;
     box-shadow: 0 14px 30px rgba(12, 34, 68, 0.08);
 }
@@ -1334,7 +1334,7 @@
 
 @media (max-width: 991.98px) {
     .room-type-section {
-        padding: 1.25rem;
+        padding: 0.75rem;
     }
 
     .room-type-main-image {

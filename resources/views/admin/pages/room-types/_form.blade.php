@@ -107,15 +107,34 @@
 
         <div class="col-12">
             <label class="form-label d-block">Facilities</label>
-            <div id="facility-list">
-                @foreach($facilities as $index => $facility)
-                    <div class="input-group mb-2 facility-row">
-                        <input type="text" name="facilities[]" class="form-control" value="{{ $facility }}" placeholder="Facility name">
-                        <button type="button" class="btn btn-outline-danger remove-facility">Remove</button>
+            <div class="row g-2">
+                @php
+                    $predefinedFacilities = [
+                        'Free Wi-Fi', 'Air Conditioning', 'Flat-screen TV', 'Private Bathroom', 
+                        'Hot & Cold Shower', 'Towels', 'Free Toiletries', 'Hair Dryer', 
+                        'Electric Kettle', 'Tea/Coffee Maker', 'Mini Fridge', 'Wardrobe', 
+                        'Work Desk', 'Balcony', 'Room Service', 'Daily Housekeeping', 
+                        'Safe Deposit Box', 'Restaurant', 'Bar', 'Free Parking', 
+                        'Airport Shuttle', 'Outdoor Swimming Pool', 'Spa & Wellness Center', 
+                        'Fitness Center', '24-Hour Front Desk', 'Laundry Service', 
+                        'Luggage Storage', 'Concierge Service', 'Tour Desk', 'Car Rental', 
+                        'Elevator', 'Garden', 'Terrace', 'CCTV', '24-Hour Security', 
+                        'Fire Extinguishers', 'Smoke Detectors'
+                    ];
+                @endphp
+                
+                @foreach($predefinedFacilities as $facility)
+                    <div class="col-md-3 col-sm-4 col-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="facilities[]" value="{{ $facility }}" id="facility-{{ Str::slug($facility) }}"
+                                {{ in_array($facility, $facilities ?? []) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="facility-{{ Str::slug($facility) }}">
+                                {{ $facility }}
+                            </label>
+                        </div>
                     </div>
                 @endforeach
             </div>
-            <button type="button" class="btn btn-sm btn-outline-primary" id="add-facility">+ Add Facility</button>
         </div>
 
         <div class="col-12">
@@ -132,24 +151,3 @@
         <a href="{{ route('admin.room-types.index') }}" class="btn btn-secondary">Back</a>
     </div>
 </form>
-
-<script>
-document.getElementById('add-facility')?.addEventListener('click', function () {
-    const row = document.createElement('div');
-    row.className = 'input-group mb-2 facility-row';
-    row.innerHTML = `
-        <input type="text" name="facilities[]" class="form-control" placeholder="Facility name">
-        <button type="button" class="btn btn-outline-danger remove-facility">Remove</button>
-    `;
-    document.getElementById('facility-list').appendChild(row);
-});
-
-document.addEventListener('click', function (event) {
-    if (event.target.classList.contains('remove-facility')) {
-        const rows = document.querySelectorAll('.facility-row');
-        if (rows.length > 1) {
-            event.target.closest('.facility-row').remove();
-        }
-    }
-});
-</script>
