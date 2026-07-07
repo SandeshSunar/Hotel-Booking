@@ -12,9 +12,6 @@
         <a href="{{ route('admin.room-types.create') }}" class="btn btn-success">➕ Add Room Type</a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
 
     <div class="card shadow">
         <div class="card-body table-responsive">

@@ -110,16 +110,16 @@
             <div class="row g-2">
                 @php
                     $predefinedFacilities = [
-                        'Free Wi-Fi', 'Air Conditioning', 'Flat-screen TV', 'Private Bathroom', 
-                        'Hot & Cold Shower', 'Towels', 'Free Toiletries', 'Hair Dryer', 
-                        'Electric Kettle', 'Tea/Coffee Maker', 'Mini Fridge', 'Wardrobe', 
+                        'Free Wi-Fi', 'Air Conditioning', 'Private Bathroom', 
+                        'Hot & Cold Shower', 'Towels', 'Free Toiletries',  
+                        'Electric Kettle', 'Tea/Coffee Maker',   
                         'Work Desk', 'Balcony', 'Room Service', 'Daily Housekeeping', 
                         'Safe Deposit Box', 'Restaurant', 'Bar', 'Free Parking', 
-                        'Airport Shuttle', 'Outdoor Swimming Pool', 'Spa & Wellness Center', 
-                        'Fitness Center', '24-Hour Front Desk', 'Laundry Service', 
-                        'Luggage Storage', 'Concierge Service', 'Tour Desk', 'Car Rental', 
-                        'Elevator', 'Garden', 'Terrace', 'CCTV', '24-Hour Security', 
-                        'Fire Extinguishers', 'Smoke Detectors'
+                        'Airport Shuttle', 'Outdoor Swimming Pool', 
+                        '24-Hour Front Desk', 'Laundry Service', 
+                        'Luggage Storage', 'Tour Desk', 'Car Rental', 
+                        'CCTV', '24-Hour Security', 
+                        'Smoke Detectors'
                     ];
                 @endphp
                 

@@ -11,9 +11,17 @@ class GuestController extends Controller
     // Show all guests
     public function index()
     {
-        $guests = Guest::all();
+        $guests = Guest::with('bookings.roomType')->get();
+        
+        $singleBookings = \App\Models\Booking::whereHas('roomType', function($q) { $q->where('category', 'single'); })->count();
+        $doubleBookings = \App\Models\Booking::whereHas('roomType', function($q) { $q->where('category', 'double'); })->count();
+        $familyBookings = \App\Models\Booking::whereHas('roomType', function($q) { $q->where('category', 'family'); })->count();
 
-        return view('admin.pages.guest.index', compact('guests'));
+        $totalAdults = \App\Models\Booking::sum('adults');
+        $totalChildren = \App\Models\Booking::sum('children');
+        $totalGuests = $totalAdults + $totalChildren;
+
+        return view('admin.pages.guest.index', compact('guests', 'singleBookings', 'doubleBookings', 'familyBookings', 'totalAdults', 'totalChildren', 'totalGuests'));
     }
 
     // Show create form

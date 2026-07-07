@@ -46,7 +46,17 @@ class BookingController extends Controller
         $nights = max(1, (new \DateTime($validated['check_in']))->diff(new \DateTime($validated['check_out']))->days);
         $totalPrice = $roomType->display_price * $nights * (int) $validated['rooms_count'];
 
+        $guest = \App\Models\Guest::firstOrCreate(
+            ['email' => $validated['email']],
+            [
+                'name' => $validated['guest_name'],
+                'phone' => $validated['phone'],
+                'address' => 'Walk-in',
+            ]
+        );
+
         $booking = Booking::create(array_merge($validated, [
+            'guest_id' => $guest->id,
             'children' => $validated['children'] ?? 0,
             'total_price' => $totalPrice,
         ]));
@@ -88,6 +98,16 @@ class BookingController extends Controller
         $nights = max(1, (new \DateTime($validated['check_in']))->diff(new \DateTime($validated['check_out']))->days);
         $validated['total_price'] = $roomType->display_price * $nights * (int) $validated['rooms_count'];
         $validated['children'] = $validated['children'] ?? 0;
+
+        $guest = \App\Models\Guest::firstOrCreate(
+            ['email' => $validated['email']],
+            [
+                'name' => $validated['guest_name'],
+                'phone' => $validated['phone'],
+                'address' => 'Walk-in',
+            ]
+        );
+        $validated['guest_id'] = $guest->id;
 
         $booking->update($validated);
 
