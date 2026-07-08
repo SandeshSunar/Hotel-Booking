@@ -37,7 +37,16 @@
             <div class="col-12"><label>Special Requests</label><textarea name="special_requests" class="form-control" rows="3">{{ $booking->special_requests }}</textarea></div>
         </div>
         <div class="mt-4 d-flex gap-2">
-            <button type="submit" class="btn btn-success">Update Booking</button>
+            <button type="submit" class="btn btn-primary">Update Booking</button>
+            
+            @if($booking->status !== 'confirmed')
+                <a href="{{ route('admin.booking.approve', $booking->id) }}" class="btn btn-success" onclick="return confirm('Quickly confirm this booking?');">Mark Confirmed</a>
+            @endif
+            
+            @if($booking->status !== 'cancelled')
+                <a href="{{ route('admin.booking.reject', $booking->id) }}" class="btn btn-danger" onclick="return confirm('Cancel this booking?');">Mark Cancelled</a>
+            @endif
+            
             <a href="{{ route('admin.booking.index') }}" class="btn btn-secondary">Back</a>
         </div>
     </form>

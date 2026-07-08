@@ -25,6 +25,12 @@ class RoomTypeController extends Controller
         return view('admin.pages.room-types.create');
     }
 
+    public function show(RoomType $roomType)
+    {
+        $roomType->load(['images', 'facilities']);
+        return view('admin.pages.room-types.show', compact('roomType'));
+    }
+
     public function store(Request $request)
     {
         $validated = $this->validateRoomType($request);

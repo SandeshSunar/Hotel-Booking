@@ -7,10 +7,7 @@
     <h4 class="fw-bold mb-3">📅 Booking Management</h4>
     <a href="{{ route('admin.booking.create') }}" class="btn btn-success mb-3">+ Add Booking</a>
 
-    @if(session('success'))
-        <div class="alert alert-success mb-3">{{ session('success') }}</div>
-    @endif
-
+  
     <div class="card shadow">
         <div class="card-body table-responsive">
             <table class="table table-striped table-hover align-middle">

@@ -64,6 +64,7 @@
                                 </span>
                             </td>
                             <td class="d-flex gap-2">
+                                <a href="{{ route('admin.room-types.show', $roomType) }}" class="btn btn-sm btn-info text-white">View</a>
                                 <a href="{{ route('admin.room-types.edit', $roomType) }}" class="btn btn-sm btn-primary">Edit</a>
                                 <form action="{{ route('admin.room-types.destroy', $roomType) }}" method="POST" onsubmit="return confirm('Delete this room type?');">
                                     @csrf
