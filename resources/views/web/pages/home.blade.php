@@ -99,8 +99,8 @@
                                     alt="{{ $roomType->name }}" class="w-100 h-100 object-fit-cover">
                             </div>
                             <div class="room-card-body">
-                                <span class="badge mb-2 {{ $roomType->status === 'available' ? 'bg-success' : 'bg-secondary' }}">
-                                    {{ ucfirst($roomType->status) }}
+                                <span class="badge mb-2 {{ $roomType->status === 'available' ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $roomType->status === 'available' ? 'Available' : 'Booked' }}
                                 </span>
                                 <h5>{{ $roomType->name }}</h5>
                                 <p>{{ Str::limit($roomType->short_description ?? $roomType->description, 95) }}</p>

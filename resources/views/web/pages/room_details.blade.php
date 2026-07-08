@@ -26,7 +26,9 @@
 <section class="room-page">
     <div class="container">
         <div class="room-hero text-center">
-            <span class="badge bg-primary-subtle text-primary mb-2">{{ $roomType->name }}</span>
+            <span class="badge {{ $isAvailable ? 'bg-primary-subtle text-primary' : 'bg-danger text-white' }} mb-2">
+                {{ $isAvailable ? $roomType->name : 'Booked' }}
+            </span>
             <h1 class="room-title">{{ $roomType->name }}</h1>
             <p class="text-muted mb-0">{{ $roomType->short_description ?? 'A dedicated stay experience with its own facilities, pricing, and comfort.' }}</p>
         </div>
@@ -132,8 +134,8 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary w-100" {{ $isAvailable ? '' : 'disabled' }}>
-                                    {{ $isAvailable ? 'Book Now' : 'Currently Unavailable' }}
+                                <button type="submit" class="btn {{ $isAvailable ? 'btn-primary' : 'btn-danger' }} w-100" {{ $isAvailable ? '' : 'disabled' }}>
+                                    {{ $isAvailable ? 'Book Now' : 'Booked' }}
                                 </button>
                             </div>
                         </div>

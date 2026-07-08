@@ -67,6 +67,10 @@ class BookingController extends Controller
             'payment_method' => 'cash',
             'status' => $validated['status'] === 'confirmed' ? 'paid' : 'pending',
         ]);
+        
+        if ($validated['status'] === 'confirmed') {
+            $roomType->update(['status' => 'unavailable']);
+        }
 
         return redirect()->route('admin.booking.index')->with('success', 'Booking created successfully.');
     }
@@ -117,6 +121,12 @@ class BookingController extends Controller
                 'status' => $validated['status'] === 'confirmed' ? 'paid' : ($validated['status'] === 'cancelled' ? 'refunded' : 'pending'),
             ]);
         }
+        
+        if ($validated['status'] === 'confirmed') {
+            $roomType->update(['status' => 'unavailable']);
+        } elseif ($validated['status'] === 'cancelled') {
+            $roomType->update(['status' => 'available']);
+        }
 
         return redirect()->route('admin.booking.index')->with('success', 'Booking updated successfully.');
     }
@@ -137,6 +147,10 @@ class BookingController extends Controller
         if ($booking->payment) {
             $booking->payment->update(['status' => 'paid']);
         }
+        
+        if ($booking->roomType) {
+            $booking->roomType->update(['status' => 'unavailable']);
+        }
 
         return redirect()->back()->with('success', 'Booking confirmed successfully!');
     }
@@ -148,6 +162,10 @@ class BookingController extends Controller
 
         if ($booking->payment) {
             $booking->payment->update(['status' => 'refunded']);
+        }
+        
+        if ($booking->roomType) {
+            $booking->roomType->update(['status' => 'available']);
         }
 
         return redirect()->back()->with('success', 'Booking cancelled successfully!');

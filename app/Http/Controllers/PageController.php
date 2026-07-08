@@ -97,7 +97,6 @@ class PageController extends Controller
     {
         $featuredRooms = RoomType::with('images')
             ->where('is_active', true)
-            ->where('status', 'available')
             ->latest()
             ->take(3)
             ->get();

@@ -60,7 +60,12 @@
                                             @endif
                                         </div>
                                         <div class="rooms-card-body">
-                                            <h3 class="rooms-card-title">{{ $roomType->name }}</h3>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <h3 class="rooms-card-title mb-0">{{ $roomType->name }}</h3>
+                                                <span class="badge {{ $roomType->status === 'available' ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $roomType->status === 'available' ? 'Available' : 'Booked' }}
+                                                </span>
+                                            </div>
                                             <div class="mb-2">
                                                 <strong>Rs. {{ number_format($roomType->display_price, 2) }} / night</strong>
                                                 @if($roomType->discount_price)
@@ -80,9 +85,15 @@
                                                 <a class="btn btn-sm rooms-card-btn" href="{{ route('room.details', $roomType->slug) }}">
                                                     View Details <i class="bi bi-arrow-right"></i>
                                                 </a>
-                                                <a class="btn btn-sm btn-outline-primary rounded-pill px-3" href="{{ route('room.details', $roomType->slug) }}#booking-form">
-                                                    Book Now
-                                                </a>
+                                                @if($roomType->status === 'available')
+                                                    <a class="btn btn-sm btn-outline-primary rounded-pill px-3" href="{{ route('room.details', $roomType->slug) }}#booking-form">
+                                                        Book Now
+                                                    </a>
+                                                @else
+                                                    <button class="btn btn-sm btn-outline-danger rounded-pill px-3" disabled>
+                                                        Booked
+                                                    </button>
+                                                @endif
                                             </div>
                                         </div>
                                     </article>
