@@ -112,4 +112,15 @@ class RoomType extends Model
 
         return max(0, $this->total_rooms - (int) $booked);
     }
+    
+    public function getIsCurrentlyBookedAttribute(): bool
+    {
+        if ($this->status !== 'available') {
+            return true;
+        }
+
+        $today = now()->format('Y-m-d');
+        $tomorrow = now()->addDay()->format('Y-m-d');
+        return $this->availableUnitsForDates($today, $tomorrow) <= 0;
+    }
 }

@@ -62,8 +62,8 @@
                                         <div class="rooms-card-body">
                                             <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <h3 class="rooms-card-title mb-0">{{ $roomType->name }}</h3>
-                                                <span class="badge {{ $roomType->status === 'available' ? 'bg-success' : 'bg-danger' }}">
-                                                    {{ $roomType->status === 'available' ? 'Available' : 'Booked' }}
+                                                <span class="badge {{ !$roomType->is_currently_booked ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ !$roomType->is_currently_booked ? 'Available' : 'Booked' }}
                                                 </span>
                                             </div>
                                             <div class="mb-2">
@@ -85,7 +85,7 @@
                                                 <a class="btn btn-sm rooms-card-btn" href="{{ route('room.details', $roomType->slug) }}">
                                                     View Details <i class="bi bi-arrow-right"></i>
                                                 </a>
-                                                @if($roomType->status === 'available')
+                                                @if(!$roomType->is_currently_booked)
                                                     <a class="btn btn-sm btn-outline-primary rounded-pill px-3" href="{{ route('room.details', $roomType->slug) }}#booking-form">
                                                         Book Now
                                                     </a>

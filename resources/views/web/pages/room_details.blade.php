@@ -7,7 +7,7 @@
     $primaryImage = $roomType->primary_image
         ? asset('storage/' . $roomType->primary_image)
         : asset('images/hotel-bg.jpg');
-    $isAvailable = $roomType->status === 'available' && $roomType->is_active;
+    $isAvailable = !$roomType->is_currently_booked && $roomType->is_active;
 @endphp
 
 <style>
