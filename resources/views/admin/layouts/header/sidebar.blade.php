@@ -12,11 +12,12 @@
         
     </ul>
     
-    <div class="mt-auto pt-3 border-top w-100">
-        <form action="{{ route('logout') }}" method="POST" class="d-grid w-100">
+    <div class="mt-auto pt-3 pb-3 border-top border-secondary w-100">
+        <form action="{{ route('logout') }}" method="POST" class="d-grid w-100" onsubmit="return confirm('Do you want to log out?');">
             @csrf
-            <button type="submit" class="btn btn-outline-light btn-sm text-start">
-                🚪 Logout
+            <button type="submit" class="btn btn-danger fw-bold d-flex justify-content-between align-items-center py-2 px-3 rounded-3 shadow border-0" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
+                <span class="text-white">Logout</span>
+                <span class="fs-5 text-white"><i class="bi bi-person-circle"></i></span>
             </button>
         </form>
     </div>
