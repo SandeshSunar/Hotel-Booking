@@ -112,7 +112,7 @@
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                @if (!old('name') && ($errors->any() || session('error') || session('success')))
+                {{-- @if (!old('name') && ($errors->any() || session('error') || session('success')))
                     <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} auth-alert">
                         @if (session('success'))
                             {{ session('success') }}
@@ -126,7 +126,7 @@
                             </ul>
                         @endif
                     </div>
-                @endif
+                @endif --}}
 
                 <form method="POST" action="{{ route('login.submit') }}" class="auth-form">
                     @csrf
