@@ -7,6 +7,8 @@ use App\Models\Booking;
 use App\Models\Payment;
 use App\Models\RoomType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingStatusMail;
 
 class BookingController extends Controller
 {
@@ -115,6 +117,8 @@ class BookingController extends Controller
 
         $booking->update($validated);
 
+        $statusChanged = $booking->wasChanged('status');
+
         if ($booking->payment) {
             $booking->payment->update([
                 'amount' => $validated['total_price'],
@@ -126,6 +130,17 @@ class BookingController extends Controller
             $roomType->update(['status' => 'unavailable']);
         } elseif ($validated['status'] === 'cancelled') {
             $roomType->update(['status' => 'available']);
+        }
+
+        if ($statusChanged && in_array($validated['status'], ['confirmed', 'cancelled'])) {
+            $guestEmail = $booking->email ?? ($booking->guest ? $booking->guest->email : null);
+            if ($guestEmail) {
+                try {
+                    Mail::to($guestEmail)->send(new BookingStatusMail($booking));
+                } catch (\Exception $e) {
+                    return redirect()->route('admin.booking.index')->with('success', 'Booking updated successfully. Note: Email failed to send (SMTP Error).');
+                }
+            }
         }
 
         return redirect()->route('admin.booking.index')->with('success', 'Booking updated successfully.');
@@ -152,6 +167,15 @@ class BookingController extends Controller
             $booking->roomType->update(['status' => 'unavailable']);
         }
 
+        $guestEmail = $booking->email ?? ($booking->guest ? $booking->guest->email : null);
+        if ($guestEmail) {
+            try {
+                Mail::to($guestEmail)->send(new BookingStatusMail($booking));
+            } catch (\Exception $e) {
+                return redirect()->back()->with('success', 'Booking confirmed successfully! Note: Email failed to send (SMTP Error).');
+            }
+        }
+
         return redirect()->back()->with('success', 'Booking confirmed successfully!');
     }
 
@@ -166,6 +190,15 @@ class BookingController extends Controller
         
         if ($booking->roomType) {
             $booking->roomType->update(['status' => 'available']);
+        }
+
+        $guestEmail = $booking->email ?? ($booking->guest ? $booking->guest->email : null);
+        if ($guestEmail) {
+            try {
+                Mail::to($guestEmail)->send(new BookingStatusMail($booking));
+            } catch (\Exception $e) {
+                return redirect()->back()->with('success', 'Booking cancelled successfully! Note: Email failed to send (SMTP Error).');
+            }
         }
 
         return redirect()->back()->with('success', 'Booking cancelled successfully!');
