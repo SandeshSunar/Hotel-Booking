@@ -4,10 +4,10 @@
 
 @section('content')
 <div class="p-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="mb-3">
         <div>
-            <h4 class="fw-bold mb-1">🛏️ Room Types</h4>
-            <p class="text-muted mb-0">Manage Single, Double, and Family room profiles independently.</p>
+            <h4 class="fw-bold mb-3">🛏️ Room Types</h4>
+            <p class="text-muted mb-3">Manage Single, Double, and Family room profiles independently.</p>
         </div>
         <a href="{{ route('admin.room-types.create') }}" class="btn btn-success">➕ Add Room Type</a>
     </div>
