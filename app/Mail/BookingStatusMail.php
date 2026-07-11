@@ -41,7 +41,7 @@ class BookingStatusMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.booking.status',
+            view: 'emails.booking.status',
         );
     }
 
