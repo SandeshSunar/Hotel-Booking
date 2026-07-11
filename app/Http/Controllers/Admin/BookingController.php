@@ -41,7 +41,7 @@ class BookingController extends Controller
             'children' => 'nullable|integer|min:0',
             'rooms_count' => 'required|integer|min:1',
             'special_requests' => 'nullable|string',
-            'status' => 'required|in:pending,confirmed,cancelled',
+            'status' => 'required|in:pending,confirmed,cancelled,completed',
         ]);
 
         $roomType = RoomType::findOrFail($validated['room_type_id']);
@@ -97,7 +97,7 @@ class BookingController extends Controller
             'children' => 'nullable|integer|min:0',
             'rooms_count' => 'required|integer|min:1',
             'special_requests' => 'nullable|string',
-            'status' => 'required|in:pending,confirmed,cancelled',
+            'status' => 'required|in:pending,confirmed,cancelled,completed',
         ]);
 
         $roomType = RoomType::findOrFail($validated['room_type_id']);
@@ -128,11 +128,11 @@ class BookingController extends Controller
         
         if ($validated['status'] === 'confirmed') {
             $roomType->update(['status' => 'unavailable']);
-        } elseif ($validated['status'] === 'cancelled') {
+        } elseif (in_array($validated['status'], ['cancelled', 'completed'])) {
             $roomType->update(['status' => 'available']);
         }
 
-        if ($statusChanged && in_array($validated['status'], ['confirmed', 'cancelled'])) {
+        if ($statusChanged && in_array($validated['status'], ['confirmed', 'cancelled', 'completed'])) {
             $guestEmail = $booking->email ?? ($booking->guest ? $booking->guest->email : null);
             if ($guestEmail) {
                 try {
@@ -205,5 +205,31 @@ class BookingController extends Controller
         }
 
         return redirect()->back()->with('success', 'Booking cancelled successfully!');
+    }
+
+    public function complete($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->update(['status' => 'completed']);
+
+        if ($booking->payment) {
+            $booking->payment->update(['status' => 'paid']);
+        }
+        
+        if ($booking->roomType) {
+            $booking->roomType->update(['status' => 'available']);
+        }
+
+        $guestEmail = $booking->email ?? ($booking->guest ? $booking->guest->email : null);
+        if ($guestEmail) {
+            try {
+                Mail::to($guestEmail)->send(new BookingStatusMail($booking));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
+                return redirect()->back()->with('success', 'Booking completed! Note: Email failed to send (' . $e->getMessage() . ').');
+            }
+        }
+
+        return redirect()->back()->with('success', 'Booking marked as completed successfully!');
     }
 }

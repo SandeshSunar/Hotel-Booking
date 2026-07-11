@@ -40,6 +40,8 @@
                             <td>
                                 @if($booking->status === 'confirmed')
                                     <span class="badge bg-success">Confirmed</span>
+                                @elseif($booking->status === 'completed')
+                                    <span class="badge bg-info text-dark">Completed</span>
                                 @elseif($booking->status === 'cancelled')
                                     <span class="badge bg-danger">Cancelled</span>
                                 @else
@@ -51,6 +53,9 @@
                                     @if($booking->status === 'pending')
                                         <a href="{{ route('admin.booking.approve', $booking->id) }}" class="btn btn-success btn-sm">Confirm</a>
                                         <a href="{{ route('admin.booking.reject', $booking->id) }}" class="btn btn-warning btn-sm">Cancel</a>
+                                    @endif
+                                    @if($booking->status === 'confirmed')
+                                        <a href="{{ route('admin.booking.complete', $booking->id) }}" class="btn btn-info btn-sm text-white">Complete</a>
                                     @endif
                                     <a href="{{ route('admin.booking.edit', $booking->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                     <form action="{{ route('admin.booking.destroy', $booking->id) }}" method="POST" class="d-inline">

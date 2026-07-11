@@ -71,6 +71,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 
     Route::get('/booking/approve/{id}/{model?}', [BookingController::class, 'approve'])->name('booking.approve');
     Route::get('/booking/reject/{id}/{model?}', [BookingController::class, 'reject'])->name('booking.reject');
+    Route::get('/booking/complete/{id}/{model?}', [BookingController::class, 'complete'])->name('booking.complete');
 
     Route::resource('booking', BookingController::class);
 

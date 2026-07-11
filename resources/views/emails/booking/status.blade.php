@@ -18,6 +18,9 @@
                             if($booking->status == 'pending') {
                                 $headerBg = '#f59e0b';
                                 $statusText = 'Pending Confirmation';
+                            } elseif($booking->status == 'completed') {
+                                $headerBg = '#10b981';
+                                $statusText = 'Completed';
                             } elseif($booking->status == 'cancelled') {
                                 $headerBg = '#ef4444';
                                 $statusText = 'Cancelled';
@@ -37,6 +40,8 @@
                             <p style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.6; color: #475569;">
                                 @if($booking->status == 'confirmed')
                                     Great news! Your reservation for our <strong>{{ $booking->roomType ? $booking->roomType->name : 'Room' }}</strong> has been confirmed. We are thrilled to host you and ensure you have a wonderful stay.
+                                @elseif($booking->status == 'completed')
+                                    Thank you for your booking and visit! We hope you thoroughly enjoyed your stay in our <strong>{{ $booking->roomType ? $booking->roomType->name : 'Room' }}</strong>. We look forward to welcoming you back again soon.
                                 @elseif($booking->status == 'pending')
                                     We have received your reservation request for our <strong>{{ $booking->roomType ? $booking->roomType->name : 'Room' }}</strong>. Our team is currently reviewing it and will send you a confirmation shortly.
                                 @else
