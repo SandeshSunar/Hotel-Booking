@@ -138,7 +138,8 @@ class BookingController extends Controller
                 try {
                     Mail::to($guestEmail)->send(new BookingStatusMail($booking));
                 } catch (\Exception $e) {
-                    return redirect()->route('admin.booking.index')->with('success', 'Booking updated successfully. Note: Email failed to send (SMTP Error).');
+                    \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
+                    return redirect()->route('admin.booking.index')->with('success', 'Booking updated successfully. Note: Email failed to send (' . $e->getMessage() . ').');
                 }
             }
         }
@@ -172,7 +173,8 @@ class BookingController extends Controller
             try {
                 Mail::to($guestEmail)->send(new BookingStatusMail($booking));
             } catch (\Exception $e) {
-                return redirect()->back()->with('success', 'Booking confirmed successfully! Note: Email failed to send (SMTP Error).');
+                \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
+                return redirect()->back()->with('success', 'Booking confirmed successfully! Note: Email failed to send (' . $e->getMessage() . ').');
             }
         }
 
@@ -197,7 +199,8 @@ class BookingController extends Controller
             try {
                 Mail::to($guestEmail)->send(new BookingStatusMail($booking));
             } catch (\Exception $e) {
-                return redirect()->back()->with('success', 'Booking cancelled successfully! Note: Email failed to send (SMTP Error).');
+                \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
+                return redirect()->back()->with('success', 'Booking cancelled successfully! Note: Email failed to send (' . $e->getMessage() . ').');
             }
         }
 

@@ -86,6 +86,13 @@ class BookController extends Controller
             'status' => 'pending',
         ]);
 
+        try {
+            \Illuminate\Support\Facades\Mail::to($booking->email)->send(new \App\Mail\BookingStatusMail($booking));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
+            return redirect()->back()->with('success', 'Booking submitted successfully! Note: Email failed to send (' . $e->getMessage() . ').');
+        }
+
         return redirect()->back()->with('success', 'Booking submitted successfully! We will confirm your reservation shortly.');
     }
 }
