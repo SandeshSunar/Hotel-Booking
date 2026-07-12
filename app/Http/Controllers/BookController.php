@@ -79,6 +79,11 @@ class BookController extends Controller
             'status' => 'pending',
         ]);
 
+        $roomType->decrement('available_rooms', $roomsCount);
+        if ($roomType->available_rooms <= 0) {
+            $roomType->update(['status' => 'unavailable']);
+        }
+
         Payment::create([
             'booking_id' => $booking->id,
             'amount' => $totalPrice,

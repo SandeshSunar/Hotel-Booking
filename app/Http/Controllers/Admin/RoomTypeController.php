@@ -58,6 +58,9 @@ class RoomTypeController extends Controller
     {
         $validated = $this->validateRoomType($request, $roomType);
         $data = $this->roomTypeData($request, $validated);
+
+        $diff = $validated['total_rooms'] - $roomType->total_rooms;
+        $data['available_rooms'] = max(0, $roomType->available_rooms + $diff);
         $data['slug'] = $this->makeUniqueSlug($data['name'], $data['room_number'] ?? null, $roomType->id);
 
         $roomType->update($data);

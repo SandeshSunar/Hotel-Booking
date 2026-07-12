@@ -25,12 +25,12 @@ class DashboardController extends Controller
             return redirect()->route('login')->with('error', 'Please login first.');
         }
 
-        $totalBookings = Booking::count();
+        $totalBookings = Booking::whereIn('status', ['pending', 'confirmed'])->count();
 
         $statistics = [
             'totalBookings'   => $totalBookings,
-            'totalRooms'      => RoomType::sum('total_rooms'),
-            'availableRooms'  => RoomType::sum('available_rooms'),
+            'totalRooms'      => RoomType::count(),
+            'availableRooms'  => RoomType::where('available_rooms', '>', 0)->count(),
             'totalGuests'     => Guest::count(),
             'totalStaff'      => Staff::count(),
         ];

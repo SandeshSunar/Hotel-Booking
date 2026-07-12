@@ -63,6 +63,10 @@ class BookingController extends Controller
             'total_price' => $totalPrice,
         ]));
 
+        if (in_array($validated['status'], ['pending', 'confirmed'])) {
+            $roomType->decrement('available_rooms', $validated['rooms_count']);
+        }
+
         Payment::create([
             'booking_id' => $booking->id,
             'amount' => $totalPrice,
@@ -70,7 +74,7 @@ class BookingController extends Controller
             'status' => $validated['status'] === 'confirmed' ? 'paid' : 'pending',
         ]);
         
-        if ($validated['status'] === 'confirmed') {
+        if ($roomType->available_rooms <= 0) {
             $roomType->update(['status' => 'unavailable']);
         }
 
@@ -115,21 +119,40 @@ class BookingController extends Controller
         );
         $validated['guest_id'] = $guest->id;
 
+        $oldStatus = $booking->status;
+        $oldRoomsCount = $booking->rooms_count;
+        $oldRoomTypeId = $booking->room_type_id;
+
         $booking->update($validated);
 
         $statusChanged = $booking->wasChanged('status');
+
+        $wasTaking = in_array($oldStatus, ['pending', 'confirmed']);
+        $isTaking = in_array($validated['status'], ['pending', 'confirmed']);
+
+        $oldRoomType = \App\Models\RoomType::find($oldRoomTypeId);
+
+        if ($wasTaking && $oldRoomType) {
+            $oldRoomType->increment('available_rooms', $oldRoomsCount);
+            if ($oldRoomType->available_rooms > 0) {
+                $oldRoomType->update(['status' => 'available']);
+            }
+        }
+
+        if ($isTaking) {
+            $roomType->decrement('available_rooms', $validated['rooms_count']);
+            if ($roomType->available_rooms <= 0) {
+                $roomType->update(['status' => 'unavailable']);
+            } else {
+                $roomType->update(['status' => 'available']);
+            }
+        }
 
         if ($booking->payment) {
             $booking->payment->update([
                 'amount' => $validated['total_price'],
                 'status' => $validated['status'] === 'confirmed' ? 'paid' : ($validated['status'] === 'cancelled' ? 'refunded' : 'pending'),
             ]);
-        }
-        
-        if ($validated['status'] === 'confirmed') {
-            $roomType->update(['status' => 'unavailable']);
-        } elseif (in_array($validated['status'], ['cancelled', 'completed'])) {
-            $roomType->update(['status' => 'available']);
         }
 
         if ($statusChanged && in_array($validated['status'], ['confirmed', 'cancelled', 'completed'])) {
@@ -158,13 +181,18 @@ class BookingController extends Controller
     public function approve($id)
     {
         $booking = Booking::findOrFail($id);
+        $wasTaking = in_array($booking->status, ['pending', 'confirmed']);
         $booking->update(['status' => 'confirmed']);
+
+        if (!$wasTaking && $booking->roomType) {
+            $booking->roomType->decrement('available_rooms', $booking->rooms_count);
+        }
 
         if ($booking->payment) {
             $booking->payment->update(['status' => 'paid']);
         }
         
-        if ($booking->roomType) {
+        if ($booking->roomType && $booking->roomType->available_rooms <= 0) {
             $booking->roomType->update(['status' => 'unavailable']);
         }
 
@@ -184,14 +212,18 @@ class BookingController extends Controller
     public function reject($id)
     {
         $booking = Booking::findOrFail($id);
+        $wasTaking = in_array($booking->status, ['pending', 'confirmed']);
         $booking->update(['status' => 'cancelled']);
+
+        if ($wasTaking && $booking->roomType) {
+            $booking->roomType->increment('available_rooms', $booking->rooms_count);
+            if ($booking->roomType->available_rooms > 0) {
+                $booking->roomType->update(['status' => 'available']);
+            }
+        }
 
         if ($booking->payment) {
             $booking->payment->update(['status' => 'refunded']);
-        }
-        
-        if ($booking->roomType) {
-            $booking->roomType->update(['status' => 'available']);
         }
 
         $guestEmail = $booking->email ?? ($booking->guest ? $booking->guest->email : null);
@@ -210,14 +242,18 @@ class BookingController extends Controller
     public function complete($id)
     {
         $booking = Booking::findOrFail($id);
+        $wasTaking = in_array($booking->status, ['pending', 'confirmed']);
         $booking->update(['status' => 'completed']);
+
+        if ($wasTaking && $booking->roomType) {
+            $booking->roomType->increment('available_rooms', $booking->rooms_count);
+            if ($booking->roomType->available_rooms > 0) {
+                $booking->roomType->update(['status' => 'available']);
+            }
+        }
 
         if ($booking->payment) {
             $booking->payment->update(['status' => 'paid']);
-        }
-        
-        if ($booking->roomType) {
-            $booking->roomType->update(['status' => 'available']);
         }
 
         $guestEmail = $booking->email ?? ($booking->guest ? $booking->guest->email : null);

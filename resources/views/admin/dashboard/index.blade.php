@@ -11,7 +11,7 @@
         <div class="col-md text-white">
             <div class="card bg-primary shadow h-100">
                 <div class="card-body text-center">
-                    <h6>Total Bookings</h6>
+                    <h6>Active Bookings</h6>
                     <h3>{{ $statistics['totalBookings'] }}</h3>
                 </div>
             </div>
