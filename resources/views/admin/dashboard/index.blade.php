@@ -8,8 +8,8 @@
 
     <!-- ================= TOP STATS CARDS ================= -->
     <div class="row g-3">
-        <div class="col-md-4">
-            <div class="card text-white bg-primary shadow">
+        <div class="col-md text-white">
+            <div class="card bg-primary shadow h-100">
                 <div class="card-body text-center">
                     <h6>Total Bookings</h6>
                     <h3>{{ $statistics['totalBookings'] }}</h3>
@@ -17,8 +17,8 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card text-white bg-success shadow">
+        <div class="col-md text-white">
+            <div class="card bg-success shadow h-100">
                 <div class="card-body text-center">
                     <h6>Total Rooms</h6>
                     <h3>{{ $statistics['totalRooms'] }}</h3>
@@ -26,11 +26,29 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card text-white bg-warning shadow">
+        <div class="col-md text-white">
+            <div class="card bg-warning shadow h-100">
                 <div class="card-body text-center">
                     <h6>Available Rooms</h6>
                     <h3>{{ $statistics['availableRooms'] }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md text-white">
+            <div class="card bg-info shadow h-100">
+                <div class="card-body text-center">
+                    <h6>Total Guests</h6>
+                    <h3>{{ $statistics['totalGuests'] }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md text-white">
+            <div class="card bg-danger shadow h-100">
+                <div class="card-body text-center">
+                    <h6>Total Staff</h6>
+                    <h3>{{ $statistics['totalStaff'] }}</h3>
                 </div>
             </div>
         </div>
