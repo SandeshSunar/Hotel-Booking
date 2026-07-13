@@ -133,10 +133,11 @@
                                     <strong>Total Price:</strong> <span id="totalPrice">Rs. {{ number_format($roomType->display_price, 2) }}</span>
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 gap-2 d-flex">
                                 <button type="submit" class="btn {{ $isAvailable ? 'btn-primary' : 'btn-danger' }} w-100" {{ $isAvailable ? '' : 'disabled' }}>
                                     {{ $isAvailable ? 'Book Now' : 'Booked' }}
                                 </button>
+                                <a href="{{ route('rooms') }}" class="btn btn-secondary w-100">Cancel</a>
                             </div>
                         </div>
                     </form>
