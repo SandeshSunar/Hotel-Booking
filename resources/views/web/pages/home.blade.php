@@ -126,10 +126,83 @@
             </div>
         </div>
 
-        <div class="room-link-wrap py-4">
-            <a href="{{ route('rooms', $roomType->slug) }}" class="room-link">
+        <div class="room-link-wrap py-4" style="text-align: center;">
+            <a href="{{ route('rooms') }}" class="room-link">
                 View All Rooms <i class="bi bi-arrow-right"></i>
             </a>
         </div>
     </section>
+
+    <section class="hotel-amenities py-5" style="background-color: #f8fafc;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-tag" style="color: #6366f1; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Discover More</span>
+                <h2 class="section-title fw-bold">Attractive Features</h2>
+                <p class="text-muted mt-2">Everything you need for an unforgettable and comfortable stay.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3 col-sm-6">
+                    <div class="amenity-item text-center p-4 bg-white rounded-4 shadow-sm border border-light h-100">
+                        <i class="bi bi-wifi text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold">Free High-Speed Wi-Fi</h5>
+                        <p class="text-muted small mb-0">Stay connected with our seamless internet connection anywhere in the hotel.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="amenity-item text-center p-4 bg-white rounded-4 shadow-sm border border-light h-100">
+                        <i class="bi bi-car-front text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold">Airport Transfers</h5>
+                        <p class="text-muted small mb-0">Complimentary pick-up and drop-off to make your journey smoother.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="amenity-item text-center p-4 bg-white rounded-4 shadow-sm border border-light h-100">
+                        <i class="bi bi-person-workspace text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold">Business Suites</h5>
+                        <p class="text-muted small mb-0">Equipped with workstations, printing, and meeting spaces for professionals.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="amenity-item text-center p-4 bg-white rounded-4 shadow-sm border border-light h-100">
+                        <i class="bi bi-shield-check text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold">24/7 Security</h5>
+                        <p class="text-muted small mb-0">Advanced surveillance and trained personnel for a completely safe stay.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="amenity-item text-center p-4 bg-white rounded-4 shadow-sm border border-light h-100">
+                        <i class="bi bi-tv text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold">Smart Entertainment</h5>
+                        <p class="text-muted small mb-0">Large flat-screen TVs with premium streaming services included.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="amenity-item text-center p-4 bg-white rounded-4 shadow-sm border border-light h-100">
+                        <i class="bi bi-bicycle text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold">City Tours & Rentals</h5>
+                        <p class="text-muted small mb-0">Bicycle and car rentals for convenient local exploration.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="amenity-item text-center p-4 bg-white rounded-4 shadow-sm border border-light h-100">
+                        <i class="bi bi-bell text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold">In-Room Dining</h5>
+                        <p class="text-muted small mb-0">Enjoy warm, freshly cooked meals delivered right to your bed seamlessly.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="amenity-item text-center p-4 bg-white rounded-4 shadow-sm border border-light h-100">
+                        <i class="bi bi-cart text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold">Mini Mart</h5>
+                        <p class="text-muted small mb-0">On-site store stocked with snacks, drinks, and essential travel needs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .amenity-item { transition: all 0.3s ease; }
+        .amenity-item:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important; border-color: rgba(99, 102, 241, 0.4) !important; }
+    </style>
 @endsection
