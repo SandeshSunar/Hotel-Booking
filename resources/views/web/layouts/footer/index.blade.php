@@ -93,4 +93,47 @@
     });
 </script>
 
+<!-- AOS Animation JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Automatically add AOS animation to headings, paragraphs, and cards on all pages
+        const animatedElements = document.querySelectorAll('main h1, main h2, main h3, main h4, main h5, main p, main .feature-card, main .room-card, main .amenity-item, main .card, main img, footer');
+        
+        let delayCount = 0;
+        let lastTop = 0;
+        
+        animatedElements.forEach((el, index) => {
+            if(!el.hasAttribute('data-aos')) {
+                // Determine animation type based on element
+                let animType = 'fade-up';
+                if(el.tagName === 'H1') animType = 'fade-down';
+                else if(el.tagName === 'IMG' && !el.closest('.room-card')) animType = 'zoom-in';
+
+                el.setAttribute('data-aos', animType);
+                
+                // Group elements by their vertical position to stagger animations properly
+                let currentTop = el.getBoundingClientRect().top;
+                if (Math.abs(currentTop - lastTop) > 50) {
+                    delayCount = 0; // Reset delay for a new row/section
+                    lastTop = currentTop;
+                }
+                
+                let delay = delayCount * 100;
+                if (delay > 500) delay = 500; // Cap delay
+                
+                el.setAttribute('data-aos-delay', delay.toString());
+                delayCount++;
+            }
+        });
+
+        AOS.init({
+            duration: 900,
+            easing: 'ease-in-out-cubic',
+            once: true,
+            offset: 40
+        });
+    });
+</script>
+
 @stack('scripts')
