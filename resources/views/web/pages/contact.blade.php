@@ -88,14 +88,17 @@
                 <div class="contact-map-card">
                     <h3 class="contact-card-title">Find Us Here</h3>
                     <p class="contact-card-subtitle">Visit us at our central location.</p>
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.080412493457!2d85.31132281506191!3d27.71724593278859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb190b3f1d2c1d%3A0x3b1f0c2e024aaa6a!2sKathmandu!5e0!3m2!1sen!2snp!4v1631891726453!5m2!1sen!2snp"
-                        width="100%"
-                        height="350"
-                        class="contact-map"
-                        allowfullscreen=""
-                        loading="lazy">
-                    </iframe>
+                    <div id="smallMapContainer">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.080412493457!2d85.31132281506191!3d27.71724593278859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb190b3f1d2c1d%3A0x3b1f0c2e024aaa6a!2sKathmandu!5e0!3m2!1sen!2snp!4v1631891726453!5m2!1sen!2snp"
+                            width="100%"
+                            height="350"
+                            class="contact-map border rounded mb-3 mt-3"
+                            allowfullscreen=""
+                            loading="lazy">
+                        </iframe>
+                        <button id="btnOpenMap" class="btn btn-outline-dark w-100 fw-bold py-2 mb-2" type="button">VIEW FULL MAP</button>
+                    </div>
                     <div class="contact-address">
                         <i class="bi bi-geo-alt-fill"></i>
                         <span>City Center, Main Street, Kathmandu</span>
@@ -105,4 +108,51 @@
         </div>
     </div>
 </section>
+
+<!-- Full Width Map Section -->
+<section id="fullMapSection" style="display: none;" class="bg-light mt-4 mb-4">
+    <div class="position-relative w-100">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.080412493457!2d85.31132281506191!3d27.71724593278859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb190b3f1d2c1d%3A0x3b1f0c2e024aaa6a!2sKathmandu!5e0!3m2!1sen!2snp!4v1631891726453!5m2!1sen!2snp"
+            width="100%"
+            height="450"
+            style="border:0; margin-bottom: -5px;"
+            allowfullscreen=""
+            loading="lazy">
+        </iframe>
+    </div>
+    <div class="w-100 bg-white shadow-sm border-top py-3">
+        <div class="container d-flex justify-content-between align-items-center px-4">
+            <div class="d-flex align-items-center gap-4" style="color: #ed5565;">
+             
+            </div>
+            <button id="btnHideMap" class="btn px-4 py-2" type="button" style="background-color: #ed5565; color: white; font-weight: bold; border: none; letter-spacing: 0.5px; border-radius: 4px;">HIDE MAP</button>
+        </div>
+    </div>
+</section>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnOpenMap = document.getElementById('btnOpenMap');
+        const btnHideMap = document.getElementById('btnHideMap');
+        const smallMapContainer = document.getElementById('smallMapContainer');
+        const fullMapSection = document.getElementById('fullMapSection');
+
+        if (btnOpenMap && btnHideMap) {
+            btnOpenMap.addEventListener('click', function() {
+                smallMapContainer.style.display = 'none';
+                fullMapSection.style.display = 'block';
+                setTimeout(() => { fullMapSection.scrollIntoView({ behavior: 'smooth' }); }, 50);
+            });
+
+            btnHideMap.addEventListener('click', function() {
+                fullMapSection.style.display = 'none';
+                smallMapContainer.style.display = 'block';
+                setTimeout(() => { document.querySelector('.contact-main').scrollIntoView({ behavior: 'smooth' }); }, 50);
+            });
+        }
+    });
+</script>
+@endpush
 @endsection
