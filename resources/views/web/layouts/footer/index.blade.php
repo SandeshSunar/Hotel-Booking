@@ -98,7 +98,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Automatically add AOS animation to headings, paragraphs, and cards on all pages
-        const animatedElements = document.querySelectorAll('main h1, main h2, main h3, main h4, main h5, main p, main .feature-card, main .room-card, main .amenity-item, main .card, main img, footer');
+        const animatedElements = document.querySelectorAll('main h1, main h2, main h3, main h4, main h5, main p, main .feature-card, main .room-card, main .amenity-item, main .card, main img');
         
         let delayCount = 0;
         let lastTop = 0;
