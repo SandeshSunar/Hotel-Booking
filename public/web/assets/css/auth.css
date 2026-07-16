@@ -1552,9 +1552,9 @@
 .site-footer {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #0f2747 0%, #123a67 52%, #1c5b92 100%);
-    color: rgba(255, 255, 255, 0.9);
-    padding: 3rem 0 1.2rem;
+    background: var(--auth-gradient);
+    color: rgba(255, 255, 255, 0.95);
+    padding: 3.5rem 0 1.2rem;
 }
 
 .site-footer::before,
@@ -1572,8 +1572,8 @@
     right: -80px;
     background: radial-gradient(
         circle,
-        rgba(126, 208, 255, 0.22) 0%,
-        rgba(126, 208, 255, 0) 70%
+        rgba(255, 255, 255, 0.18) 0%,
+        rgba(255, 255, 255, 0) 70%
     );
 }
 
@@ -1584,8 +1584,8 @@
     bottom: -140px;
     background: radial-gradient(
         circle,
-        rgba(255, 255, 255, 0.16) 0%,
-        rgba(255, 255, 255, 0) 72%
+        rgba(32, 201, 151, 0.3) 0%,
+        rgba(32, 201, 151, 0) 72%
     );
 }
 
