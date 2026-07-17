@@ -11,9 +11,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <div class="home-hero-top">
-                        <span class="home-badge">
-                            <i class="bi bi-stars"></i> Premium Boutique Experience
-                        </span>
+                        
                         <h1 class="home-title text-center">Find your perfect stay at our hotel</h1>
                         <p class="home-subtitle text-center">
                             Modern rooms, friendly staff and a prime location for business, family and leisure trips.
