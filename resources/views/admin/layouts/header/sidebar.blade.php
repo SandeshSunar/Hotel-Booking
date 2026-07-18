@@ -17,7 +17,7 @@
         border-radius: 10px;
     }
 </style>
-<div class="bg-dark text-white p-3 vh-100 d-flex flex-column" style="width: 220px;">
+<div class="bg-dark text-white p-3 vh-100 d-flex flex-column sticky-top" style="width: 220px;">
     <h5 class="text-uppercase border-bottom pb-2 mb-3 pe-2">Admin Menu</h5>
     
     <ul class="nav flex-column flex-grow-1 sidebar-nav-scroll pe-2">
