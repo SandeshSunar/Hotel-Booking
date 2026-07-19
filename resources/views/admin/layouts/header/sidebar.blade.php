@@ -26,6 +26,7 @@
         <li class="nav-item mb-1"><a class="nav-link text-white rounded hover-bg-secondary" href="{{ route('admin.room-types.index') }}">🛏️ Room Types</a></li>
         <li class="nav-item mb-1"><a class="nav-link text-white rounded hover-bg-secondary" href="{{ route('admin.gallery.index') }}">🖼️ Gallery</a></li>
         <li class="nav-item mb-1"><a class="nav-link text-white rounded hover-bg-secondary" href="{{ route('admin.message.index') }}">💬 Messages</a></li>
+        <li class="nav-item mb-1"><a class="nav-link text-white rounded hover-bg-secondary" href="{{ route('admin.blogs.index') }}">📝 Blogs</a></li>
         <li class="nav-item mb-1"><a class="nav-link text-white rounded hover-bg-secondary" href="{{ route('admin.guest.index') }}">👥 Guests</a></li>
         <li class="nav-item mb-1"><a class="nav-link text-white rounded hover-bg-secondary" href="{{ route('admin.staff.index') }}">🧑‍💼 Staff</a></li>
     </ul>

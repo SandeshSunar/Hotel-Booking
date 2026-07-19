@@ -192,7 +192,7 @@
                         <a href="{{ route('blog.details', ['slug' => $post['slug']]) }}" class="blog-card-link">
                             <article class="blog-card">
                                 <div class="blog-media">
-                                    <img src="{{ $post['image'] }}" alt="{{ $post['title'] }}">
+                                    <img src="{{ Str::startsWith($post['image'], 'http') ? $post['image'] : asset('storage/' . $post['image']) }}" alt="{{ $post['title'] }}">
                                     <div class="blog-badge">{{ $post['category'] }}</div>
                                 </div>
                                 <div class="blog-body">

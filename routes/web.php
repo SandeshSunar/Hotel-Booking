@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\RoomTypeController;
 use App\Http\Controllers\Admin\GuestController;
 use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
@@ -77,6 +78,8 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 
     Route::resource('room-types', RoomTypeController::class);
     Route::delete('room-type-images/{image}', [RoomTypeController::class, 'destroyImage'])->name('room-type-images.destroy');
+
+    Route::resource('blogs', BlogController::class);
 
     Route::resource('guest', GuestController::class);
     Route::resource('staff', StaffController::class);

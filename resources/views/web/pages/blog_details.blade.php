@@ -147,7 +147,7 @@
     <div class="blog-details-page">
         <div class="container">
             <div class="blog-details-hero">
-                <img src="{{ $post['image'] }}" alt="{{ $post['title'] }}">
+                <img src="{{ Str::startsWith($post['image'], 'http') ? $post['image'] : asset('storage/' . $post['image']) }}" alt="{{ $post['title'] }}">
                 <div class="blog-details-overlay">
                     <div class="blog-details-content">
                         <div class="blog-details-badge">{{ $post['category'] }}</div>
