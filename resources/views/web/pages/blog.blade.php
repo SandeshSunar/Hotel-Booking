@@ -118,7 +118,7 @@
         }
 
         .blog-body {
-            padding: 1.5rem;
+            padding: 1.25rem;
         }
 
         .blog-meta {
@@ -126,8 +126,8 @@
             flex-wrap: wrap;
             gap: 0.75rem;
             color: #64748b;
-            font-size: 0.9rem;
-            margin-bottom: 0.9rem;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
         }
 
         .blog-meta span {
@@ -138,16 +138,17 @@
 
         .blog-card-title {
             color: #0f172a;
-            font-size: 1.35rem;
+            font-size: 1.15rem;
             font-weight: 700;
             line-height: 1.35;
-            margin-bottom: 0.85rem;
+            margin-bottom: 0.75rem;
         }
 
         .blog-card-text {
             color: #475569;
             margin-bottom: 0;
-            line-height: 1.75;
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
 
         .blog-readmore {
@@ -185,9 +186,9 @@
                     plan a better stay.</p>
             </div>
 
-            <div class="row g-4">
+            <div class="row g-4 justify-content-center">
                 @foreach ($posts as $post)
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-lg-4">
                         <a href="{{ route('blog.details', ['slug' => $post['slug']]) }}" class="blog-card-link">
                             <article class="blog-card">
                                 <div class="blog-media">
