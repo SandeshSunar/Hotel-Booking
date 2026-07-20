@@ -147,7 +147,7 @@
     <div class="blog-details-page">
         <div class="container">
             <div class="blog-details-hero">
-                <img src="{{ Str::startsWith($post['image'], 'http') ? $post['image'] : asset('storage/' . $post['image']) }}" alt="{{ $post['title'] }}">
+                <img src="{{ Str::startsWith($post['image'] ?? '', 'http') ? $post['image'] : asset('storage/' . ($post['image'] ?? '')) }}" alt="{{ $post['title'] ?? '' }}">
                 <div class="blog-details-overlay">
                     <div class="blog-details-content">
                         <div class="blog-details-badge">{{ $post['category'] }}</div>
@@ -164,16 +164,22 @@
                 <div class="col-lg-8">
                     <div class="blog-details-card">
                         <p>{{ $post['excerpt'] }}</p>
-                        @foreach ($post['content'] as $paragraph)
-                            <p>{{ $paragraph }}</p>
-                        @endforeach
+                        @if(is_iterable($post['content']))
+                            @foreach ($post['content'] as $paragraph)
+                                <p>{{ $paragraph }}</p>
+                            @endforeach
+                        @elseif(!empty($post['content']))
+                            <p>{{ $post['content'] }}</p>
+                        @endif
 
+                        @if(!empty($post['highlights']) && is_iterable($post['highlights']) && count($post['highlights']) > 0)
                         <h3 class="mt-4 mb-3" style="color: #0f172a; font-weight: 800;">Highlights</h3>
                         <ul class="blog-details-list">
                             @foreach ($post['highlights'] as $highlight)
                                 <li>{{ $highlight }}</li>
                             @endforeach
                         </ul>
+                        @endif
                     </div>
                 </div>
 
