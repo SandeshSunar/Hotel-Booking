@@ -11,6 +11,40 @@
                 linear-gradient(180deg, #f8fafc 0%, #eef4f8 100%);
         }
 
+        .back-to-blog {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #fff;
+            background: linear-gradient(135deg, #0d6efd, #20c997);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            padding: 0.6rem 1.25rem;
+            border-radius: 999px;
+            border: none;
+            box-shadow: 0 10px 24px rgba(13, 110, 253, 0.22);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        }
+
+        .back-to-blog:hover {
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(13, 110, 253, 0.28);
+            filter: brightness(1.05);
+        }
+
+        .back-to-blog svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .back-to-blog:hover svg {
+            transform: translateX(-4px);
+        }
+
         .blog-details-hero {
             position: relative;
             overflow: hidden;
@@ -146,6 +180,14 @@
 
     <div class="blog-details-page">
         <div class="container">
+            <a href="{{ route('blog') }}" class="back-to-blog">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Blogs
+            </a>
+            
             <div class="blog-details-hero">
                 <img src="{{ Str::startsWith($post['image'] ?? '', 'http') ? $post['image'] : asset('storage/' . ($post['image'] ?? '')) }}" alt="{{ $post['title'] ?? '' }}">
                 <div class="blog-details-overlay">
