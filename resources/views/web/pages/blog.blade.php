@@ -71,6 +71,8 @@
 
         .blog-card {
             height: 100%;
+            display: flex;
+            flex-direction: column;
             border: 1px solid rgba(148, 163, 184, 0.2);
             border-radius: 24px;
             overflow: hidden;
@@ -119,6 +121,9 @@
 
         .blog-body {
             padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .blog-meta {
@@ -138,17 +143,25 @@
 
         .blog-card-title {
             color: #0f172a;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 700;
             line-height: 1.35;
             margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .blog-card-text {
             color: #475569;
             margin-bottom: 0;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .blog-readmore {
