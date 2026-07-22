@@ -16,6 +16,24 @@
         </div>
     @endif
 
+    @if($room->images->isNotEmpty())
+        <div class="mb-4">
+            <label class="form-label d-block">Current Images</label>
+            <div class="d-flex flex-wrap gap-3">
+                @foreach($room->images as $image)
+                    <div class="text-center">
+                        <img src="{{ asset('storage/' . $image->image_path) }}" width="100" class="rounded border mb-2">
+                        <form action="{{ route('admin.room-images.destroy', $image->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Remove this image?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-outline-danger d-block mx-auto">Remove</button>
+                        </form>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     <form action="{{ route('admin.rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -82,19 +100,33 @@
         </div>
 
         <div class="mb-3">
-            <label>Image @if(!$room->image)<span class="text-danger">*</span>@endif</label><br>
-            @if($room->image)
-                <img src="{{ asset('storage/' . $room->image) }}" width="100" class="rounded mb-2">
-            @endif
-            <input type="file" name="image" class="form-control @error('image') is-invalid @enderror"
-                {{ $room->image ? '' : 'required' }}>
-            @error('image')
+            <label>Add New Images @if($room->images->isEmpty())<span class="text-danger">*</span>@endif</label>
+            <input type="file" name="images[]" class="form-control @error('images') is-invalid @enderror" id="imageInput" multiple {{ $room->images->isEmpty() ? 'required' : '' }}>
+            @error('images')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+            <div id="preview-container" class="mt-2 d-flex flex-wrap gap-2"></div>
         </div>
 
         <button type="submit" class="btn btn-success">Update Room</button>
         <a href="{{ route('admin.rooms.index') }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
+
+<script>
+document.getElementById('imageInput').addEventListener('change', function(){
+    const files = this.files;
+    const container = document.getElementById('preview-container');
+    container.innerHTML = '';
+    if(files){
+        Array.from(files).forEach(file => {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.width = 100;
+            img.className = 'rounded border';
+            container.appendChild(img);
+        });
+    }
+});
+</script>
 @endsection

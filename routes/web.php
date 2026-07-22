@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\RoomTypeController;
+use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\GuestController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\BlogController;
@@ -78,6 +79,9 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 
     Route::resource('room-types', RoomTypeController::class);
     Route::delete('room-type-images/{image}', [RoomTypeController::class, 'destroyImage'])->name('room-type-images.destroy');
+
+    Route::resource('rooms', RoomController::class);
+    Route::delete('room-images/{image}', [RoomController::class, 'destroyImage'])->name('room-images.destroy');
 
     Route::resource('blogs', BlogController::class);
 

@@ -11,7 +11,13 @@ class Room extends Model
 
     protected $fillable = [
         'room_type_id',
+        'room_Number',
         'room_number',
+        'image',
+        'description',
+        'wifi',
+        'type',
+        'price',
         'status',
     ];
 
@@ -23,5 +29,20 @@ class Room extends Model
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(RoomImage::class)->orderBy('sort_order');
+    }
+
+    public function getRoomNumberAttribute()
+    {
+        return $this->attributes['room_Number'] ?? null;
+    }
+
+    public function setRoomNumberAttribute($value)
+    {
+        $this->attributes['room_Number'] = $value;
     }
 }

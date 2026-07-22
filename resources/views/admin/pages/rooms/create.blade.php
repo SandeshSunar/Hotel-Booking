@@ -28,12 +28,12 @@
         </div>
 
         <div class="mb-3">
-            <label>Image <span class="text-danger">*</span></label>
-            <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" id="imageInput" required>
-            @error('image')
+            <label>Images <span class="text-danger">*</span></label>
+            <input type="file" name="images[]" class="form-control @error('images') is-invalid @enderror" id="imageInput" multiple required>
+            @error('images')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
-            <img id="preview" src="#" style="display:none;" width="100" class="mt-2 rounded">
+            <div id="preview-container" class="mt-2 d-flex flex-wrap gap-2"></div>
         </div>
 
         <div class="mb-3">
@@ -93,11 +93,17 @@
 
 <script>
 document.getElementById('imageInput').addEventListener('change', function(){
-    const [file] = this.files;
-    if(file){
-        const preview = document.getElementById('preview');
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = 'inline-block';
+    const files = this.files;
+    const container = document.getElementById('preview-container');
+    container.innerHTML = '';
+    if(files){
+        Array.from(files).forEach(file => {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.width = 100;
+            img.className = 'rounded border';
+            container.appendChild(img);
+        });
     }
 });
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Room;
+use App\Models\RoomImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -13,7 +14,7 @@ class RoomController extends Controller
     // Show all rooms
     public function index()
     {
-        $rooms = Room::all();
+        $rooms = Room::with('images')->latest()->get();
         return view('admin.pages.rooms.index', compact('rooms'));
     }
 
@@ -33,13 +34,14 @@ class RoomController extends Controller
             'wifi' => 'nullable|string',
             'status' => 'required',
             'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'images' => 'required|array|min:1',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ], [
             'room_number.required' => 'Room number is required.',
             'type.required' => 'Room type is required.',
             'price.required' => 'Price is required.',
             'description.required' => 'Description is required.',
-            'image.required' => 'Room image is required.',
+            'images.required' => 'Room images are required.',
         ]);
 
         $data = $request->only([
@@ -51,11 +53,25 @@ class RoomController extends Controller
             'description'
         ]);
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('rooms', 'public');
+        if ($request->hasFile('images')) {
+            $files = $request->file('images');
+            // Store the first image in the main table for backward compatibility
+            $data['image'] = $files[0]->store('rooms', 'public');
         }
 
-        Room::create($data);
+        $room = Room::create($data);
+
+        if ($request->hasFile('images')) {
+            $sortOrder = 0;
+            foreach ($request->file('images') as $file) {
+                $sortOrder++;
+                RoomImage::create([
+                    'room_id' => $room->id,
+                    'image_path' => $file->store('rooms', 'public'),
+                    'sort_order' => $sortOrder,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.rooms.index')->with('success', 'Room added successfully.');
     }
@@ -63,6 +79,7 @@ class RoomController extends Controller
     // Show edit form
     public function edit(Room $room)
     {
+        $room->load('images');
         return view('admin.pages.rooms.edit', compact('room'));
     }
 
@@ -79,18 +96,13 @@ class RoomController extends Controller
             'wifi' => 'nullable|string',
             'status' => 'required',
             'description' => 'required|string',
-            'image' => [
-                $room->image ? 'nullable' : 'required',
-                'image',
-                'mimes:jpeg,png,jpg,gif,svg,webp',
-                'max:2048',
-            ],
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:4096',
         ], [
             'room_number.required' => 'Room number is required.',
             'type.required' => 'Room type is required.',
             'price.required' => 'Price is required.',
             'description.required' => 'Description is required.',
-            'image.required' => 'Room image is required.',
         ]);
 
         $data = $request->only([
@@ -102,12 +114,26 @@ class RoomController extends Controller
             'description'
         ]);
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            if ($room->image) {
-                Storage::disk('public')->delete($room->image);
+        // If new images are uploaded, save them
+        if ($request->hasFile('images')) {
+            $sortOrder = $room->images()->max('sort_order') ?? 0;
+            foreach ($request->file('images') as $file) {
+                $sortOrder++;
+                $path = $file->store('rooms', 'public');
+                RoomImage::create([
+                    'room_id' => $room->id,
+                    'image_path' => $path,
+                    'sort_order' => $sortOrder,
+                ]);
             }
-            $data['image'] = $request->file('image')->store('rooms', 'public');
+
+            // Update cover image if empty or not set
+            if (!$room->image) {
+                $firstImage = $room->images()->first();
+                if ($firstImage) {
+                    $data['image'] = $firstImage->image_path;
+                }
+            }
         }
 
         $room->update($data);
@@ -118,11 +144,35 @@ class RoomController extends Controller
     // Delete room
     public function destroy(Room $room)
     {
+        // Delete all associated images
+        foreach ($room->images as $image) {
+            Storage::disk('public')->delete($image->image_path);
+        }
+        
+        // Old image column cleanup
         if ($room->image) {
             Storage::disk('public')->delete($room->image);
         }
+
         $room->delete();
 
         return redirect()->route('admin.rooms.index')->with('success', 'Room deleted successfully.');
+    }
+
+    // Delete individual image
+    public function destroyImage(RoomImage $image)
+    {
+        Storage::disk('public')->delete($image->image_path);
+        
+        $room = $image->room;
+        $image->delete();
+
+        // If the deleted image was set as the main cover image, update it to the next available image
+        if ($room->image === $image->image_path) {
+            $nextImage = $room->images()->first();
+            $room->update(['image' => $nextImage ? $nextImage->image_path : null]);
+        }
+
+        return back()->with('success', 'Image removed successfully.');
     }
 }

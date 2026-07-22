@@ -29,10 +29,13 @@
                     @forelse($rooms as $room)
                         <tr>
                             <td>{{ $room->id }}</td>
-                            <td>{{ $room->room_Number }}</td> <!-- match your DB column -->
+                            <td>{{ $room->room_Number }}</td>
                             <td>
-                                @if($room->image)
-                                    <img src="{{ asset('storage/' . $room->image) }}" width="80" height="80" class="rounded">
+                                @php
+                                    $coverImage = $room->image ?: ($room->images->first()?->image_path);
+                                @endphp
+                                @if($coverImage)
+                                    <img src="{{ asset('storage/' . $coverImage) }}" width="80" height="80" class="rounded object-fit-cover">
                                 @else
                                     <span class="text-muted">No image</span>
                                 @endif
@@ -50,10 +53,10 @@
                             <td>{{ ucfirst($room->wifi) }}</td>
                             <td>
                                 <a href="{{ route('admin.rooms.edit', $room->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                <form action="{{ route('admin.rooms.destroy', $room->id) }}" method="POST" class="d-inline">
+                                <form action="{{ route('admin.rooms.destroy', $room->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this room?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button onclick="return confirm('Are you sure?')" class="btn btn-sm btn-danger">Delete</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
                                 </form>
                             </td>
                         </tr>
