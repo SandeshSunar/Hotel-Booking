@@ -185,7 +185,7 @@
                         <th class="py-3" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Wifi</th>
                         <th class="py-3" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Status</th>
                         <th class="py-3" style="max-width: 280px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Description</th>
-                        <th class="pe-4 py-3 text-end" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Actions</th>
+                        <th class="py-3" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -253,35 +253,14 @@
                                 {!! nl2br(e($room->description)) ?? '-' !!}
                             </td>
 
-                            <!-- Actions buttons -->
-                            <td class="pe-4 text-end">
-                                <div class="d-flex justify-content-end gap-2">
-                                    <!-- View Button -->
-                                    <a href="{{ route('admin.rooms.show', $room->id) }}" 
-                                       class="btn btn-info btn-sm text-white action-btn shadow-sm" 
-                                       title="View Details">
-                                        <i class="bi bi-eye-fill"></i>
-                                    </a>
-                                    <!-- Edit Button -->
-                                    <a href="{{ route('admin.rooms.edit', $room->id) }}" 
-                                       class="btn btn-primary btn-sm action-btn shadow-sm" 
-                                       title="Edit Room">
-                                        <i class="bi bi-pencil-fill"></i>
-                                    </a>
-                                    <!-- Delete Button -->
-                                    <form action="{{ route('admin.rooms.destroy', $room->id) }}" 
-                                          method="POST" 
-                                          class="d-inline mb-0" 
-                                          onsubmit="return confirm('Are you sure you want to delete this room? This action cannot be undone.');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" 
-                                                class="btn btn-danger btn-sm action-btn shadow-sm" 
-                                                title="Delete Room">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                            <td class="d-flex gap-2">
+                                <a href="{{ route('admin.rooms.show', $room->id) }}" class="btn btn-sm btn-info text-white">View</a>
+                                <a href="{{ route('admin.rooms.edit', $room->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                <form action="{{ route('admin.rooms.destroy', $room->id) }}" method="POST" onsubmit="return confirm('Delete this room?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     @empty
