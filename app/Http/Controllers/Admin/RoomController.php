@@ -76,6 +76,15 @@ class RoomController extends Controller
         return redirect()->route('admin.rooms.index')->with('success', 'Room added successfully.');
     }
 
+    // Show single room details
+    public function show(Room $room)
+    {
+        $room->load(['images', 'bookings' => function($q) {
+            $q->latest();
+        }, 'bookings.guest', 'bookings.user']);
+        return view('admin.pages.rooms.show', compact('room'));
+    }
+
     // Show edit form
     public function edit(Room $room)
     {
