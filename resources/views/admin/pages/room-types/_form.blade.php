@@ -102,7 +102,8 @@
 
         <div class="col-12">
             <label class="form-label">Images @if(!$roomType || $roomType->images->isEmpty())<span class="text-danger">*</span>@endif</label>
-            <input type="file" name="images[]" class="form-control" multiple accept="image/*" {{ !$roomType || $roomType->images->isEmpty() ? 'required' : '' }}>
+            <input type="file" name="images[]" class="form-control" id="imageInput" multiple accept="image/*" {{ !$roomType || $roomType->images->isEmpty() ? 'required' : '' }}>
+            <div id="preview-container" class="mt-2 d-flex flex-wrap gap-2"></div>
         </div>
 
         <div class="col-12">
@@ -151,3 +152,20 @@
         <a href="{{ route('admin.room-types.index') }}" class="btn btn-secondary">Back</a>
     </div>
 </form>
+
+<script>
+document.getElementById('imageInput').addEventListener('change', function(){
+    const files = this.files;
+    const container = document.getElementById('preview-container');
+    container.innerHTML = '';
+    if(files){
+        Array.from(files).forEach(file => {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.width = 100;
+            img.className = 'rounded border';
+            container.appendChild(img);
+        });
+    }
+});
+</script>

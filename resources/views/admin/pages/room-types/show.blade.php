@@ -3,6 +3,33 @@
 @section('title', 'View Room Type')
 
 @section('content')
+<style>
+    .gallery-main {
+        height: 380px;
+        object-fit: cover;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: opacity 0.3s ease;
+    }
+    .gallery-thumb {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        cursor: pointer;
+        border-radius: 8px;
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+    }
+    .gallery-thumb:hover {
+        border-color: #667eea;
+        transform: translateY(-2px);
+    }
+    .gallery-thumb.active {
+        border-color: #667eea;
+        box-shadow: 0 0 8px rgba(102, 126, 234, 0.5);
+    }
+</style>
 <div class="p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -77,21 +104,33 @@
             </div>
 
             <!-- Images gallery -->
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-white py-3">
                     <h5 class="mb-0 fw-bold">Room Images</h5>
                 </div>
                 <div class="card-body">
-                    @if($roomType->images->isNotEmpty())
-                        <div class="d-flex flex-wrap gap-3">
-                            @foreach($roomType->images as $image)
-                                <div>
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="Room Image" class="rounded object-fit-cover shadow-sm" width="160" height="120">
-                                </div>
-                            @endforeach
-                        </div>
+                    @php
+                        $coverImage = $roomType->primary_image ?: ($roomType->images->first()?->image_path);
+                    @endphp
+                    
+                    @if($coverImage)
+                        <img id="mainImage" src="{{ asset('storage/' . $coverImage) }}" class="gallery-main mb-3" alt="Room Cover">
+                        
+                        @if($roomType->images->count() > 0)
+                            <div class="d-flex flex-wrap gap-2 overflow-x-auto pb-2">
+                                @foreach($roomType->images as $img)
+                                    <img src="{{ asset('storage/' . $img->image_path) }}" 
+                                         class="gallery-thumb {{ $coverImage === $img->image_path ? 'active' : '' }}" 
+                                         alt="Room Thumbnail"
+                                         onclick="changeCover('{{ asset('storage/' . $img->image_path) }}', this)">
+                                @endforeach
+                            </div>
+                        @endif
                     @else
-                        <p class="text-muted mb-0">No images uploaded.</p>
+                        <div class="bg-light rounded-4 d-flex flex-column align-items-center justify-content-center py-5 border border-dashed text-muted">
+                            <i class="bi bi-image fs-1 mb-2"></i>
+                            <span>No images uploaded for this room type</span>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -170,4 +209,25 @@
         </div>
     </div>
 </div>
+
+<script>
+    function changeCover(src, thumbElement) {
+        // Change image source
+        const mainImage = document.getElementById('mainImage');
+        mainImage.style.opacity = '0.3';
+        
+        setTimeout(() => {
+            mainImage.src = src;
+            mainImage.style.opacity = '1';
+        }, 150);
+
+        // Remove active class from all thumbnails
+        document.querySelectorAll('.gallery-thumb').forEach(thumb => {
+            thumb.classList.remove('active');
+        });
+
+        // Add active class to clicked thumbnail
+        thumbElement.classList.add('active');
+    }
+</script>
 @endsection

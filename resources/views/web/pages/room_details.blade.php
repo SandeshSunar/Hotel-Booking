@@ -15,7 +15,9 @@
     .room-hero, .room-block, .room-booking-card { background: #fff; border-radius: 1.25rem; box-shadow: 0 16px 40px rgba(15,23,42,.06); border: 1px solid rgba(148,163,184,.16); }
     .room-hero { padding: 1.5rem; margin-bottom: 1.5rem; }
     .room-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #0f172a; }
-    .room-gallery img { width: 100%; height: 220px; object-fit: cover; border-radius: 1rem; }
+    .room-gallery img { width: 100%; height: 120px; object-fit: cover; border-radius: 0.75rem; border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; }
+    .room-gallery img:hover { transform: translateY(-2px); border-color: #cbd5e1; }
+    .room-gallery img.active { border-color: #3b82f6 !important; box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
     .room-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
     .room-meta-item { background: #f8fafc; border-radius: .9rem; padding: 1rem; }
     .room-facility-item { display: flex; gap: .6rem; align-items: center; padding: .75rem 0; border-bottom: 1px solid #eef2f7; }
@@ -36,12 +38,15 @@
         <div class="row g-4">
             <div class="col-lg-7">
                 <div class="room-block p-3 mb-4">
-                    <img src="{{ $primaryImage }}" alt="{{ $roomType->name }}" class="w-100 rounded-4 mb-3" style="max-height:420px; object-fit:cover;">
+                    <img id="mainImage" src="{{ $primaryImage }}" alt="{{ $roomType->name }}" class="w-100 rounded-4 mb-3" style="max-height:420px; object-fit:cover; transition: opacity 0.2s ease;">
                     @if($roomType->images->count() > 1)
-                        <div class="row g-3 room-gallery">
-                            @foreach($roomType->images->skip(1) as $image)
-                                <div class="col-md-4">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $roomType->name }}">
+                        <div class="row g-2 room-gallery">
+                            @foreach($roomType->images as $img)
+                                <div class="col-md-3 col-sm-4 col-6">
+                                    <img src="{{ asset('storage/' . $img->image_path) }}" 
+                                         class="{{ ($roomType->primary_image ?: $roomType->images->first()?->image_path) === $img->image_path ? 'active' : '' }}" 
+                                         alt="Room Thumbnail"
+                                         onclick="changeCover('{{ asset('storage/' . $img->image_path) }}', this)">
                                 </div>
                             @endforeach
                         </div>
@@ -148,6 +153,20 @@
 </section>
 
 <script>
+function changeCover(src, thumbElement) {
+    const mainImage = document.getElementById('mainImage');
+    mainImage.style.opacity = '0.3';
+    setTimeout(() => {
+        mainImage.src = src;
+        mainImage.style.opacity = '1';
+    }, 150);
+
+    document.querySelectorAll('.room-gallery img').forEach(thumb => {
+        thumb.classList.remove('active');
+    });
+    thumbElement.classList.add('active');
+}
+
 const pricePerNight = {{ $roomType->display_price }};
 const checkIn = document.getElementById('check_in');
 const checkOut = document.getElementById('check_out');
