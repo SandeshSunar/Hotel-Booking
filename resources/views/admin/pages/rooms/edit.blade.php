@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+{{-- @extends('admin.layouts.master')
 
 @section('title', 'Edit Room')
 
@@ -129,4 +129,4 @@ document.getElementById('imageInput').addEventListener('change', function(){
     }
 });
 </script>
-@endsection
+@endsection --}}

@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+{{-- @extends('admin.layouts.master')
 
 @section('title', 'Room #' . $room->room_number . ' Details')
 
@@ -353,4 +353,4 @@
         thumbElement.classList.add('active');
     }
 </script>
-@endsection
+@endsection --}}
