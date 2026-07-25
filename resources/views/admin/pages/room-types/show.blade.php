@@ -45,6 +45,46 @@
     <div class="row g-4">
         <!-- Main Details -->
         <div class="col-md-8">
+            <!-- Status Card -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold">Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-sm-4">
+                            <div class="p-3 bg-light rounded shadow-sm border border-light h-100">
+                                <div class="text-muted small mb-2"><i class="bi bi-eye me-1"></i> Web Visibility</div>
+                                <span class="badge {{ $roomType->is_active ? 'bg-primary' : 'bg-secondary' }} px-3 py-2">
+                                    {{ $roomType->is_active ? 'Enabled / Active' : 'Disabled / Hidden' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-3 bg-light rounded shadow-sm border border-light h-100">
+                                <div class="text-muted small mb-2"><i class="bi bi-toggles2 me-1"></i> Current Manual Status</div>
+                                <span class="badge {{ $roomType->status === 'available' ? 'bg-success' : 'bg-danger' }} px-3 py-2">
+                                    {{ ucfirst($roomType->status) }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-3 bg-light rounded shadow-sm border border-light h-100">
+                                <div class="text-muted small mb-2"><i class="bi bi-calendar-check me-1"></i> Real-time Booked Check</div>
+                                @if($roomType->is_currently_booked)
+                                    <span class="badge bg-danger px-3 py-2">Currently Booked</span>
+                                    <div class="small text-muted mt-1" style="font-size: 0.75rem;">Room is booked for today or manually set to unavailable.</div>
+                                @else
+                                    <span class="badge bg-success px-3 py-2">Not Booked</span>
+                                    <div class="small text-muted mt-1" style="font-size: 0.75rem;">Room is open for bookings.</div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- General Information -->
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-white py-3">
                     <h5 class="mb-0 fw-bold">General Information</h5>
@@ -174,35 +214,6 @@
                             <div class="text-muted small">Available</div>
                             <div class="fw-bold fs-5 text-primary">{{ $roomType->available_rooms }}</div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-white py-3">
-                    <h5 class="mb-0 fw-bold">Status</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <div class="text-muted small mb-1">Web Visibility</div>
-                        <span class="badge {{ $roomType->is_active ? 'bg-primary' : 'bg-secondary' }} px-3 py-2">
-                            {{ $roomType->is_active ? 'Enabled / Active' : 'Disabled / Hidden' }}
-                        </span>
-                    </div>
-                    <div>
-                        <div class="text-muted small mb-1">Current Manual Status</div>
-                        <span class="badge {{ $roomType->status === 'available' ? 'bg-success' : 'bg-danger' }} px-3 py-2">
-                            {{ ucfirst($roomType->status) }}
-                        </span>
-                    </div>
-                    <div class="mt-3 pt-3 border-top">
-                        <div class="text-muted small mb-1">Real-time Booked Check</div>
-                        @if($roomType->is_currently_booked)
-                            <span class="badge bg-danger px-3 py-2">Currently Booked</span>
-                            <div class="small text-muted mt-1">This room is booked for today or manually set to unavailable.</div>
-                        @else
-                            <span class="badge bg-success px-3 py-2">Not Booked</span>
-                        @endif
                     </div>
                 </div>
             </div>
