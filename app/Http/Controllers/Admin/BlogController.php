@@ -16,6 +16,11 @@ class BlogController extends Controller
         return view('admin.pages.blogs.index', compact('blogs'));
     }
 
+    public function show(Blog $blog)
+    {
+        return view('admin.pages.blogs.show', compact('blog'));
+    }
+
     public function create()
     {
         return view('admin.pages.blogs.create');

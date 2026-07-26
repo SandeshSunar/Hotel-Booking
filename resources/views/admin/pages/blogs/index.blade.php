@@ -49,6 +49,7 @@
                                 <td>{{ $blog->date ?? $blog->created_at->format('M d, Y') }}</td>
                                 <td class="text-end pe-4">
                                     <div class="d-inline-flex gap-2">
+                                        <a href="{{ route('admin.blogs.show', $blog) }}" class="btn btn-sm btn-outline-info">View</a>
                                         <a href="{{ route('admin.blogs.edit', $blog) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                                         <form action="{{ route('admin.blogs.destroy', $blog) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this blog?');">
                                             @csrf
