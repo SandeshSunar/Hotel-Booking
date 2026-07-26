@@ -180,7 +180,7 @@
     <!-- ================= MANAGEMENT SECTIONS ================= -->
     <div class="row g-4 mb-5">
         <!-- ===== Recent Bookings ===== -->
-        <div class="col-lg-7">
+        <div class="col-12">
             <div class="card modern-card h-100">
                 <div class="card-header fw-bold d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-clock-history me-2 text-primary"></i>Recent Bookings</span>
@@ -228,21 +228,6 @@
                             @endforelse
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== Calendar ===== -->
-        <div class="col-lg-5">
-            <div class="card modern-card h-100">
-                <div class="card-header fw-bold">
-                    <i class="bi bi-calendar-check me-2 text-primary"></i>Schedule Calendar
-                </div>
-                <div class="card-body p-0">
-                    <iframe src="https://calendar.google.com/calendar/embed?height=350&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FKathmandu&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0"
-                            style="border-width:0" 
-                            width="100%" height="350" frameborder="0" scrolling="no">
-                    </iframe>
                 </div>
             </div>
         </div>
