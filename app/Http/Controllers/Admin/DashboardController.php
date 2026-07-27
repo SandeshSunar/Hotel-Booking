@@ -66,6 +66,11 @@ class DashboardController extends Controller
         return view('admin.pages.message.index', compact('messages'));
     }
 
+    public function messageShow(Contact $contact)
+    {
+        return view('admin.pages.message.show', ['message' => $contact]);
+    }
+
     public function messageEdit(Contact $contact)
     {
         return view('admin.pages.message.edit', ['message' => $contact]);

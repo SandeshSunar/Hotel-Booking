@@ -60,6 +60,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/message', [DashboardController::class, 'message'])->name('message.index');
+    Route::get('/message/{contact}', [DashboardController::class, 'messageShow'])->name('message.show');
     Route::get('/message/{contact}/edit', [DashboardController::class, 'messageEdit'])->name('message.edit');
     Route::put('/message/{contact}', [DashboardController::class, 'messageUpdate'])->name('message.update');
     Route::delete('/message/{contact}', [DashboardController::class, 'messageDestroy'])->name('message.destroy');

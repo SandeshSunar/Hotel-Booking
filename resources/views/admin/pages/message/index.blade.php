@@ -34,6 +34,7 @@
                                 <td>{{ \Illuminate\Support\Str::limit($message->message, 50) }}</td>
                                 <td>{{ $message->created_at->format('d M Y, h:i A') }}</td>
                                 <td class="d-flex gap-2">
+                                    <a href="{{ route('admin.message.show', $message->id) }}" class="btn btn-sm btn-secondary">View</a>
                                     <a href="{{ route('admin.message.edit', $message->id) }}" class="btn btn-sm btn-primary"> Edit</a>
                                     <form action="{{ route('admin.message.destroy', $message->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                         @csrf
