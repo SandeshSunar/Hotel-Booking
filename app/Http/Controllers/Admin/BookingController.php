@@ -81,6 +81,13 @@ class BookingController extends Controller
         return redirect()->route('admin.booking.index')->with('success', 'Booking created successfully.');
     }
 
+    public function show(Booking $booking)
+    {
+        $booking->load(['roomType', 'guest', 'user', 'payment']);
+
+        return view('admin.pages.booking.show', compact('booking'));
+    }
+
     public function edit(Booking $booking)
     {
         $roomTypes = RoomType::all();
