@@ -41,9 +41,10 @@
                         </td>
                         <td>{{ ucfirst($member->role) }}</td>
                         <td>{{ $member->email }}</td>
-                         <td>{{$member->phone}}
+                         <td>{{$member->phone}}</td>
 
                         <td>
+                            <a href="{{ route('admin.staff.show', $member->id) }}" class="btn btn-sm btn-info">View</a>
                             <a href="{{ route('admin.staff.edit', $member->id) }}" class="btn btn-sm btn-primary">Edit</a>
                             <form action="{{ route('admin.staff.destroy', $member->id) }}" method="POST" class="d-inline">
                                 @csrf

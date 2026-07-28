@@ -45,6 +45,12 @@ class StaffController extends Controller
         return redirect()->route('admin.staff.index')->with('success', 'Staff added successfully.');
     }
 
+    // Show staff details
+    public function show(Staff $staff)
+    {
+        return view('admin.pages.staff.show', compact('staff'));
+    }
+
     // Show edit form
     public function edit(Staff $staff)
     {
