@@ -45,6 +45,13 @@ class GuestController extends Controller
         return redirect()->route('admin.guest.index')->with('success', 'Guest added successfully.');
     }
 
+    // Show guest details
+    public function show(Guest $guest)
+    {
+        $guest->load('bookings.roomType');
+        return view('admin.pages.guest.show', compact('guest'));
+    }
+
     // Show edit form
     public function edit(Guest $guest)
     {
