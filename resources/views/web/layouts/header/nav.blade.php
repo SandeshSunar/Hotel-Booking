@@ -112,23 +112,35 @@
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {{-- @if (!old('name') && ($errors->any() || session('error') || session('success')))
-                    <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} auth-alert">
-                        @if (session('success'))
-                            {{ session('success') }}
-                        @elseif (session('error'))
-                            {{ session('error') }}
-                        @else
-                            <ul class="mb-0 ps-3">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </div>
-                @endif --}}
 
-                <form method="POST" action="{{ route('login.submit') }}" class="auth-form">
+                {{-- Lockout banner with countdown --}}
+                @if (session('login_locked'))
+                    <div class="alert auth-alert auth-alert-locked d-flex align-items-start gap-2" id="loginLockoutAlert">
+                        <i class="bi bi-shield-lock-fill fs-5 mt-1 flex-shrink-0"></i>
+                        <div>
+                            <strong>Too many failed attempts!</strong><br>
+                            Please wait <span id="loginCountdown" class="fw-bold">{{ session('login_locked_seconds') }}</span> second(s) before trying again.
+                        </div>
+                    </div>
+                @elseif (session('success'))
+                    <div class="alert alert-success auth-alert">
+                        <i class="bi bi-check-circle me-1"></i> {{ session('success') }}
+                    </div>
+                @elseif (session('error'))
+                    <div class="alert alert-danger auth-alert">
+                        <i class="bi bi-exclamation-circle me-1"></i> {{ session('error') }}
+                    </div>
+                @elseif ($errors->any() && !old('name'))
+                    <div class="alert alert-danger auth-alert">
+                        <ul class="mb-0 ps-3">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('login.submit') }}" class="auth-form" id="loginForm">
                     @csrf
 
                     <div class="auth-input-group">
@@ -136,7 +148,8 @@
                         <label for="modalEmail" class="form-label">Email address</label>
                         <input type="email" class="form-control @error('email') is-invalid @enderror"
                             id="modalEmail" name="email" value="{{ old('email') }}"
-                            placeholder="Enter your email" required>
+                            placeholder="Enter your email"
+                            {{ session('login_locked') ? 'disabled' : '' }} required>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -146,7 +159,8 @@
                         <i class="bi bi-lock input-icon"></i>
                         <label for="modalPassword" class="form-label">Password</label>
                         <input type="password" class="form-control @error('password') is-invalid @enderror"
-                            id="modalPassword" name="password" placeholder="Enter your password" required>
+                            id="modalPassword" name="password" placeholder="Enter your password"
+                            {{ session('login_locked') ? 'disabled' : '' }} required>
                         @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -156,10 +170,33 @@
                         <a href="{{ route('password.request') }}" class="auth-link small">Forgot password?</a>
                     </div>
 
-                    <button type="submit" class="auth-btn">
+                    <button type="submit" class="auth-btn" id="loginSubmitBtn" {{ session('login_locked') ? 'disabled' : '' }}>
                         <i class="bi bi-box-arrow-in-right"></i> Sign In
                     </button>
                 </form>
+
+                @if (session('login_locked'))
+                <script>
+                (function () {
+                    var seconds = {{ session('login_locked_seconds', 60) }};
+                    var countdownEl = document.getElementById('loginCountdown');
+                    var submitBtn   = document.getElementById('loginSubmitBtn');
+                    var emailInput  = document.getElementById('modalEmail');
+                    var passInput   = document.getElementById('modalPassword');
+
+                    var timer = setInterval(function () {
+                        seconds--;
+                        if (seconds <= 0) {
+                            clearInterval(timer);
+                            // Re-enable the form and reload so the session lockout state is fresh
+                            window.location.reload();
+                        } else {
+                            countdownEl.textContent = seconds;
+                        }
+                    }, 1000);
+                })();
+                </script>
+                @endif
 
                 <p class="auth-switch">
                     Don't have an account?

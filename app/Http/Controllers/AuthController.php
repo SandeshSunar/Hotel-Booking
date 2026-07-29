@@ -64,6 +64,25 @@ class AuthController extends Controller
     // Handle login request
     public function login(Request $request)
     {
+        // --- Rate Limiting: Check lockout ---
+        $lockoutKey      = 'login_locked_until';
+        $attemptsKey     = 'login_failed_attempts';
+        $lockedUntil     = $request->session()->get($lockoutKey);
+
+        if ($lockedUntil && now()->timestamp < $lockedUntil) {
+            $remaining = $lockedUntil - now()->timestamp;
+            return redirect()->back()
+                ->withInput()
+                ->with('open_auth_modal', 'login')
+                ->with('login_locked', true)
+                ->with('login_locked_seconds', $remaining);
+        }
+
+        // Reset lockout state if the lockout period has expired
+        if ($lockedUntil && now()->timestamp >= $lockedUntil) {
+            $request->session()->forget([$lockoutKey, $attemptsKey]);
+        }
+
         // Validate input
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -81,6 +100,8 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            // Successful login: clear rate-limit counters
+            $request->session()->forget([$lockoutKey, $attemptsKey]);
             $request->session()->regenerate();
             $user = Auth::user();
 
@@ -88,11 +109,30 @@ class AuthController extends Controller
             if ($user->usertype === 'admin') {
                 return redirect()->route('admin.dashboard.index');
             } else {
-                return redirect()->route('home'); // ✅ Correct route for normal users
+                return redirect()->route('home');
             }
         }
 
-        return redirect()->back()->withInput()->with('error', 'Invalid email or password.')->with('open_auth_modal', 'login');
+        // --- Rate Limiting: Increment failed attempts ---
+        $attempts = $request->session()->get($attemptsKey, 0) + 1;
+        $request->session()->put($attemptsKey, $attempts);
+
+        if ($attempts >= 3) {
+            // Lock the account for 60 seconds
+            $request->session()->put($lockoutKey, now()->timestamp + 60);
+            $request->session()->put($attemptsKey, 0); // reset counter for next window
+            return redirect()->back()
+                ->withInput()
+                ->with('open_auth_modal', 'login')
+                ->with('login_locked', true)
+                ->with('login_locked_seconds', 60);
+        }
+
+        $remaining = 3 - $attempts;
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Invalid email or password. ' . $remaining . ' attempt(s) remaining before lockout.')
+            ->with('open_auth_modal', 'login');
     }
 
     // Logout

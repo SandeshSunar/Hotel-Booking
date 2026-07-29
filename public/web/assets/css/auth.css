@@ -281,6 +281,38 @@
     margin-bottom: 1rem;
 }
 
+/* Lockout banner */
+.auth-alert-locked {
+    background: linear-gradient(135deg, #fff3cd, #ffe8a3);
+    border: 1.5px solid #f5c842 !important;
+    color: #7a5800;
+    border-radius: 0.85rem;
+    padding: 0.85rem 1rem;
+    animation: lockPulse 2s ease-in-out infinite;
+}
+
+.auth-alert-locked i {
+    color: #c87800;
+}
+
+.auth-alert-locked #loginCountdown {
+    color: #b84200;
+    font-size: 1.05em;
+}
+
+@keyframes lockPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 200, 66, 0); }
+    50%       { box-shadow: 0 0 0 5px rgba(245, 200, 66, 0.2); }
+}
+
+/* Disabled form state during lockout */
+.auth-form input:disabled,
+.auth-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    filter: grayscale(0.3);
+}
+
 /* Admin login — simple centered layout, no side panel */
 .auth-page-simple {
     background: #f5f6f8;
