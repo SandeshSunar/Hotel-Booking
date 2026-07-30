@@ -90,6 +90,11 @@
             var errorToast = new bootstrap.Toast(errorToastEl, { delay: 6000 });
             errorToast.show();
         }
+        var validationToastEl = document.getElementById('validationToast');
+        if (validationToastEl) {
+            var validationToast = new bootstrap.Toast(validationToastEl, { delay: 8000 });
+            validationToast.show();
+        }
     });
 </script>
 

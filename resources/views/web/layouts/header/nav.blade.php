@@ -126,10 +126,6 @@
                     <div class="alert alert-success auth-alert">
                         <i class="bi bi-check-circle me-1"></i> {{ session('success') }}
                     </div>
-                @elseif (session('error'))
-                    <div class="alert alert-danger auth-alert">
-                        <i class="bi bi-exclamation-circle me-1"></i> {{ session('error') }}
-                    </div>
                 @elseif ($errors->any() && !old('name'))
                     <div class="alert alert-danger auth-alert">
                         <ul class="mb-0 ps-3">
@@ -139,6 +135,7 @@
                         </ul>
                     </div>
                 @endif
+                {{-- session('error') for invalid credentials is shown ONLY as toast (see master.blade.php) --}}
 
                 <form method="POST" action="{{ route('login.submit') }}" class="auth-form" id="loginForm">
                     @csrf
