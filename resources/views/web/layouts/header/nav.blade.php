@@ -174,6 +174,9 @@
                             clearInterval(timer);
                             // Re-enable the form and reload so the session lockout state is fresh
                             window.location.reload();
+                        } else {
+                            var tC = document.getElementById('toastCountdown');
+                            if(tC) tC.textContent = seconds;
                         }
                     }, 1000);
                 })();

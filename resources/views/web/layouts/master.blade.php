@@ -31,7 +31,11 @@
                 <div class="d-flex">
                     <div class="toast-body d-flex align-items-center gap-2">
                         <i class="bi bi-exclamation-triangle-fill fs-5"></i>
-                        <div>{{ session('error') }}</div>
+                        @if(session('login_locked'))
+                            <div>Too many failed attempts! Please wait <span id="toastCountdown" class="fw-bold">{{ session('login_locked_seconds', 60) }}</span> second(s) before trying again.</div>
+                        @else
+                            <div>{{ session('error') }}</div>
+                        @endif
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>

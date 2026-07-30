@@ -87,7 +87,8 @@
         }
         var errorToastEl = document.getElementById('errorToast');
         if (errorToastEl) {
-            var errorToast = new bootstrap.Toast(errorToastEl, { delay: 6000 });
+            var delayMs = {{ session('login_locked') ? (session('login_locked_seconds', 60) * 1000 + 1000) : 6000 }};
+            var errorToast = new bootstrap.Toast(errorToastEl, { delay: delayMs });
             errorToast.show();
         }
         var validationToastEl = document.getElementById('validationToast');
