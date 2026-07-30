@@ -75,7 +75,8 @@ class AuthController extends Controller
                 ->withInput()
                 ->with('open_auth_modal', 'login')
                 ->with('login_locked', true)
-                ->with('login_locked_seconds', $remaining);
+                ->with('login_locked_seconds', $remaining)
+                ->with('error', 'Too many failed attempts! Please wait ' . $remaining . ' second(s) before trying again.');
         }
 
         // Reset lockout state if the lockout period has expired
@@ -125,7 +126,8 @@ class AuthController extends Controller
                 ->withInput()
                 ->with('open_auth_modal', 'login')
                 ->with('login_locked', true)
-                ->with('login_locked_seconds', 60);
+                ->with('login_locked_seconds', 60)
+                ->with('error', 'Too many failed attempts! Please wait 60 second(s) before trying again.');
         }
 
         $remaining = 3 - $attempts;

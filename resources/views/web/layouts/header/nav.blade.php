@@ -113,16 +113,8 @@
             </div>
             <div class="modal-body">
 
-                {{-- Lockout banner with countdown --}}
-                @if (session('login_locked'))
-                    <div class="alert auth-alert auth-alert-locked d-flex align-items-start gap-2" id="loginLockoutAlert">
-                        <i class="bi bi-shield-lock-fill fs-5 mt-1 flex-shrink-0"></i>
-                        <div>
-                            <strong>Too many failed attempts!</strong><br>
-                            Please wait <span id="loginCountdown" class="fw-bold">{{ session('login_locked_seconds') }}</span> second(s) before trying again.
-                        </div>
-                    </div>
-                @elseif (session('success'))
+                {{-- Lockout state is handled via disabled inputs and toast error popup. --}}
+                @if (session('success'))
                     <div class="alert alert-success auth-alert">
                         <i class="bi bi-check-circle me-1"></i> {{ session('success') }}
                     </div>
@@ -176,19 +168,12 @@
                 <script>
                 (function () {
                     var seconds = {{ session('login_locked_seconds', 60) }};
-                    var countdownEl = document.getElementById('loginCountdown');
-                    var submitBtn   = document.getElementById('loginSubmitBtn');
-                    var emailInput  = document.getElementById('modalEmail');
-                    var passInput   = document.getElementById('modalPassword');
-
                     var timer = setInterval(function () {
                         seconds--;
                         if (seconds <= 0) {
                             clearInterval(timer);
                             // Re-enable the form and reload so the session lockout state is fresh
                             window.location.reload();
-                        } else {
-                            countdownEl.textContent = seconds;
                         }
                     }, 1000);
                 })();
