@@ -11,11 +11,9 @@
 @section('content')
     @php $hasError = $errors->any() || session('error'); @endphp
 
-    @if ($hasError || session('success'))
-        <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} auth-alert">
-            @if (session('success'))
-                {{ session('success') }}
-            @elseif (session('error'))
+    @if ($hasError)
+        <div class="alert alert-danger auth-alert">
+            @if (session('error'))
                 {{ session('error') }}
             @else
                 <ul class="mb-0 ps-3">

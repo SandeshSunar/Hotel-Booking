@@ -114,11 +114,7 @@
             <div class="modal-body">
 
                 {{-- Lockout state is handled via disabled inputs and toast error popup. --}}
-                @if (session('success'))
-                    <div class="alert alert-success auth-alert">
-                        <i class="bi bi-check-circle me-1"></i> {{ session('success') }}
-                    </div>
-                @elseif ($errors->any() && !old('name'))
+                @if ($errors->any() && !old('name'))
                     <div class="alert alert-danger auth-alert">
                         <ul class="mb-0 ps-3">
                             @foreach ($errors->all() as $error)
