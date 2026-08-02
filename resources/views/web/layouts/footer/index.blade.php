@@ -48,7 +48,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p class="mb-0">&copy; {{ date('Y') }} MyHotel. All rights reserved.</p>
+            <p class="mb-0">&copy; {{ date('Y') }} Sandesh Sunar. All rights reserved.</p>
             <div class="footer-bottom-links">
                 <a href="#">Privacy</a>
                 <a href="#">Terms</a>
