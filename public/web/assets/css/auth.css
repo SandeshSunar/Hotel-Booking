@@ -1584,7 +1584,7 @@
 .site-footer {
     position: relative;
     overflow: hidden;
-    background: var(--auth-gradient);
+    background: linear-gradient(135deg, #08172c 0%, #0b50b8 60%, #179e75 100%);
     color: rgba(255, 255, 255, 0.95);
     padding: 3.5rem 0 1.2rem;
 }
@@ -1604,7 +1604,7 @@
     right: -80px;
     background: radial-gradient(
         circle,
-        rgba(255, 255, 255, 0.18) 0%,
+        rgba(255, 255, 255, 0.08) 0%,
         rgba(255, 255, 255, 0) 70%
     );
 }
