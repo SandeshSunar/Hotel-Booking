@@ -4,12 +4,12 @@
 
 @section('content')
 <div class="p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="mb-4">
         <div>
             <h4 class="fw-bold mb-1">🛏️ Room Types</h4>
-            <p class="text-muted mb-0">Manage Single, Double, and Family room profiles independently.</p>
+            <p class="text-muted mb-3">Manage Single, Double, and Family room profiles independently.</p>
         </div>
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2 align-items-center flex-wrap">
             <form action="{{ route('admin.room-types.index') }}" method="GET" class="d-flex">
                 <input type="text" name="search" class="form-control me-2" placeholder="Search room type..." value="{{ request('search') }}">
                 <button type="submit" class="btn btn-secondary">Search</button>
