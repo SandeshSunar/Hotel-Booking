@@ -13,9 +13,18 @@ use Illuminate\Validation\Rule;
 
 class RoomTypeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $roomTypes = RoomType::with(['images', 'facilities'])->latest()->get();
+        $query = RoomType::with(['images', 'facilities'])->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('category', 'like', "%{$search}%")
+                  ->orWhere('room_number', 'like', "%{$search}%");
+        }
+
+        $roomTypes = $query->get();
 
         return view('admin.pages.room-types.index', compact('roomTypes'));
     }
