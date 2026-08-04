@@ -4,10 +4,22 @@
 
 @section('content')
 <div class="p-4">
-    <h4 class="fw-bold mb-3">📅 Booking Management</h4>
-    <a href="{{ route('admin.booking.create') }}" class="btn btn-success mb-3">+ Add Booking</a>
+    <div class="mb-4">
+        <div>
+            <h4 class="fw-bold mb-1">📅 Booking Management</h4>
+            <p class="text-muted mb-3">View and manage all guest bookings.</p>
+        </div>
+        <div class="mb-3">
+            <a href="{{ route('admin.booking.create') }}" class="btn btn-success">+ Add Booking</a>
+        </div>
+        <div class="mb-3">
+            <form action="{{ route('admin.booking.index') }}" method="GET" class="d-flex">
+                <input type="text" name="search" class="form-control me-2" style="width: 350px;" placeholder="Search booking by name, email..." value="{{ request('search') }}">
+                <button type="submit" class="btn btn-secondary">Search</button>
+            </form>
+        </div>
+    </div>
 
-  
     <div class="card shadow">
         <div class="card-body table-responsive">
             <table class="table table-striped table-hover align-middle">

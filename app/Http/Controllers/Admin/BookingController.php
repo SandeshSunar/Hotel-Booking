@@ -12,11 +12,21 @@ use App\Mail\BookingStatusMail;
 
 class BookingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $bookings = Booking::with(['roomType', 'guest', 'user', 'payment'])
-            ->latest()
-            ->get();
+        $query = Booking::with(['roomType', 'guest', 'user', 'payment'])->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('guest_name', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%')
+                  ->orWhere('phone', 'like', '%' . $search . '%')
+                  ->orWhere('id', 'like', '%' . $search . '%');
+            });
+        }
+
+        $bookings = $query->get();
 
         return view('admin.pages.booking.index', compact('bookings'));
     }
