@@ -10,13 +10,13 @@
                 <p class="text-muted mb-3">Manage Single, Double, and Family room profiles independently.</p>
             </div>
             <div class="mb-3">
-                <a href="{{ route('admin.room-types.create') }}" class="btn btn-success">➕ Add Room Type</a>
-            </div>
-            <div class="mb-4">
                 <form action="{{ route('admin.room-types.index') }}" method="GET" class="d-flex">
                     <input type="text" name="search" class="form-control me-2" style="width: 350px;" placeholder="Search room type..." value="{{ request('search') }}">
                     <button type="submit" class="btn btn-secondary">Search</button>
                 </form>
+            </div>
+            <div class="mb-4">
+                <a href="{{ route('admin.room-types.create') }}" class="btn btn-success">➕ Add Room Type</a>
             </div>
         </div>
 

@@ -10,9 +10,19 @@ use Illuminate\Support\Facades\Storage;
 class StaffController extends Controller
 {
     // Show all staff
-    public function index()
+    public function index(Request $request)
     {
-        $staffs = Staff::all();
+        $query = Staff::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%")
+                  ->orWhere('role', 'like', "%{$search}%");
+        }
+
+        $staffs = $query->get();
 
         return view('admin.pages.staff.index', compact('staffs'));
     }

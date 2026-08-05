@@ -10,13 +10,13 @@
             <p class="text-muted mb-3">List of all hotel guests.</p>
         </div>
         <div class="mb-3">
-            <a href="{{ route('admin.guest.create') }}" class="btn btn-success">➕ Add Guest</a>
-        </div>
-        <div class="mb-4">
             <form action="{{ route('admin.guest.index') }}" method="GET" class="d-flex">
                 <input type="text" name="search" class="form-control me-2" style="width: 350px;" placeholder="Search guest by name, email..." value="{{ request('search') }}">
                 <button type="submit" class="btn btn-secondary">Search</button>
             </form>
+        </div>
+        <div class="mb-4">
+            <a href="{{ route('admin.guest.create') }}" class="btn btn-success">➕ Add Guest</a>
         </div>
     </div>
 

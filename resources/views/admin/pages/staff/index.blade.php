@@ -4,10 +4,21 @@
 
 @section('content')
 <div class="p-4">
-    <h4 class="fw-bold mb-3">🧑‍💼 Staff Management</h4>
-    <p class="text-muted">Manage all hotel staff members.</p>
-
-    <a href="{{ route('admin.staff.create') }}" class="btn btn-success mb-3">➕ Add Staff</a>
+    <div class="mb-4">
+        <div>
+            <h4 class="fw-bold mb-1">🧑‍💼 Staff Management</h4>
+            <p class="text-muted mb-3">Manage all hotel staff members.</p>
+        </div>
+        <div class="mb-3">
+            <form action="{{ route('admin.staff.index') }}" method="GET" class="d-flex">
+                <input type="text" name="search" class="form-control me-2" style="width: 350px;" placeholder="Search staff by name, email, role..." value="{{ request('search') }}">
+                <button type="submit" class="btn btn-secondary">Search</button>
+            </form>
+        </div>
+        <div class="mb-4">
+            <a href="{{ route('admin.staff.create') }}" class="btn btn-success">➕ Add Staff</a>
+        </div>
+    </div>
 
     <div class="card shadow">
         <div class="card-body">
