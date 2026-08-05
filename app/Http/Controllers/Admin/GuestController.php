@@ -9,9 +9,18 @@ use Illuminate\Http\Request;
 class GuestController extends Controller
 {
     // Show all guests
-    public function index()
+    public function index(Request $request)
     {
-        $guests = Guest::with('bookings.roomType')->get();
+        $query = Guest::with('bookings.roomType');
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+        }
+
+        $guests = $query->get();
         
         $singleBookings = \App\Models\Booking::whereHas('roomType', function($q) { $q->where('category', 'single'); })->count();
         $doubleBookings = \App\Models\Booking::whereHas('roomType', function($q) { $q->where('category', 'double'); })->count();
