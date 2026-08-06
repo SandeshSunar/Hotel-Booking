@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\GuestController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
@@ -88,4 +89,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
 
     Route::resource('guest', GuestController::class);
     Route::resource('staff', StaffController::class);
+
+    Route::post('reviews/{review}/approve', [ReviewController::class, 'approve'])->name('reviews.approve');
+    Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'destroy']);
 });
