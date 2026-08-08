@@ -81,6 +81,11 @@ class RoomType extends Model
         return $this->hasMany(Booking::class);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function getPrimaryImageAttribute(): ?string
     {
         return $this->images->first()?->image_path;

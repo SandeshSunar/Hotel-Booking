@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Blog;
 use App\Models\RoomType;
+use App\Models\Room;
 use App\Models\Guest;
 use App\Models\Gallery;
 use App\Models\Staff;
@@ -29,12 +30,36 @@ class PageController extends Controller
 
     public function roomDetails($slug)
     {
-        $roomType = RoomType::with(['images', 'facilities'])
+        $roomType = RoomType::with(['images', 'facilities', 'reviews' => function($q) {
+            $q->where('is_approved', true)->latest();
+        }])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
 
         return view('web.pages.room_details', compact('roomType'));
+    }
+
+    public function submitReview(Request $request, $slug)
+    {
+        $roomType = RoomType::where('slug', $slug)->firstOrFail();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:1000',
+        ]);
+
+        $roomType->reviews()->create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+            'is_approved' => false,
+        ]);
+
+        return redirect()->back()->with('review_success', 'Your review has been submitted and is waiting for approval.');
     }
 
     public function about()

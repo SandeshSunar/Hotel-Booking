@@ -23,6 +23,7 @@ Route::get('/blog/{slug}', [PageController::class, 'blogDetails'])->name('blog.d
 Route::get('/contact', [PageController::class, 'showContactForm'])->name('contact');
 Route::post('/contact', [PageController::class, 'submitContactForm'])->name('contact.submit');
 Route::get('/rooms/{slug}', [PageController::class, 'roomDetails'])->name('room.details');
+Route::post('/rooms/{slug}/reviews', [PageController::class, 'submitReview'])->name('room.review.submit');
 Route::get('/room_details/{slug}', fn ($slug) => redirect()->route('room.details', $slug));
 
 // Forgot password routes (generic for any user)
