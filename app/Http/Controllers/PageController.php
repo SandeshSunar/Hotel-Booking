@@ -44,6 +44,19 @@ class PageController extends Controller
     {
         $roomType = RoomType::where('slug', $slug)->firstOrFail();
 
+        if (!auth()->check()) {
+            return redirect()->back()->with('error', 'You must be logged in to submit a review.');
+        }
+
+        $hasCompletedBooking = Booking::where('user_id', auth()->id())
+            ->where('room_type_id', $roomType->id)
+            ->where('status', 'completed')
+            ->exists();
+
+        if (!$hasCompletedBooking) {
+            return redirect()->back()->with('error', 'You can only review a room after your stay is completed.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',

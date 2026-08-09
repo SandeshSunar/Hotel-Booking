@@ -101,40 +101,55 @@
                         <p class="text-muted mb-4">No reviews yet. Be the first to share your experience!</p>
                     @endif
 
-                    <h5 class="fw-bold mt-4 mb-3">Write a Review</h5>
-                    @if(session('review_success'))
-                        <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>{{ session('review_success') }}</div>
+                    @php
+                        $canReview = false;
+                        if (auth()->check()) {
+                            $canReview = \App\Models\Booking::where('user_id', auth()->id())
+                                ->where('room_type_id', $roomType->id)
+                                ->where('status', 'completed')
+                                ->exists();
+                        }
+                    @endphp
+
+                    @if($canReview)
+                        <h5 class="fw-bold mt-4 mb-3">Write a Review</h5>
+                        @if(session('review_success'))
+                            <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>{{ session('review_success') }}</div>
+                        @endif
+                        @if(session('error'))
+                            <div class="alert alert-danger"><i class="bi bi-exclamation-circle me-2"></i>{{ session('error') }}</div>
+                        @endif
+                        <form action="{{ route('room.review.submit', $roomType->slug) }}" method="POST">
+                            @csrf
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Name</label>
+                                    <input type="text" name="name" class="form-control" value="{{ auth()->user()->name ?? '' }}" placeholder="Your Name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Email</label>
+                                    <input type="email" name="email" class="form-control" value="{{ auth()->user()->email ?? '' }}" placeholder="Your Email" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Rating</label>
+                                    <select name="rating" class="form-select" required>
+                                        <option value="5" selected>5 - Excellent</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="3">3 - Average</option>
+                                        <option value="2">2 - Poor</option>
+                                        <option value="1">1 - Terrible</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Review</label>
+                                    <textarea name="comment" class="form-control" rows="4" placeholder="Share your thoughts about this room..." required></textarea>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-primary px-4 py-2">Submit Review</button>
+                                </div>
+                            </div>
+                        </form>
                     @endif
-                    <form action="{{ route('room.review.submit', $roomType->slug) }}" method="POST">
-                        @csrf
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Name</label>
-                                <input type="text" name="name" class="form-control" value="{{ auth()->user()->name ?? '' }}" placeholder="Your Name" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Email</label>
-                                <input type="email" name="email" class="form-control" value="{{ auth()->user()->email ?? '' }}" placeholder="Your Email" required>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label fw-bold">Rating</label>
-                                <select name="rating" class="form-select" required>
-                                    <option value="5" selected>5 - Excellent</option>
-                                    <option value="4">4 - Very Good</option>
-                                    <option value="3">3 - Average</option>
-                                    <option value="2">2 - Poor</option>
-                                    <option value="1">1 - Terrible</option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label fw-bold">Review</label>
-                                <textarea name="comment" class="form-control" rows="4" placeholder="Share your thoughts about this room..." required></textarea>
-                            </div>
-                            <div class="col-12 mt-3">
-                                <button type="submit" class="btn btn-primary px-4 py-2">Submit Review</button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
 
