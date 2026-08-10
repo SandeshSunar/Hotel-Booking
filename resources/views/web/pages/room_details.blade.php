@@ -27,6 +27,11 @@
 
 <section class="room-page">
     <div class="container">
+        <div class="mb-3">
+            <a href="{{ route('rooms') }}" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm">
+                <i class="bi bi-arrow-left me-2"></i>Back to Our Rooms
+            </a>
+        </div>
         <div class="room-hero text-center">
             <span class="badge {{ $isAvailable ? 'bg-primary-subtle text-primary' : 'bg-danger text-white' }} mb-2">
                 {{ $isAvailable ? $roomType->name : 'Booked' }}
