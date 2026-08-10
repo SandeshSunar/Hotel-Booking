@@ -28,7 +28,7 @@
 <section class="room-page">
     <div class="container">
         <div class="mb-3">
-            <a href="{{ route('rooms') }}" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm">
+            <a href="{{ route('rooms') }}" class="btn nav-auth-btn rounded-pill px-4 shadow-sm">
                 <i class="bi bi-arrow-left me-2"></i>Back to Our Rooms
             </a>
         </div>
