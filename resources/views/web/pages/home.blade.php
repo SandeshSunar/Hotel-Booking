@@ -17,8 +17,8 @@
                             Modern rooms, friendly staff and a prime location for business, family and leisure trips.
                         </p>
                         <div class="home-trust justify-content-center">
-                            <div><strong>4.9/5</strong> guest rating</div>
-                            <div><strong>1k+</strong> happy stays</div>
+                            <div><strong>{{ number_format($averageRating, 1) }}/5</strong> guest rating</div>
+                            <div><strong>{{ $totalReviews > 0 ? $totalReviews . '+' : 'No' }}</strong> reviews</div>
                             <div><strong>24/7</strong> support</div>
                         </div>
                     </div>
@@ -106,6 +106,17 @@
                                     <strong>Rs. {{ number_format($roomType->display_price, 2) }} / night</strong>
                                     <small class="text-muted">{{ $roomType->capacity_label }}</small>
                                 </div>
+
+                                @if($roomType->reviews->count() > 0)
+                                    <div class="mb-3 small">
+                                        <div class="star-rating text-warning d-inline-block">
+                                            @php $avgRoomRating = round($roomType->reviews->avg('rating')); @endphp
+                                            @for($i = 0; $i < $avgRoomRating; $i++) <i class="bi bi-star-fill"></i> @endfor
+                                            @for($i = $avgRoomRating; $i < 5; $i++) <i class="bi bi-star text-secondary opacity-25"></i> @endfor
+                                        </div>
+                                        <span class="text-muted ms-1">({{ $roomType->reviews->count() }} {{ Str::plural('review', $roomType->reviews->count()) }})</span>
+                                    </div>
+                                @endif
                                 <div class="room-link-wrap">
                                     <a href="{{ route('room.details', $roomType->slug) }}" class="room-link">
                                         View Details <i class="bi bi-arrow-right"></i>
@@ -130,6 +141,37 @@
             </a>
         </div>
     </section>
+
+    @if($latestReviews->count() > 0)
+    <section class="home-reviews py-5" style="background-color: #f8fafc;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-tag" style="color: #6366f1; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Testimonials</span>
+                <h2 class="section-title fw-bold">What Our Guests Say</h2>
+            </div>
+            <div class="row g-4 justify-content-center">
+                @foreach($latestReviews as $review)
+                    <div class="col-md-4">
+                        <div class="review-card p-4 bg-white rounded-4 shadow-sm border border-light h-100">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h6 class="fw-bold mb-1">{{ $review->name }}</h6>
+                                    <small class="text-muted">{{ $review->roomType?->name }}</small>
+                                </div>
+                                <div class="star-rating text-warning small">
+                                    @for($i = 0; $i < $review->rating; $i++) <i class="bi bi-star-fill"></i> @endfor
+                                    @for($i = $review->rating; $i < 5; $i++) <i class="bi bi-star text-secondary opacity-25"></i> @endfor
+                                </div>
+                            </div>
+                            <p class="text-muted fst-italic mb-0">"{{ \Illuminate\Support\Str::limit($review->comment, 120) }}"</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+
 
     <section class="hotel-amenities py-5" style="background-color: #f8fafc;">
         <div class="container">

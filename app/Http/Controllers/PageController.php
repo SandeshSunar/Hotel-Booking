@@ -16,16 +16,21 @@ use Illuminate\Support\Facades\Mail;
 
 class PageController extends Controller
 {
-    // ======= Public Pages =======
     public function home()
     {
-        $featuredRooms = RoomType::with('images')
+        $featuredRooms = RoomType::with(['images', 'reviews' => function($q) {
+            $q->where('is_approved', true);
+        }])
             ->where('is_active', true)
             ->latest()
             ->take(3)
             ->get();
 
-        return view('web.pages.home', compact('featuredRooms'));
+        $averageRating = \App\Models\Review::where('is_approved', true)->avg('rating') ?? 5.0;
+        $totalReviews = \App\Models\Review::where('is_approved', true)->count();
+        $latestReviews = \App\Models\Review::with('roomType')->where('is_approved', true)->latest()->take(3)->get();
+
+        return view('web.pages.home', compact('featuredRooms', 'averageRating', 'totalReviews', 'latestReviews'));
     }
 
     public function roomDetails($slug)
