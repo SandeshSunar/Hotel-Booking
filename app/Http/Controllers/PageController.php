@@ -29,8 +29,15 @@ class PageController extends Controller
         $averageRating = \App\Models\Review::where('is_approved', true)->avg('rating') ?? 5.0;
         $totalReviews = \App\Models\Review::where('is_approved', true)->count();
         $latestReviews = \App\Models\Review::with('roomType')->where('is_approved', true)->latest()->take(3)->get();
+        $allReviews = \App\Models\Review::with('roomType')->where('is_approved', true)->latest()->get();
 
-        return view('web.pages.home', compact('featuredRooms', 'averageRating', 'totalReviews', 'latestReviews'));
+        // Rating distribution for stats
+        $ratingDistribution = [];
+        for ($i = 5; $i >= 1; $i--) {
+            $ratingDistribution[$i] = \App\Models\Review::where('is_approved', true)->where('rating', $i)->count();
+        }
+
+        return view('web.pages.home', compact('featuredRooms', 'averageRating', 'totalReviews', 'latestReviews', 'allReviews', 'ratingDistribution'));
     }
 
     public function roomDetails($slug)
