@@ -17,7 +17,10 @@
     <div class="card shadow" style="max-width: 600px;">
         <div class="card-body">
             <h5 class="card-title fw-bold">{{ $review->name }}</h5>
-            <h6 class="card-subtitle mb-3 text-muted">{{ $review->email ?? 'No email provided' }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">{{ $review->email ?? 'No email provided' }}</h6>
+            <div class="mb-3">
+                <span class="badge bg-primary text-white">Room: {{ $review->roomType ? $review->roomType->name : 'General' }}</span>
+            </div>
             
             <div class="mb-3">
                 <strong>Rating:</strong> 

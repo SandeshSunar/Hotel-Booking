@@ -10,7 +10,7 @@ class ReviewController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Review::query();
+        $query = Review::with('roomType');
 
         if ($request->has('search')) {
             $search = $request->search;

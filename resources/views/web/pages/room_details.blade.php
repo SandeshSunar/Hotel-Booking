@@ -106,55 +106,52 @@
                         <p class="text-muted mb-4">No reviews yet. Be the first to share your experience!</p>
                     @endif
 
-                    @php
-                        $canReview = false;
-                        if (auth()->check()) {
-                            $canReview = \App\Models\Booking::where('user_id', auth()->id())
-                                ->where('room_type_id', $roomType->id)
-                                ->where('status', 'completed')
-                                ->exists();
-                        }
-                    @endphp
-
-                    @if($canReview)
-                        <h5 class="fw-bold mt-4 mb-3">Write a Review</h5>
-                        @if(session('review_success'))
-                            <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>{{ session('review_success') }}</div>
-                        @endif
-                        @if(session('error'))
-                            <div class="alert alert-danger"><i class="bi bi-exclamation-circle me-2"></i>{{ session('error') }}</div>
-                        @endif
-                        <form action="{{ route('room.review.submit', $roomType->slug) }}" method="POST">
-                            @csrf
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">Name</label>
-                                    <input type="text" name="name" class="form-control" value="{{ auth()->user()->name ?? '' }}" placeholder="Your Name" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">Email</label>
-                                    <input type="email" name="email" class="form-control" value="{{ auth()->user()->email ?? '' }}" placeholder="Your Email" required>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label fw-bold">Rating</label>
-                                    <select name="rating" class="form-select" required>
-                                        <option value="5" selected>5 - Excellent</option>
-                                        <option value="4">4 - Very Good</option>
-                                        <option value="3">3 - Average</option>
-                                        <option value="2">2 - Poor</option>
-                                        <option value="1">1 - Terrible</option>
-                                    </select>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label fw-bold">Review</label>
-                                    <textarea name="comment" class="form-control" rows="4" placeholder="Share your thoughts about this room..." required></textarea>
-                                </div>
-                                <div class="col-12 mt-3">
-                                    <button type="submit" class="btn btn-primary px-4 py-2">Submit Review</button>
+                    <h5 class="fw-bold mt-5 mb-3 border-top pt-4">Rate this Room</h5>
+                    @if(session('review_success'))
+                        <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>{{ session('review_success') }}</div>
+                    @endif
+                    @if(session('error'))
+                        <div class="alert alert-danger"><i class="bi bi-exclamation-circle me-2"></i>{{ session('error') }}</div>
+                    @endif
+                    
+                    <form action="{{ route('room.review.submit', $roomType->slug) }}" method="POST" class="p-4 bg-light rounded-4 border">
+                        @csrf
+                        <div class="row g-3">
+                            <div class="col-12 py-2 text-center">
+                                <label class="form-label fw-bold d-block mb-1">Your Rating</label>
+                                <div class="rating-stars-input d-inline-flex flex-row-reverse" style="font-size: 3rem; cursor: pointer;">
+                                    <input type="radio" id="star5" name="rating" value="5" class="d-none" required checked />
+                                    <label for="star5" title="5 - Excellent"><i class="bi bi-star-fill"></i></label>
+                                    
+                                    <input type="radio" id="star4" name="rating" value="4" class="d-none" />
+                                    <label for="star4" title="4 - Very Good"><i class="bi bi-star-fill"></i></label>
+                                    
+                                    <input type="radio" id="star3" name="rating" value="3" class="d-none" />
+                                    <label for="star3" title="3 - Average"><i class="bi bi-star-fill"></i></label>
+                                    
+                                    <input type="radio" id="star2" name="rating" value="2" class="d-none" />
+                                    <label for="star2" title="2 - Poor"><i class="bi bi-star-fill"></i></label>
+                                    
+                                    <input type="radio" id="star1" name="rating" value="1" class="d-none" />
+                                    <label for="star1" title="1 - Terrible"><i class="bi bi-star-fill"></i></label>
                                 </div>
                             </div>
-                        </form>
-                    @endif
+                            <div class="col-12 mt-3 text-center">
+                                <button type="submit" class="btn btn-primary px-5 py-2 fw-semibold rounded-pill shadow-sm">Submit Rating</button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <style>
+                        .rating-stars-input label { color: #cbd5e1; transition: color 0.2s ease; margin-left: 5px; }
+                        .rating-stars-input label:hover,
+                        .rating-stars-input label:hover ~ label,
+                        .rating-stars-input input:checked ~ label { color: #fbbf24; }
+                        .rating-stars-input input:checked + label:hover,
+                        .rating-stars-input input:checked ~ label:hover,
+                        .rating-stars-input label:hover ~ input:checked ~ label,
+                        .rating-stars-input input:checked ~ label:hover ~ label { color: #f59e0b; }
+                    </style>
                 </div>
             </div>
 

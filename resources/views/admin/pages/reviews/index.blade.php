@@ -151,6 +151,7 @@
                     <tr>
                         <th class="ps-4 py-3" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">ID #</th>
                         <th class="py-3" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Guest Info</th>
+                        <th class="py-3" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Room</th>
                         <th class="py-3" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Rating</th>
                         <th class="py-3" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; width: 30%;">Comment</th>
                         <th class="py-3" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Status</th>
@@ -170,6 +171,10 @@
                                     <span class="fw-bold text-dark">{{ $review->name }}</span>
                                     <span class="text-muted small">{{ $review->email ?? 'N/A' }}</span>
                                 </div>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-light text-primary border">{{ $review->roomType ? $review->roomType->name : 'General' }}</span>
                             </td>
                             
                             <td>
