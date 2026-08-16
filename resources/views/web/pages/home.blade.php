@@ -18,7 +18,7 @@
                         </p>
                         <div class="home-trust justify-content-center">
                             <div><strong>{{ number_format($averageRating, 1) }}/5</strong> guest rating</div>
-                            <div><strong>{{ $totalReviews > 0 ? $totalReviews . '+' : 'No' }}</strong> reviews</div>
+                            <div><strong>{{ $totalReviews > 0 ? $totalReviews . '+' : 'No' }}</strong> ratings</div>
                             {{-- <div><strong>24/7</strong> support</div> --}}
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                                             @for($i = 0; $i < $avgRoomRating; $i++) <i class="bi bi-star-fill"></i> @endfor
                                             @for($i = $avgRoomRating; $i < 5; $i++) <i class="bi bi-star text-secondary opacity-25"></i> @endfor
                                         </div>
-                                        <span class="text-muted ms-1">({{ $roomType->reviews->count() }} {{ Str::plural('review', $roomType->reviews->count()) }})</span>
+                                        <span class="text-muted ms-1">({{ $roomType->reviews->count() }} {{ Str::plural('rating', $roomType->reviews->count()) }})</span>
                                     </div>
                                 @endif
                                 <div class="room-link-wrap">
@@ -147,8 +147,8 @@
         <div class="container">
             <div class="text-center mb-5">
                 <span class="section-tag" style="color: #6366f1; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Testimonials</span>
-                <h2 class="section-title fw-bold">What Our Guests Say</h2>
-                <p class="text-muted mt-2">Real experiences from our valued guests — read their stories below.</p>
+                <h2 class="section-title fw-bold">Guest Ratings</h2>
+                <p class="text-muted mt-2">See how our valued guests have rated their stay with us.</p>
             </div>
 
             {{-- Rating Overview Stats --}}
@@ -165,7 +165,7 @@
                                 @endif
                             @endfor
                         </div>
-                        <p class="text-muted mb-0">Based on <strong>{{ $totalReviews }}</strong> {{ Str::plural('review', $totalReviews) }}</p>
+                        <p class="text-muted mb-0">Based on <strong>{{ $totalReviews }}</strong> {{ Str::plural('rating', $totalReviews) }}</p>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-7">
@@ -191,8 +191,6 @@
                         @foreach($allReviews as $review)
                             <div class="reviews-carousel-card">
                                 <div class="review-card-inner">
-                                    <div class="review-quote-icon"><i class="bi bi-quote"></i></div>
-                                    <p class="review-card-comment">"{{ Str::limit($review->comment, 180) }}"</p>
                                     <div class="review-card-footer">
                                         <div class="review-card-avatar">{{ strtoupper(mb_substr($review->name, 0, 1)) }}</div>
                                         <div class="review-card-info">
@@ -216,8 +214,6 @@
                         @foreach($allReviews as $review)
                             <div class="reviews-carousel-card">
                                 <div class="review-card-inner">
-                                    <div class="review-quote-icon"><i class="bi bi-quote"></i></div>
-                                    <p class="review-card-comment">"{{ Str::limit($review->comment, 180) }}"</p>
                                     <div class="review-card-footer">
                                         <div class="review-card-avatar">{{ strtoupper(mb_substr($review->name, 0, 1)) }}</div>
                                         <div class="review-card-info">
