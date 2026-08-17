@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="room-block p-4 mt-4 mb-4">
-                    <h4 class="fw-bold mb-3">Guest Reviews</h4>
+                    {{-- <h4 class="fw-bold mb-3">Guest Reviews</h4>
                     @if($roomType->reviews->count() > 0)
                         <div class="reviews-list mb-4">
                             @foreach($roomType->reviews as $review)
@@ -104,7 +104,7 @@
                         </div>
                     @else
                         <p class="text-muted mb-4">No reviews yet. Be the first to share your experience!</p>
-                    @endif
+                    @endif --}}
 
                     <h5 class="fw-bold mt-5 mb-3 border-top pt-4">Rate this Room</h5>
                     @if(session('review_success'))
