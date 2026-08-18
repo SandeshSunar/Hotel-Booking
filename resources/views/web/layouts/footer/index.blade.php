@@ -1,7 +1,7 @@
 <footer class="site-footer mt-auto">
     <div class="container">
         <div class="row g-4">
-            <div class="col-lg-4">
+            {{-- <div class="col-lg-4">
                 <a href="{{ route('home') }}" class="footer-brand d-inline-flex align-items-center text-decoration-none">
                     <img src="{{ asset('images/logo.png') }}" alt="MyHotel Logo" class="footer-logo">
                     <span class="footer-brand-text">MyHotel</span>
@@ -15,7 +15,7 @@
                     <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
                     <a href="#" aria-label="Youtube"><i class="bi bi-youtube"></i></a>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="col-6 col-lg-2">
                 <h6 class="footer-title">Explore</h6>
