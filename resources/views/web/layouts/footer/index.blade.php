@@ -17,7 +17,7 @@
                 </div>
             </div> --}}
 
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-4">
                 <h6 class="footer-title">Explore</h6>
                 <ul class="footer-links">
                     <li><a href="{{ route('home') }}">Home</a></li>
@@ -27,7 +27,7 @@
                 </ul>
             </div>
 
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-4">
                 <h6 class="footer-title">Discover</h6>
                 <ul class="footer-links">
                     <li><a href="{{ route('blog') }}">Blog</a></li>
