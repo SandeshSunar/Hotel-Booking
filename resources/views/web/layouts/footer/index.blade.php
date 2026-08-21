@@ -49,10 +49,10 @@
 
         <div class="footer-bottom">
             <p class="mb-0">&copy; {{ date('Y') }} Sandesh Sunar. All rights reserved.</p>
-            <div class="footer-bottom-links">
+            {{-- <div class="footer-bottom-links">
                 <a href="#">Privacy</a>
                 <a href="#">Terms</a>
-            </div>
+            </div> --}}
         </div>
     </div>
 </footer>
