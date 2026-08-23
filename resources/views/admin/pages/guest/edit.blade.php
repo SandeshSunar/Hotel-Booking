@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+{{-- @extends('admin.layouts.master')
 
 @section('title', 'Edit Guest')
 
@@ -29,4 +29,4 @@
         <a href="{{ route('admin.guest.index') }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
-@endsection
+@endsection --}}

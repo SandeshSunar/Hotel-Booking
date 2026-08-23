@@ -93,7 +93,7 @@
                             </td>
                             <td>
                                 <a href="{{ route('admin.guest.show', $guest->id) }}" class="btn btn-sm btn-info">View</a>
-                                <a href="{{ route('admin.guest.edit', $guest->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                {{-- <a href="{{ route('admin.guest.edit', $guest->id) }}" class="btn btn-sm btn-primary">Edit</a> --}}
                                 <form action="{{ route('admin.guest.destroy', $guest->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
