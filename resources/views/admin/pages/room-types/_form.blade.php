@@ -108,31 +108,18 @@
 
         <div class="col-12">
             <label class="form-label d-block">Facilities</label>
-            <div class="row g-2">
+            <div id="facilitiesContainer">
                 @php
-                    $predefinedFacilities = [
-                        'Free Wi-Fi', 'Air Conditioning', 'Private Bathroom', 
-                        'Hot & Cold Shower', 'Towels', 'Free Toiletries',  
-                        'Electric Kettle', 'Tea/Coffee Maker',   
-                        'Work Desk', 'Balcony', 'Room Service', 'Daily Housekeeping', 
-                        'Safe Deposit Box', 'Free Parking', 
-                        'Airport Shuttle',  
-                        '24-Hour Front Desk', 'Laundry Service', 
-                        'Luggage Storage', 'Tour Desk', 'Car Rental', 
-                        'CCTV', '24-Hour Security', 
-                        'Smoke Detectors'
-                    ];
+                    $currentFacilities = old('facilities', isset($facilities) && !empty(array_filter($facilities)) ? $facilities : ['']);
                 @endphp
-                
-                @foreach($predefinedFacilities as $facility)
-                    <div class="col-md-3 col-sm-4 col-6">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="facilities[]" value="{{ $facility }}" id="facility-{{ Str::slug($facility) }}"
-                                {{ in_array($facility, $facilities ?? []) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="facility-{{ Str::slug($facility) }}">
-                                {{ $facility }}
-                            </label>
-                        </div>
+                @foreach($currentFacilities as $index => $facility)
+                    <div class="input-group mb-2 facility-row">
+                        <input type="text" name="facilities[]" class="form-control" value="{{ $facility }}" placeholder="e.g. Free Wi-Fi">
+                        @if($index === 0)
+                            <button type="button" class="btn btn-success" id="addFacilityBtn">+</button>
+                        @else
+                            <button type="button" class="btn btn-danger remove-facility-btn">X</button>
+                        @endif
                     </div>
                 @endforeach
             </div>
@@ -165,6 +152,31 @@ document.getElementById('imageInput').addEventListener('change', function(){
             img.width = 100;
             img.className = 'rounded border';
             container.appendChild(img);
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const addBtn = document.getElementById('addFacilityBtn');
+    const container = document.getElementById('facilitiesContainer');
+
+    if (addBtn) {
+        addBtn.addEventListener('click', function() {
+            const row = document.createElement('div');
+            row.className = 'input-group mb-2 facility-row';
+            row.innerHTML = `
+                <input type="text" name="facilities[]" class="form-control" placeholder="e.g. Free Wi-Fi">
+                <button type="button" class="btn btn-danger remove-facility-btn">X</button>
+            `;
+            container.appendChild(row);
+        });
+    }
+
+    if (container) {
+        container.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('remove-facility-btn')) {
+                e.target.closest('.facility-row').remove();
+            }
         });
     }
 });
