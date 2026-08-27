@@ -190,6 +190,18 @@ class RoomTypeController extends Controller
     private function syncFacilities(Request $request, RoomType $roomType): void
     {
         $facilities = $request->input('facilities', []);
-        $roomType->facilities()->sync($facilities);
+        
+        $facilityIds = [];
+        if (is_array($facilities)) {
+            foreach ($facilities as $facilityName) {
+                $facilityName = trim($facilityName);
+                if (!empty($facilityName)) {
+                    $facility = \App\Models\Facility::firstOrCreate(['name' => $facilityName]);
+                    $facilityIds[] = $facility->id;
+                }
+            }
+        }
+        
+        $roomType->facilities()->sync($facilityIds);
     }
 }
