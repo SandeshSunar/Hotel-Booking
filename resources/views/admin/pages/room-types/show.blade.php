@@ -54,7 +54,7 @@
                     <div class="row g-3">
                         <div class="col-sm-4">
                             <div class="p-3 bg-light rounded shadow-sm border border-light h-100">
-                                <div class="text-muted small mb-2"><i class="bi bi-eye me-1"></i> Web Visibility</div>
+                                <div class="text-muted small mb-2">Web Visibility</div>
                                 <span class="badge {{ $roomType->is_active ? 'bg-primary' : 'bg-secondary' }} px-3 py-2">
                                     {{ $roomType->is_active ? 'Enabled / Active' : 'Disabled / Hidden' }}
                                 </span>
@@ -62,7 +62,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="p-3 bg-light rounded shadow-sm border border-light h-100">
-                                <div class="text-muted small mb-2"><i class="bi bi-toggles2 me-1"></i> Current Manual Status</div>
+                                <div class="text-muted small mb-2"> Current Manual Status</div>
                                 <span class="badge {{ $roomType->status === 'available' ? 'bg-success' : 'bg-danger' }} px-3 py-2">
                                     {{ ucfirst($roomType->status) }}
                                 </span>
