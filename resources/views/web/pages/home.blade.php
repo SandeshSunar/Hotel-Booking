@@ -18,7 +18,7 @@
                         </p>
                         <div class="home-trust justify-content-center">
                             <div><strong>{{ number_format($averageRating, 1) }}/5</strong> guest rating</div>
-                            <div><strong>{{ $totalReviews > 0 ? $totalReviews . '+' : 'No' }}</strong> ratings</div>
+                            <div><strong>{{ $totalReviews > 0 ? $totalReviews . '+' : '' }}</strong> </div>
                             {{-- <div><strong>24/7</strong> support</div> --}}
                         </div>
                     </div>
