@@ -33,7 +33,7 @@
                     <li><a href="{{ route('blog') }}">Blog</a></li>
                     <li><a href="{{ route('contact') }}">Contact</a></li>
                     <li><a href="{{ route('rooms') }}">Special Offers</a></li>
-                    <li><a href="{{ route('contact') }}">Support</a></li>
+                
                 </ul>
             </div>
 
