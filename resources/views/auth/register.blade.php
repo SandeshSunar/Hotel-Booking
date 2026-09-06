@@ -31,7 +31,7 @@
             <label for="name" class="form-label">Full Name</label>
             <input type="text" class="form-control @error('name') is-invalid @enderror"
                    id="name" name="name" value="{{ old('name') }}"
-                   placeholder="John Doe" required>
+                   placeholder="Enter full Name" required>
             @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
 
@@ -40,7 +40,7 @@
             <label for="registerEmail" class="form-label">Email address</label>
             <input type="email" class="form-control @error('email') is-invalid @enderror"
                    id="registerEmail" name="email" value="{{ old('email') }}"
-                   placeholder="you@example.com" required>
+                   placeholder="Enter email address" required>
             @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
 
@@ -49,7 +49,7 @@
             <label for="phone" class="form-label">Phone Number</label>
             <input type="text" class="form-control @error('phone') is-invalid @enderror"
                    id="phone" name="phone" value="{{ old('phone') }}"
-                   placeholder="07XXXXXXXX" required>
+                   placeholder="Enter your phone number" required>
             @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
 

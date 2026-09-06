@@ -229,7 +229,7 @@
                         <i class="bi bi-person input-icon"></i>
                         <label for="modalName" class="form-label">Full Name</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" id="modalName"
-                            name="name" value="{{ old('name') }}" placeholder="John Doe" required>
+                            name="name" value="{{ old('name') }}" placeholder="Enter your name" required>
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -240,7 +240,7 @@
                         <label for="modalRegisterEmail" class="form-label">Email address</label>
                         <input type="email" class="form-control @error('email') is-invalid @enderror"
                             id="modalRegisterEmail" name="email" value="{{ old('email') }}"
-                            placeholder="you@example.com" required>
+                            placeholder="Enter email address" required>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -250,7 +250,7 @@
                         <i class="bi bi-telephone input-icon"></i>
                         <label for="modalPhone" class="form-label">Phone Number</label>
                         <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                            id="modalPhone" name="phone" value="{{ old('phone') }}" placeholder="07XXXXXXXX"
+                            id="modalPhone" name="phone" value="{{ old('phone') }}" placeholder="Enter your phone number"
                             required>
                         @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
