@@ -18,7 +18,7 @@
                         </p>
                         <div class="home-trust justify-content-center">
                             <div><strong>{{ number_format($averageRating, 1) }}/5</strong> guest rating</div>
-                            <div><strong>{{ $totalReviews > 0 ? $totalReviews . '+' : '' }}</strong> </div>
+                            <div><strong>{{ $totalReviews > 0 ? $totalReviews . '' : '' }}</strong> </div>
                             {{-- <div><strong>24/7</strong> support</div> --}}
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                                             @for($i = 0; $i < $avgRoomRating; $i++) <i class="bi bi-star-fill"></i> @endfor
                                             @for($i = $avgRoomRating; $i < 5; $i++) <i class="bi bi-star text-secondary opacity-25"></i> @endfor
                                         </div>
-                                        <span class="text-muted ms-1">({{ $roomType->reviews->count() }} {{ Str::plural('rating', $roomType->reviews->count()) }})</span>
+                                        <span class="text-muted ms-1">( {{ Str::plural('Rating', $roomType->reviews->count()) }})</span>
                                     </div>
                                 @endif
                                 <div class="room-link-wrap">
