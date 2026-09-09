@@ -152,7 +152,7 @@
             </div>
 
             {{-- Rating Overview Stats --}}
-            <div class="row g-4 mb-5 justify-content-center">
+            {{-- <div class="row g-4 mb-5 justify-content-center">
                 <div class="col-lg-4 col-md-5">
                     <div class="rating-overview-card text-center p-4 rounded-4 h-100">
                         <div class="rating-big-number">{{ number_format($averageRating, 1) }}</div>
@@ -182,7 +182,7 @@
                         @endfor
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- Reviews Carousel --}}
             <div class="reviews-carousel-wrapper">
