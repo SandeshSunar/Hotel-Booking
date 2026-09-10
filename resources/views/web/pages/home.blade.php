@@ -205,7 +205,6 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <small class="review-card-date">{{ $review->created_at->diffForHumans() }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -228,7 +227,6 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <small class="review-card-date">{{ $review->created_at->diffForHumans() }}</small>
                                     </div>
                                 </div>
                             </div>
